@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { useWallet } from '@/hooks/useWallet';
 import { useInteraction } from '@/hooks/useApi';
-import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
 
 export const StakingTest: React.FC = () => {
   const { isConnected, publicKey, createStaking } = useWallet();

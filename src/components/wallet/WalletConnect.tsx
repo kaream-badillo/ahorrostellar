@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useWallet } from '@/hooks/useWallet';
-import { Button } from '@/components/ui/Button';
+import Button from '@/components/ui/Button';
 
 interface WalletConnectProps {
   onConnect?: (publicKey: string) => void;

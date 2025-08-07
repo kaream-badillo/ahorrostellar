@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       evidence,
       timestamp: new Date().toISOString(),
       status: 'pending', // 'pending', 'approved', 'rejected'
-      blockchainTxId: null // Will be filled when onchain transaction is created
+      blockchainTxId: null as string | null // Will be filled when onchain transaction is created
     };
 
     // Add to storage
