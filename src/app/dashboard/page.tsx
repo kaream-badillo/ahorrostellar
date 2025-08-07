@@ -6,6 +6,7 @@ import Card from "@/components/ui/Card";
 import StatsCard from "@/components/ui/StatsCard";
 import Layout from "@/components/layout/Layout";
 import { useApp } from "@/contexts/AppContext";
+import { StakingTest } from "@/components/StakingTest";
 import Link from "next/link";
 
 export default function Dashboard() {
@@ -83,6 +84,11 @@ export default function Dashboard() {
           </div>
         </div>
       </Card>
+
+      {/* Staking Test Component */}
+      <div className="mb-12">
+        <StakingTest />
+      </div>
 
       {/* Recent Projects Grid - 2 Columns */}
       <div className="mb-12">

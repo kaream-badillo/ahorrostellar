@@ -1,6 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useWallet } from '@/hooks/useWallet';
+import { useInteraction, useBadge, useAttestation, useUser } from '@/hooks/useApi';
+import { stellarService } from '@/lib/stellar';
 
 // Types
 interface User {
@@ -20,10 +23,10 @@ interface User {
 
 interface WalletState {
   isConnected: boolean;
-  address: string | null;
-  balance: number;
-  network: 'testnet' | 'mainnet';
-  provider: 'freighter' | 'albedo' | null;
+  publicKey: string | null;
+  balance: any | null;
+  isLoading: boolean;
+  error: string | null;
 }
 
 interface Project {
@@ -200,10 +203,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     user: mockUser,
     wallet: {
       isConnected: false,
-      address: null,
-      balance: 0,
-      network: 'testnet',
-      provider: null,
+      publicKey: null,
+      balance: null,
+      isLoading: false,
+      error: null,
     },
     projects: mockProjects,
     myStakedProjects: mockProjects.filter(p => p.myStake > 0),
@@ -217,27 +220,42 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const connectWallet = async () => {
     setState(prev => ({ ...prev, isLoading: true }));
     
-    // Simulate wallet connection
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setState(prev => ({
-      ...prev,
-      wallet: {
-        isConnected: true,
-        address: 'GABC1234567890ABCDEF1234567890ABCDEF1234',
-        balance: 2450,
-        network: 'testnet',
-        provider: 'freighter',
-      },
-      isLoading: false,
-    }));
+    try {
+      // Use real wallet connection
+      const publicKey = await stellarService.connectWallet();
+      const balance = await stellarService.getBalance(publicKey);
+      
+      setState(prev => ({
+        ...prev,
+        wallet: {
+          isConnected: true,
+          publicKey,
+          balance,
+          isLoading: false,
+          error: null,
+        },
+        isLoading: false,
+      }));
 
-    // Add activity
-    addActivity({
-      type: 'wallet_connected',
-      title: 'Wallet conectada',
-      description: 'Conectaste tu wallet Freighter exitosamente',
-    });
+      // Add activity
+      addActivity({
+        type: 'wallet_connected',
+        title: 'Wallet conectada',
+        description: 'Conectaste tu wallet Freighter exitosamente',
+      });
+    } catch (error) {
+      setState(prev => ({
+        ...prev,
+        wallet: {
+          isConnected: false,
+          publicKey: null,
+          balance: null,
+          isLoading: false,
+          error: error instanceof Error ? error.message : 'Failed to connect wallet',
+        },
+        isLoading: false,
+      }));
+    }
   };
 
   // Disconnect Wallet
@@ -246,58 +264,78 @@ export function AppProvider({ children }: { children: ReactNode }) {
       ...prev,
       wallet: {
         isConnected: false,
-        address: null,
-        balance: 0,
-        network: 'testnet',
-        provider: null,
+        publicKey: null,
+        balance: null,
+        isLoading: false,
+        error: null,
       },
     }));
   };
 
   // Make Stake
   const makeStake = async (projectId: string, amount: number) => {
+    if (!state.wallet.isConnected || !state.wallet.publicKey) {
+      throw new Error('Wallet not connected');
+    }
+
     setState(prev => ({ ...prev, isLoading: true }));
     
-    // Simulate stake transaction
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Update project
-    const updatedProjects = state.projects.map(project => 
-      project.id === projectId 
-        ? { 
-            ...project, 
-            totalStaked: project.totalStaked + amount,
-            progress: Math.min(100, ((project.totalStaked + amount) / project.targetAmount) * 100),
-            stakers: project.stakers + 1,
-            myStake: project.myStake + amount,
-          }
-        : project
-    );
+    try {
+      // Create blockchain transaction
+      const transactionXDR = await stellarService.createStakingTransaction(amount, projectId);
+      const result = await stellarService.signAndSubmitTransaction(transactionXDR);
+      
+      // Record interaction in backend
+      const interactionApi = useInteraction();
+      await interactionApi.recordInteraction({
+        userId: state.wallet.publicKey,
+        projectId,
+        interactionType: 'stake',
+        amount,
+        blockchainTxId: result.hash,
+      });
+      
+      // Update project
+      const updatedProjects = state.projects.map(project => 
+        project.id === projectId 
+          ? { 
+              ...project, 
+              totalStaked: project.totalStaked + amount,
+              progress: Math.min(100, ((project.totalStaked + amount) / project.targetAmount) * 100),
+              stakers: project.stakers + 1,
+              myStake: project.myStake + amount,
+            }
+          : project
+      );
 
-    // Update user balance
-    const updatedUser = state.user ? {
-      ...state.user,
-      totalBalance: state.user.totalBalance - amount,
-      activeStakes: state.user.activeStakes + amount,
-    } : null;
+      // Update user balance
+      const updatedUser = state.user ? {
+        ...state.user,
+        totalBalance: state.user.totalBalance - amount,
+        activeStakes: state.user.activeStakes + amount,
+      } : null;
 
-    setState(prev => ({
-      ...prev,
-      projects: updatedProjects,
-      myStakedProjects: updatedProjects.filter(p => p.myStake > 0),
-      user: updatedUser,
-      isLoading: false,
-    }));
+      setState(prev => ({
+        ...prev,
+        projects: updatedProjects,
+        myStakedProjects: updatedProjects.filter(p => p.myStake > 0),
+        user: updatedUser,
+        isLoading: false,
+      }));
 
-    // Add activity
-    const project = state.projects.find(p => p.id === projectId);
-    addActivity({
-      type: 'stake',
-      title: 'Nuevo stake realizado',
-      description: `Stakeaste $${amount} en "${project?.title}"`,
-      amount,
-      projectId,
-    });
+      // Add activity
+      const project = state.projects.find(p => p.id === projectId);
+      addActivity({
+        type: 'stake',
+        title: 'Nuevo stake realizado',
+        description: `Stakeaste $${amount} en "${project?.title}"`,
+        amount,
+        projectId,
+      });
+    } catch (error) {
+      setState(prev => ({ ...prev, isLoading: false }));
+      throw error;
+    }
   };
 
   // Update User Profile
