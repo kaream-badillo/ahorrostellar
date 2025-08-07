@@ -1,79 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --stellar-primary: #6b63ff;
-  --stellar-secondary: #d946ef;
-  --stellar-accent: #f59e0b;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 @layer base {
-  * {
-    @apply border-border;
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
   }
   
   body {
-    @apply bg-background text-foreground font-sans;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-  
-  html {
-    scroll-behavior: smooth;
+    @apply bg-base-100 text-base-content;
   }
 }
 
 @layer components {
-  /* Componentes base reutilizables */
   .btn-stellar {
-    @apply bg-gradient-to-r from-stellar-500 to-accent-500 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95;
+    @apply bg-gradient-to-r from-stellar-500 to-purple-500 hover:from-stellar-600 hover:to-purple-600 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105;
   }
   
   .card-stellar {
-    @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 transition-all duration-300 hover:shadow-xl;
+    @apply bg-white/80 backdrop-blur-sm border border-stellar-100 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
   
-  .input-stellar {
-    @apply w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-stellar-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-all duration-200;
-  }
-  
-  .loading-spinner {
-    @apply animate-spin rounded-full border-4 border-gray-200 border-t-stellar-500;
-  }
-  
-  .skeleton {
-    @apply animate-pulse bg-gray-200 dark:bg-gray-700 rounded;
+  .gradient-text {
+    @apply bg-gradient-to-r from-stellar-500 to-purple-500 bg-clip-text text-transparent;
   }
 }
 
 @layer utilities {
-  /* Utilidades personalizadas */
-  .text-gradient {
-    @apply bg-gradient-to-r from-stellar-500 to-accent-500 bg-clip-text text-transparent;
-  }
-  
-  .glass-effect {
-    @apply backdrop-blur-md bg-white/10 dark:bg-black/10 border border-white/20 dark:border-gray-700/50;
-  }
-  
-  .stellar-glow {
-    @apply shadow-lg shadow-stellar-500/25;
+  .text-balance {
+    text-wrap: balance;
   }
 }
