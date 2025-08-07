@@ -72,65 +72,6 @@ export const useAttestation = () => {
   return { createAttestation, getAttestations, loading, error };
 };
 
-// Hook for badge operations
-export const useBadge = () => {
-  const { makeRequest, loading, error } = useApi();
-
-  const issueBadge = async (data: {
-    userId: string;
-    badgeType: string;
-    reason?: string;
-    projectId?: string;
-    amount?: number;
-  }) => {
-    return makeRequest('/api/badge', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  };
-
-  const getBadges = async (userId?: string) => {
-    const url = userId ? `/api/badge?userId=${userId}` : '/api/badge';
-    return makeRequest(url);
-  };
-
-  return { issueBadge, getBadges, loading, error };
-};
-
-// Hook for interaction operations
-export const useInteraction = () => {
-  const { makeRequest, loading, error } = useApi();
-
-  const recordInteraction = async (data: {
-    userId: string;
-    projectId: string;
-    interactionType: string;
-    amount?: number;
-    blockchainTxId?: string;
-  }) => {
-    return makeRequest('/api/interaction', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  };
-
-  const getInteractions = async (params?: {
-    userId?: string;
-    projectId?: string;
-    type?: string;
-  }) => {
-    const searchParams = new URLSearchParams();
-    if (params?.userId) searchParams.append('userId', params.userId);
-    if (params?.projectId) searchParams.append('projectId', params.projectId);
-    if (params?.type) searchParams.append('type', params.type);
-
-    const url = `/api/interaction${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
-    return makeRequest(url);
-  };
-
-  return { recordInteraction, getInteractions, loading, error };
-};
-
 // Hook for user operations
 export const useUser = () => {
   const { makeRequest, loading, error } = useApi();

@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useWallet } from '@/hooks/useWallet';
-import { useInteraction, useBadge, useAttestation, useUser } from '@/hooks/useApi';
+import { useAttestation, useUser } from '@/hooks/useApi';
 import { stellarService } from '@/lib/stellar';
 
 // Types
@@ -294,20 +294,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         transactionResult = { hash: `mock_${Date.now()}` };
       }
       
-      // Record interaction in backend with error handling
-      try {
-        const interactionApi = useInteraction();
-        await interactionApi.recordInteraction({
-          userId: state.wallet.publicKey,
-          projectId,
-          interactionType: 'stake',
-          amount,
-          blockchainTxId: transactionResult.hash,
-        });
-      } catch (apiError) {
-        console.error('API interaction error:', apiError);
-        // Continue even if API fails
-      }
+      // Note: Interaction recording removed as part of structural cleanup
+      // Staking functionality continues with blockchain transaction only
       
       // Update project
       const updatedProjects = state.projects.map(project => 

@@ -1,66 +1,112 @@
-# 🌟 AhorroStellar – Tu Ahorro Construye el Futuro Web3 desde la Universidad
+# 🌟 AhorroStellar – Vota con tu Ahorro. Construye el Futuro Web3 desde tu Universidad
 
 > Proyecto desarrollado para el **Stellar LATAM Ideathon 2025**  
 >  
-> Plataforma Web3 donde estudiantes universitarios participan en el ecosistema Stellar sin riesgo, bloqueando una parte de su ahorro para respaldar proyectos que creen que merecen apoyo. Si ese proyecto resulta exitoso, ganan visibilidad, reputación y una recompensa simbólica.
+> Plataforma DeFi simbólica donde estudiantes bloquean temporalmente parte de su ahorro (XLM) como respaldo visible a proyectos Web3 de su universidad. Si el proyecto gana fondos externos, **recompensa al grupo que lo apoyó primero**, sin que nadie arriesgue su capital.
 
 ---
 
-## 🔹 Resumen Ejecutivo
+## 🔹 Revisión Rápida para Jurados
 
 | Elemento | Detalle |
 |---------|---------|
 | 🧠 Nombre | AhorroStellar |
 | 🔗 Demo | [https://ahorrostellar.vercel.app](https://ahorrostellar.vercel.app) |
-| 🧪 Estado actual | MVP 100% funcional – experiencia simbólica completa (staking y redistribución simulados por seguridad) |
-| 🧱 Stack | Next.js, Tailwind, Stellar SDK, Freighter, Soroban (testnet) |
-| 🌎 País | Chile (LATAM) |
+| 🎥 Pitch | *(Se agregará pronto)* |
+| 🧪 Estado | MVP funcional – lógica simbólica con staking y redistribución simuladas |
+| 💻 Stack | Next.js, Tailwind, Stellar SDK, Freighter, Soroban (testnet) |
+| 🏷️ Tags | #defi #educación #wallets #universidades #stellar #reputación |
+| 🌍 País | Chile (LATAM) |
 | 📩 Contacto | kareambadillo@proton.me |
 | 🧑‍💻 GitHub | [github.com/kaream/ahorrostellar](https://github.com/kaream/ahorrostellar) |
-| 🏷️ Tags | #wallets #reputación #educación #universidades #latam #stellar |
-| 🎥 Pitch | *(opcional: agrega enlace cuando esté listo)* |
-
-### ✅ Entregables completados
-
-- [x] Wallet integrada
-- [x] Ahorro simbólico (bloqueo temporal sin riesgo)
-- [x] Votación simbólica con compromiso
-- [x] Dashboard reputacional
-- [x] Recompensas simbólicas (simuladas en testnet)
-- [x] MVP deployado en Vercel
 
 ---
 
 ## 💡 ¿Qué es AhorroStellar?
 
-Una dApp universitaria Web3 para LATAM donde los estudiantes pueden:
+**AhorroStellar** es una dApp educativa y DeFi simbólica donde estudiantes universitarios pueden:
 
-1. **Bloquear una parte de su ahorro sin riesgo** (queda temporalmente reservado, no perdido)
-2. **Usar ese compromiso como voto simbólico** para respaldar proyectos Web3 que los inspiran
-3. **Construir reputación visible** por su compromiso y visión
-4. **Recibir reconocimiento simbólico** si el proyecto que apoyaron **triunfa** (ej. gana premios, fondos, adopción)
-5. **Participar en una comunidad educativa** de estudiantes visionarios
+1. 💰 **Bloquear temporalmente una pequeña cantidad de XLM** (sin perderla)
+2. 🗳️ **Votar con ese ahorro simbólico** por un proyecto Web3 de su universidad
+3. 📊 **Ganar reputación y visibilidad** si respaldaron el proyecto más exitoso
+4. 🏆 **Recibir recompensas** si ese proyecto gana un premio, hackathon o recibe inversión externa
 
-> En el MVP actual, todos estos procesos están implementados de forma simbólica para garantizar seguridad durante la validación. El sistema está listo para escalar a experiencias reales.
+Esta acción se llama **voto-ahorro simbólico**.  
+No es una inversión, es una forma emocional y reputacional de demostrar visión temprana.
+
+---
+
+## 🎤 Pitch – Enfoque DeFi simbólico + recompensa condicional real
+
+Durante cada ronda semanal:
+
+- Los estudiantes bloquean XLM en un contrato Soroban (no se transfiere a nadie)
+- Ese bloqueo actúa como **voto simbólico** auditable
+- Al terminar la semana, **todos recuperan su XLM**, sin importar el resultado
+
+🔁 Pero si el proyecto más votado gana un premio externo:
+
+- El proyecto puede optar por transferir **hasta el 10% de lo respaldado simbólicamente**
+- Esa recompensa se redistribuye entre los votantes originales
+
+> Ganas por haber tenido **visión antes que los demás**. No arriesgas nada, pero tu respaldo simbólico puede convertirse en retorno real si el proyecto crece.
 
 ---
 
 ## 🔑 Funcionalidades del MVP
 
-- 🧍 Registro de estudiantes con wallet Freighter
-- 💰 Bloqueo simbólico de ahorro (sin pérdida)
-- 🗳️ Votación con compromiso validado por ahorro bloqueado
-- 📊 Dashboard de trazabilidad y reputación
-- 🏆 Emisión de reconocimientos simbólicos si el proyecto es exitoso (simulado)
+- ✅ Registro de estudiantes y conexión de wallet Freighter
+- ✅ Ahorro simbólico (bloqueo temporal sin pérdida)
+- ✅ Votación respaldada por staking
+- ✅ Dashboard con reputación visible y ranking
+- ✅ Simulación de redistribución en testnet si el proyecto gana
 
 ---
 
-## 🧠 Créditos e inspiración
+## ✅ Entregables completados
 
-Inspirado en:
-
-- Gitcoin, Giveth, quadratic funding
-- Mecanismos de reputación simbólica y votación con compromiso
-- Educación financiera y emocional Web3 para jóvenes en LATAM
+- [x] MVP en línea con Vercel
+- [x] Integración con Stellar SDK y Freighter
+- [x] Lógica de staking simbólico (simulada)
+- [x] Votación visible y trazable
+- [x] Reputación acumulativa y ranking de votantes
+- [x] Redistribución simbólica (simulada en testnet)
 
 ---
+
+## 🧠 Inspiración y propósito
+
+- Gitcoin Passport, Giveth, retroPGF
+- Roscas comunitarias y ahorro solidario
+- Educación Web3 emocional y reputacional
+- DeFi sin riesgo como herramienta educativa
+
+---
+
+## 🧪 Seguridad y transparencia
+
+- Todo el MVP corre sobre testnet
+- Los fondos **no se transfieren a terceros**
+- El contrato solo bloquea y libera XLM
+- Recompensas se simulan o son activadas voluntariamente por los proyectos ganadores
+
+---
+
+## 📄 Licencia
+
+MIT
+
+---
+
+## 🧠 Créditos
+
+Proyecto creado por **Kaream Badillo**  
+Web3 builder LATAM – Foco en impacto simbólico, reputación educativa y validación emocional.
+
+---
+
+🌐 Enlace a la demo  
+https://ahorrostellar.vercel.app
+
+📸 Capturas  
+(agrega aquí tus imágenes si quieres visuales rápidas, ej. QR, dashboard, staking view, etc.)

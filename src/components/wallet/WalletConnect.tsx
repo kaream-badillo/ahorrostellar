@@ -1,115 +1,118 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useWallet } from '@/hooks/useWallet';
+import { Wallet, Star, Shield, Award } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import { useWallet } from '@/hooks/useWallet';
 
 interface WalletConnectProps {
-  onConnect?: (publicKey: string) => void;
-  onDisconnect?: () => void;
+  onClose?: () => void;
 }
 
-export const WalletConnect: React.FC<WalletConnectProps> = ({ 
-  onConnect, 
-  onDisconnect 
-}) => {
-  const { 
-    isConnected, 
-    publicKey, 
-    balance, 
-    isLoading, 
-    error, 
-    connectWallet, 
-    disconnectWallet,
-    isFreighterInstalled 
-  } = useWallet();
-
-  const [showError, setShowError] = useState(false);
+export const WalletConnect: React.FC<WalletConnectProps> = ({ onClose }) => {
+  const { isConnected, publicKey, connectWallet, disconnectWallet } = useWallet();
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const handleConnect = async () => {
+    setIsConnecting(true);
     try {
-      setShowError(false);
-      const publicKey = await connectWallet();
-      onConnect?.(publicKey);
+      await connectWallet();
     } catch (error) {
-      setShowError(true);
-      console.error('Failed to connect wallet:', error);
+      console.error('Connection error:', error);
+    } finally {
+      setIsConnecting(false);
     }
   };
 
   const handleDisconnect = () => {
     disconnectWallet();
-    onDisconnect?.();
+    if (onClose) onClose();
   };
-
-  const formatBalance = (balance: any) => {
-    if (!balance) return '0 XLM';
-    
-    const xlmBalance = balance.find((b: any) => b.asset_type === 'native');
-    return xlmBalance ? `${parseFloat(xlmBalance.balance).toFixed(2)} XLM` : '0 XLM';
-  };
-
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
-
-  if (!isFreighterInstalled()) {
-    return (
-      <div className="text-center p-4">
-        <div className="bg-warning/10 border border-warning/20 rounded-lg p-4">
-          <h3 className="text-warning font-semibold mb-2">Freighter Wallet Required</h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Para usar AhorroStellar, necesitas instalar la extensión Freighter.
-          </p>
-          <Button
-            onClick={() => window.open('https://www.freighter.app/', '_blank')}
-            className="bg-warning text-white hover:bg-warning/80"
-          >
-            Instalar Freighter
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (isConnected && publicKey) {
-    return (
-      <div className="flex items-center gap-4">
-        <div className="text-right">
-          <div className="text-sm font-medium text-gray-900">
-            {formatAddress(publicKey)}
-          </div>
-          <div className="text-xs text-gray-500">
-            {formatBalance(balance)}
-          </div>
-        </div>
-        <Button
-          onClick={handleDisconnect}
-          variant="outline"
-          size="sm"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Desconectando...' : 'Desconectar'}
-        </Button>
-      </div>
-    );
-  }
 
   return (
-    <div className="text-center">
-      <Button
-        onClick={handleConnect}
-        disabled={isLoading}
-        className="bg-primary text-white hover:bg-primary/80"
-      >
-        {isLoading ? 'Conectando...' : 'Conectar Wallet'}
-      </Button>
-      
-      {showError && error && (
-        <div className="mt-2 text-sm text-error">
-          {error}
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <Card className="max-w-md w-full mx-4">
+        <div className="p-8">
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Wallet className="w-8 h-8 text-blue-600" />
+            </div>
+            <h2 className="text-2xl font-bold gradient-text mb-2">
+              {isConnected ? 'Wallet Conectada' : 'Conecta tu Wallet'}
+            </h2>
+            <p className="text-gray-600">
+              {isConnected 
+                ? 'Tu wallet está lista para participar en el ecosistema'
+                : 'Conecta tu wallet para empezar a votar simbólicamente'
+              }
+            </p>
+          </div>
+
+          {!isConnected ? (
+            <div className="space-y-4">
+              {/* Benefits */}
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="font-semibold mb-3 text-blue-800">Beneficios de Conectar:</h3>
+                <div className="space-y-2 text-sm text-blue-700">
+                  <div className="flex items-center space-x-2">
+                    <Award className="w-4 h-4" />
+                    <span>Votar simbólicamente en proyectos</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Star className="w-4 h-4" />
+                    <span>Construir reputación en la comunidad</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Shield className="w-4 h-4" />
+                    <span>Participar de forma segura</span>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                onClick={handleConnect}
+                disabled={isConnecting}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+              >
+                <Wallet className="w-5 h-5 mr-2" />
+                {isConnecting ? 'Conectando...' : 'Conectar Wallet'}
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {/* Connection Info */}
+              <div className="bg-green-50 p-4 rounded-lg">
+                <div className="flex items-center space-x-2 mb-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-sm font-medium text-green-800">Conectado</span>
+                </div>
+                <p className="text-sm text-green-700">
+                  Address: {publicKey?.slice(0, 8)}...{publicKey?.slice(-8)}
+                </p>
+              </div>
+
+              <div className="flex space-x-3">
+                <Button
+                  onClick={handleDisconnect}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Desconectar
+                </Button>
+                {onClose && (
+                  <Button
+                    onClick={onClose}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                  >
+                    Continuar
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </Card>
     </div>
   );
 };

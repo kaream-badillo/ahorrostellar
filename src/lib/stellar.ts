@@ -1,4 +1,5 @@
-import { Server, Networks, TransactionBuilder, Operation, Asset, Memo } from '@stellar/stellar-sdk';
+import { Networks, TransactionBuilder, Operation, Asset, Memo } from '@stellar/stellar-sdk';
+import Server from '@stellar/stellar-sdk';
 import { getStellarConfig } from './config';
 
 // Stellar testnet configuration

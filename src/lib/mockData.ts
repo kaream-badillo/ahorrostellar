@@ -238,20 +238,4 @@ export const projectStatuses = {
   ending: "Finalizando",
 };
 
-// Badges de reputación
-export const reputationBadges = {
-  bronze: { name: "Bronze", minPoints: 0, maxPoints: 50 },
-  silver: { name: "Silver", minPoints: 51, maxPoints: 100 },
-  gold: { name: "Gold", minPoints: 101, maxPoints: 200 },
-  platinum: { name: "Platinum", minPoints: 201, maxPoints: 500 },
-  diamond: { name: "Diamond", minPoints: 501, maxPoints: 1000 },
-};
 
-// Función para obtener badge de reputación
-export const getReputationBadge = (points: number) => {
-  if (points >= 501) return "diamond";
-  if (points >= 201) return "platinum";
-  if (points >= 101) return "gold";
-  if (points >= 51) return "silver";
-  return "bronze";
-};

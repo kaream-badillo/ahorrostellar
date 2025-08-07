@@ -31,35 +31,18 @@ export async function GET(
       userProfiles.push(userProfile);
     }
 
-    // Fetch related data from other endpoints
-    const [badgesResponse, interactionsResponse, attestationsResponse] = await Promise.all([
-      fetch(`${request.nextUrl.origin}/api/badge?userId=${userId}`),
-      fetch(`${request.nextUrl.origin}/api/interaction?userId=${userId}`),
-      fetch(`${request.nextUrl.origin}/api/attest?userId=${userId}`)
-    ]);
-
-    const badgesData = await badgesResponse.json();
-    const interactionsData = await interactionsResponse.json();
+    // Fetch attestations data (only remaining API)
+    const attestationsResponse = await fetch(`${request.nextUrl.origin}/api/attest?userId=${userId}`);
     const attestationsData = await attestationsResponse.json();
 
     // Update user profile with latest data
-    userProfile.badges = badgesData.badges || [];
-    userProfile.reputation = badgesData.totalReputation || 0;
-    userProfile.totalStaked = interactionsData.statistics?.totalStaked || 0;
-    userProfile.projectsSupported = new Set(interactionsData.interactions?.map((i: any) => i.projectId) || []).size;
     userProfile.successfulPredictions = attestationsData.attestations?.filter((a: any) => a.status === 'approved').length || 0;
 
     return NextResponse.json({
       user: userProfile,
-      badges: badgesData.badges || [],
-      interactions: interactionsData.interactions || [],
       attestations: attestationsData.attestations || [],
       statistics: {
-        totalReputation: userProfile.reputation,
-        totalStaked: userProfile.totalStaked,
-        projectsSupported: userProfile.projectsSupported,
-        successfulPredictions: userProfile.successfulPredictions,
-        totalInteractions: interactionsData.statistics?.totalInteractions || 0
+        successfulPredictions: userProfile.successfulPredictions
       }
     });
 
