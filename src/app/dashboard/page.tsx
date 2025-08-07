@@ -1,6 +1,6 @@
 "use client";
 
-import { Wallet, Star, TrendingUp, Users, FolderOpen } from "lucide-react";
+import { Wallet, Star, TrendingUp, Users, FolderOpen, Award } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import StatsCard from "@/components/ui/StatsCard";
@@ -26,14 +26,21 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      {/* Welcome Section */}
+      {/* Welcome Section - Emocional y Web3 */}
       <div className="mb-12">
-        <h1 className="text-5xl font-bold gradient-text mb-4">¡Bienvenido de vuelta, {user.name}!</h1>
-        <p className="text-xl text-gray-600">Aquí tienes un resumen de tu actividad en AhorroStellar</p>
+        <h1 className="text-5xl font-bold gradient-text mb-4">¡Tu ahorro ya está construyendo Web3!</h1>
+        <p className="text-xl text-gray-600 mb-4">Cada stake apoya proyectos reales y suma reputación. ¡Es win-win sin riesgo!</p>
+        
+        {/* Mensaje motivacional adicional */}
+        <div className="bg-gradient-to-r from-stellarBlue/10 to-stellarPurple/10 p-6 rounded-xl border border-stellarBlue/20">
+          <p className="text-lg text-gray-700 text-center">
+            <span className="font-semibold text-stellarBlue">Ahorra sin riesgo, gana reputación y apoya lo que importa.</span> Stellar te recompensa por confiar.
+          </p>
+        </div>
       </div>
 
-      {/* Stats Grid - 4 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      {/* Stats Grid - 5 Columns Web3 Simplificadas */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
         <StatsCard
           title="Balance Total"
           value={`$${user.totalBalance.toLocaleString()}`}
@@ -52,13 +59,74 @@ export default function Dashboard() {
           trend={{ value: 8, isPositive: true }}
         />
         <StatsCard
-          title="Proyectos"
+          title="Proyectos Apoyados"
           value={user.totalProjects.toString()}
           icon={FolderOpen}
         />
+        <StatsCard
+          title="Rentabilidad"
+          value="+12.5%"
+          icon={TrendingUp}
+          trend={{ value: 12.5, isPositive: true }}
+        />
       </div>
 
-      {/* Quick Actions */}
+      {/* Información de Rentabilidad - Motivacional */}
+      <Card className="mb-8">
+        <div className="p-6 text-center">
+          <p className="text-lg text-gray-700">
+            <span className="font-semibold text-green-600">Tu ahorro está generando una rentabilidad anual estimada del 12.5%</span> mientras lo bloqueas para apoyar proyectos blockchain.
+          </p>
+        </div>
+      </Card>
+
+      {/* Gamificación y Logros - Estilo Web3 */}
+      <Card className="mb-8">
+        <div className="p-8">
+          <h2 className="text-2xl font-bold mb-6 gradient-text">🎮 Tus Logros Web3</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-stellar-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Award className="w-8 h-8 text-stellarBlue" />
+              </div>
+              <h3 className="font-semibold mb-1">Nivel {user.reputationLevel}</h3>
+              <p className="text-sm text-gray-600">Reputación en la comunidad</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Star className="w-8 h-8 text-stellarPurple" />
+              </div>
+              <h3 className="font-semibold mb-1">{user.totalProjects} Proyectos</h3>
+              <p className="text-sm text-gray-600">Apoyados exitosamente</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <TrendingUp className="w-8 h-8 text-green-500" />
+              </div>
+              <h3 className="font-semibold mb-1">+{user.totalRewards}</h3>
+              <p className="text-sm text-gray-600">Recompensas ganadas</p>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Incentivo para nuevos usuarios */}
+      {user.activeStakes === 0 && (
+        <Card className="mb-8 bg-gradient-to-r from-stellarBlue/5 to-stellarPurple/5 border-stellarBlue/20">
+          <div className="p-6 text-center">
+            <h3 className="text-xl font-semibold text-stellarBlue mb-2">¿Aún no estás participando?</h3>
+            <p className="text-gray-600 mb-4">Haz tu primer stake y empieza a construir reputación en el ecosistema Web3.</p>
+            <Link href="/projects">
+              <Button size="lg" className="bg-stellarBlue hover:bg-stellarBlue/90">
+                <Star className="w-5 h-5 mr-2" />
+                Explorar Proyectos
+              </Button>
+            </Link>
+          </div>
+        </Card>
+      )}
+
+      {/* Quick Actions - Simplificadas */}
       <Card className="mb-12">
         <div className="p-8">
           <h2 className="text-2xl font-bold mb-6 gradient-text">Acciones Rápidas</h2>
@@ -66,7 +134,7 @@ export default function Dashboard() {
             <Link href="/projects">
               <Button size="lg">
                 <FolderOpen className="w-5 h-5 mr-2" />
-                Explorar Proyectos
+                Explorar Proyectos Blockchain
               </Button>
             </Link>
             <Link href="/profile">
@@ -127,8 +195,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Activity Feed */}
-      <Card>
+      {/* Activity Feed - Simplificado */}
+      <Card className="mb-12">
         <div className="p-8">
           <h2 className="text-2xl font-bold mb-6 gradient-text">Actividad Reciente</h2>
           <div className="space-y-4">
@@ -155,6 +223,31 @@ export default function Dashboard() {
                 </span>
               </div>
             ))}
+          </div>
+        </div>
+      </Card>
+
+      {/* Mensaje motivacional final */}
+      <Card className="bg-gradient-to-r from-stellarBlue/5 to-stellarPurple/5 border-stellarBlue/20">
+        <div className="p-8 text-center">
+          <h3 className="text-2xl font-bold text-stellarBlue mb-4">¡Sigues construyendo el futuro!</h3>
+          <p className="text-lg text-gray-700 mb-6">
+            Cada stake que haces no solo genera rentabilidad, sino que también apoya proyectos reales 
+            y construye tu reputación en la comunidad Web3. ¡Tu ahorro tiene poder!
+          </p>
+          <div className="flex justify-center space-x-4">
+            <Link href="/projects">
+              <Button size="lg" className="bg-stellarBlue hover:bg-stellarBlue/90">
+                <Star className="w-5 h-5 mr-2" />
+                Explorar Más Proyectos
+              </Button>
+            </Link>
+            <Link href="/stats">
+              <Button variant="outline" size="lg">
+                <TrendingUp className="w-5 h-5 mr-2" />
+                Ver Mi Progreso
+              </Button>
+            </Link>
           </div>
         </div>
       </Card>

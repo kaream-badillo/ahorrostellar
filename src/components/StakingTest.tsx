@@ -51,28 +51,28 @@ export const StakingTest: React.FC = () => {
 
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-semibold mb-4">🧪 Prueba de Staking Completo</h3>
+      <h3 className="text-lg font-semibold mb-4">🚀 Nuevo Stake en Blockchain</h3>
       
       <div className="space-y-4">
         <div className="flex items-center gap-4">
           <div className="flex-1">
             <p className="text-sm text-gray-600 mb-2">
-              Esta prueba valida el flujo completo:
+              Bloquea temporalmente tu ahorro para apoyar proyectos blockchain:
             </p>
             <ul className="text-xs text-gray-500 space-y-1">
-              <li>• Conexión con wallet Stellar</li>
-              <li>• Creación de transacción onchain</li>
-              <li>• Registro en backend</li>
-              <li>• Validación de respuesta</li>
+              <li>• Tu dinero queda seguro y bloqueado</li>
+              <li>• Generas rentabilidad mientras apoyas</li>
+              <li>• Ganas reputación en la comunidad Web3</li>
+              <li>• Posibles beneficios si el proyecto triunfa</li>
             </ul>
           </div>
           
           <Button
             onClick={runStakingTest}
             disabled={!isConnected || isTesting}
-            className="bg-primary text-white"
+            className="bg-stellarBlue hover:bg-stellarBlue/90 text-white"
           >
-            {isTesting ? 'Probando...' : 'Ejecutar Prueba'}
+            {isTesting ? 'Procesando...' : 'Hacer Stake'}
           </Button>
         </div>
 

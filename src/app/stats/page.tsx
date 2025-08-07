@@ -35,12 +35,12 @@ export default function Stats() {
     <Layout>
       {/* Header */}
       <div className="mb-12">
-        <h1 className="text-5xl font-bold gradient-text mb-4">Estadísticas Detalladas</h1>
-        <p className="text-xl text-gray-600">Análisis completo de tu actividad en AhorroStellar</p>
+        <h1 className="text-5xl font-bold gradient-text mb-4">Estadísticas Web3</h1>
+        <p className="text-xl text-gray-600">Análisis completo de tu actividad en el ecosistema blockchain</p>
       </div>
 
-      {/* Main Stats Grid - 4 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      {/* Main Stats Grid - 5 Columns Simplificadas */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
         <StatsCard
           title="Balance Total"
           value={`$${user.totalBalance.toLocaleString()}`}
@@ -59,64 +59,47 @@ export default function Stats() {
           trend={{ value: 8, isPositive: true }}
         />
         <StatsCard
-          title="Proyectos"
+          title="Proyectos Apoyados"
           value={user.totalProjects.toString()}
           icon={BarChart3}
         />
+        <StatsCard
+          title="Rentabilidad"
+          value="+12.5%"
+          icon={TrendingUp}
+          trend={{ value: 12.5, isPositive: true }}
+        />
       </div>
 
-      {/* Detailed Stats - 2 Columns */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-        {/* Performance Metrics */}
-        <Card>
-          <div className="p-8">
-            <h2 className="text-2xl font-bold mb-6 gradient-text">Métricas de Rendimiento</h2>
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Promedio de Stake</span>
-                <span className="font-semibold">${averageStake.toLocaleString()}</span>
+      {/* Gamificación y Logros */}
+      <Card className="mb-8">
+        <div className="p-8">
+          <h2 className="text-2xl font-bold mb-6 gradient-text">🎮 Logros y Reputación</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-stellar-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Award className="w-8 h-8 text-stellarBlue" />
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Proyectos Completados</span>
-                <span className="font-semibold">{completedProjects}</span>
+              <h3 className="font-semibold mb-1">Nivel {user.reputationLevel}</h3>
+              <p className="text-sm text-gray-600">Reputación en la comunidad</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Star className="w-8 h-8 text-stellarPurple" />
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Total Recompensas</span>
-                <span className="font-semibold text-green-600">${totalRewards.toLocaleString()}</span>
+              <h3 className="font-semibold mb-1">{completedProjects} Proyectos</h3>
+              <p className="text-sm text-gray-600">Apoyados exitosamente</p>
+            </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <TrendingUp className="w-8 h-8 text-green-500" />
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Tasa de Éxito</span>
-                <span className="font-semibold text-stellarBlue">85%</span>
-              </div>
+              <h3 className="font-semibold mb-1">+{totalRewards}</h3>
+              <p className="text-sm text-gray-600">Recompensas ganadas</p>
             </div>
           </div>
-        </Card>
-
-        {/* Activity Summary */}
-        <Card>
-          <div className="p-8">
-            <h2 className="text-2xl font-bold mb-6 gradient-text">Resumen de Actividad</h2>
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Stakes Realizados</span>
-                <span className="font-semibold">{activities.filter(a => a.type === 'stake').length}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Puntos Ganados</span>
-                <span className="font-semibold text-purple-600">+{activities.filter(a => a.type === 'reputation_gained').reduce((sum, a) => sum + (a.amount || 0), 0)}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Días Activo</span>
-                <span className="font-semibold">{Math.floor((new Date().getTime() - new Date(user.memberSince).getTime()) / (1000 * 60 * 60 * 24))}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Nivel Actual</span>
-                <span className="font-semibold text-stellarPurple">{user.reputationLevel}</span>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
+        </div>
+      </Card>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">

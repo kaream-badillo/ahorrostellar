@@ -12,14 +12,14 @@ export default function Projects() {
   const { state, makeStake } = useApp();
   const { projects, isLoading } = state;
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Todos");
+  const [selectedCategory, setSelectedCategory] = useState("Blockchain");
 
-  const categories = ["Todos", "Blockchain", "Fintech", "Educación", "Sostenibilidad", "Salud"];
+  const categories = ["Blockchain", "DeFi", "NFTs", "Smart Contracts", "Web3", "DAO"];
 
   const filteredProjects = projects.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          project.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "Todos" || project.category === selectedCategory;
+    const matchesCategory = selectedCategory === "Blockchain" || project.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -33,10 +33,10 @@ export default function Projects() {
       {/* Header with Search and Filters */}
       <div className="mb-12">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-5xl font-bold gradient-text">Explorar Proyectos</h1>
+          <h1 className="text-5xl font-bold gradient-text">Explorar Proyectos Blockchain</h1>
           <Button size="lg">
             <Star className="w-5 h-5 mr-2" />
-            Crear Proyecto
+            Crear Proyecto Web3
           </Button>
         </div>
 
@@ -46,7 +46,7 @@ export default function Projects() {
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Buscar proyectos..."
+              placeholder="Buscar proyectos blockchain..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-3 border border-stellar-100 rounded-lg focus:ring-2 focus:ring-stellarBlue focus:border-transparent"
@@ -58,7 +58,7 @@ export default function Projects() {
           </Button>
         </div>
 
-        {/* Filter Pills */}
+        {/* Filter Pills - Solo Web3 */}
         <div className="flex items-center space-x-4 mt-6 overflow-x-auto pb-2">
           {categories.map((category) => (
             <Button

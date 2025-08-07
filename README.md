@@ -1,105 +1,66 @@
-# 🪙 AhorroStellar – MVP para Stellar LATAM Ideathon 2025
+# 🌟 AhorroStellar – Tu Ahorro Construye el Futuro Web3 desde la Universidad
 
-Plataforma Web3 donde estudiantes universitarios bloquean ahorros simbólicos sin riesgo para respaldar proyectos Web3 emergentes en sus universidades. Si el proyecto elegido obtiene éxito (premios, adopción o financiamiento real), los votantes reciben recompensas simbólicas y reputación acumulativa. El MVP utiliza Stellar y Soroban testnet para simular staking, reputación y validación simbólica de impacto.
+> Proyecto desarrollado para el **Stellar LATAM Ideathon 2025**  
+>  
+> Plataforma Web3 donde estudiantes universitarios participan en el ecosistema Stellar sin riesgo, bloqueando una parte de su ahorro para respaldar proyectos que creen que merecen apoyo. Si ese proyecto resulta exitoso, ganan visibilidad, reputación y una recompensa simbólica.
 
 ---
 
-## 🔹 Parte N°1 – Resumen Ejecutivo
+## 🔹 Resumen Ejecutivo
 
 | Elemento | Detalle |
-| --- | --- |
-| **Proyecto** | AhorroStellar |
-| **Propósito** | Fomentar respaldo simbólico y reputacional a proyectos Web3 desde universidades LATAM |
-| **Stack técnico** | Next.js 14, Tailwind, DaisyUI, Stellar SDK, Soroban testnet, Freighter |
-| **Fechas clave** | Desarrollo desde 5 agosto 2025 – Deadline: 10 agosto 2025 (02:59 UTC) |
-| **Demo** | *(pendiente)* |
-| **Repositorio** | *(este repositorio)* |
-| **Estado actual del MVP** | 🔧 En desarrollo activo – MVP previsto para demo funcional el 10 de agosto |
-| **Pitch** | *(enlace a Loom o YouTube si disponible)* |
-| **Miniatura/captura** | *(agrega si está disponible, ej. ./public/demo-qr.png)* |
-| **Contacto** | Kaream Badillo – Chile – [GitHub](https://github.com/) *(agrega tu usuario)* |
-| **Tags** | Web3, Stellar, DAOs, educación, reputación, staking simbólico, hackathon, LATAM, universitaria |
-| **Checklist express** | ✅ README.md<br>🟡 Demo en progreso<br>🟡 Conexión wallet<br>🟡 Staking simbólico<br>🟡 Votación simbólica<br>🟡 Dashboard reputación<br>🟡 Capturas<br>🟡 Pitch grabado |
+|---------|---------|
+| 🧠 Nombre | AhorroStellar |
+| 🔗 Demo | [https://ahorrostellar.vercel.app](https://ahorrostellar.vercel.app) |
+| 🧪 Estado actual | MVP 100% funcional – experiencia simbólica completa (staking y redistribución simulados por seguridad) |
+| 🧱 Stack | Next.js, Tailwind, Stellar SDK, Freighter, Soroban (testnet) |
+| 🌎 País | Chile (LATAM) |
+| 📩 Contacto | kareambadillo@proton.me |
+| 🧑‍💻 GitHub | [github.com/kaream/ahorrostellar](https://github.com/kaream/ahorrostellar) |
+| 🏷️ Tags | #wallets #reputación #educación #universidades #latam #stellar |
+| 🎥 Pitch | *(opcional: agrega enlace cuando esté listo)* |
+
+### ✅ Entregables completados
+
+- [x] Wallet integrada
+- [x] Ahorro simbólico (bloqueo temporal sin riesgo)
+- [x] Votación simbólica con compromiso
+- [x] Dashboard reputacional
+- [x] Recompensas simbólicas (simuladas en testnet)
+- [x] MVP deployado en Vercel
 
 ---
 
-## 🔹 Parte N°2 – Detalles Técnicos y Contexto
+## 💡 ¿Qué es AhorroStellar?
 
-### 🧠 Pitch emocional
+Una dApp universitaria Web3 para LATAM donde los estudiantes pueden:
 
-En un continente donde miles de estudiantes tienen ideas brillantes pero escasos recursos, **AhorroStellar** permite respaldar simbólicamente a quienes más nos inspiran. Cada aporte, aunque no implique dinero real, construye reputación y comunidad en torno a lo que creemos que debe nacer en Web3. Porque apoyar es educar, y educar es transformar.
+1. **Bloquear una parte de su ahorro sin riesgo** (queda temporalmente reservado, no perdido)
+2. **Usar ese compromiso como voto simbólico** para respaldar proyectos Web3 que los inspiran
+3. **Construir reputación visible** por su compromiso y visión
+4. **Recibir reconocimiento simbólico** si el proyecto que apoyaron **triunfa** (ej. gana premios, fondos, adopción)
+5. **Participar en una comunidad educativa** de estudiantes visionarios
 
----
-
-### ⚙️ Funcionalidad del MVP
-
-- Registro de estudiantes (formulario o QR)
-- Integración con wallet Freighter
-- Pool de ahorro simbólico (staking sin riesgo)
-- Votación con peso reputacional simbólico
-- Dashboard con ranking, reputación, impacto
-- Emisión de recompensa simbólica si el proyecto elegido gana
+> En el MVP actual, todos estos procesos están implementados de forma simbólica para garantizar seguridad durante la validación. El sistema está listo para escalar a experiencias reales.
 
 ---
 
-### 🧱 Stack Técnico
+## 🔑 Funcionalidades del MVP
 
-| Componente | Herramienta |
-| --- | --- |
-| **Frontend** | Next.js 14 + TailwindCSS + DaisyUI |
-| **Wallet** | Stellar SDK + Freighter |
-| **Onchain** | Soroban testnet (staking simbólico + reputación) |
-| **Backend simulado** | API Routes de Next.js |
-| **Gamificación** | Reputación simbólica + badges (NFT opcionales) |
-| **Base de datos** | Ninguna (simulación vía localStorage) |
+- 🧍 Registro de estudiantes con wallet Freighter
+- 💰 Bloqueo simbólico de ahorro (sin pérdida)
+- 🗳️ Votación con compromiso validado por ahorro bloqueado
+- 📊 Dashboard de trazabilidad y reputación
+- 🏆 Emisión de reconocimientos simbólicos si el proyecto es exitoso (simulado)
 
 ---
 
-### 📦 Instrucciones para correr localmente
+## 🧠 Créditos e inspiración
 
-```bash
-git clone <https://github.com/><usuario>/<repositorio>.git
-cd ahorrostellar
-npm install
-npm run dev
+Inspirado en:
 
-```
-
-### 🌐 Enlace a la demo
-
-*(Agrega cuando esté desplegado, ej. [https://ahorrostellar.vercel.app](https://ahorrostellar.vercel.app/))*
-
----
-
-### 📸 Capturas de pantalla
-
-*(Agregar imágenes opcionales en `./public/`, ej. landing, QR, dashboard, badges, etc.)*
-
----
-
-### ⚖️ Licencia
-
-MIT
-
----
-
-### 🧠 Créditos e inspiración
-
-Proyecto desarrollado por Kaream Badillo para el **Stellar LATAM Ideathon 2025**
-
-### 📅 Fechas clave
-
-| Evento | Fecha |
-| --- | --- |
-| Inicio desarrollo | 5 agosto 2025 |
-| Apertura entregas | 7 agosto 2025 |
-| Deadline final | 10 agosto 2025 – 02:59 UTC |
-| Modalidad | Remota – MVP funcional + pitch |
-
----
-
-### 📦 Versión del Proyecto
-
-Versión: MVP v0.1 – actualizado el 2025-08-07
+- Gitcoin, Giveth, quadratic funding
+- Mecanismos de reputación simbólica y votación con compromiso
+- Educación financiera y emocional Web3 para jóvenes en LATAM
 
 ---

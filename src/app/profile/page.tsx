@@ -69,8 +69,8 @@ export default function Profile() {
 
                 {/* Bio */}
                 <p className="text-gray-600 leading-relaxed max-w-2xl">
-                  Apasionado por la tecnología blockchain y las finanzas descentralizadas. 
-                  Participando activamente en el ecosistema Stellar para construir el futuro del ahorro universitario.
+                  Apasionado por la tecnología blockchain y el ecosistema Web3. 
+                  Participando activamente en AhorroStellar para construir el futuro del ahorro universitario y la reputación descentralizada.
                 </p>
 
                 {/* Contact Info */}
@@ -81,7 +81,7 @@ export default function Profile() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <Award className="w-5 h-5 text-gray-400" />
-                    <span className="text-gray-600">{user.totalProjects} proyectos respaldados</span>
+                    <span className="text-gray-600">{user.totalProjects} proyectos blockchain respaldados</span>
                   </div>
                 </div>
               </div>
@@ -90,8 +90,8 @@ export default function Profile() {
         </Card>
       </div>
 
-      {/* Stats Grid - 4 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      {/* Stats Grid - 5 Columns Web3 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
         <StatsCard
           title="Balance Total"
           value={`$${user.totalBalance.toLocaleString()}`}
@@ -110,9 +110,15 @@ export default function Profile() {
           trend={{ value: 8, isPositive: true }}
         />
         <StatsCard
-          title="Proyectos"
+          title="Proyectos Apoyados"
           value={user.totalProjects.toString()}
           icon={User}
+        />
+        <StatsCard
+          title="Rentabilidad"
+          value="+12.5%"
+          icon={TrendingUp}
+          trend={{ value: 12.5, isPositive: true }}
         />
       </div>
 
