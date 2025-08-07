@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { WalletProvider } from "@/components/wallet/WalletProvider";
 import { AppProvider } from "@/contexts/AppContext";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -29,14 +30,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" data-theme="ahorrostellar" className={inter.variable}>
-      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-light to-white antialiased`}>
-        <AppProvider>
-          <WalletProvider>
-            <div className="min-h-screen">
-              {children}
-            </div>
-          </WalletProvider>
-        </AppProvider>
+      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-stellar-50 to-white antialiased`}>
+        <ErrorBoundary>
+          <AppProvider>
+            <WalletProvider>
+              <div className="min-h-screen">
+                {children}
+              </div>
+            </WalletProvider>
+          </AppProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

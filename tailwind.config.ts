@@ -22,6 +22,8 @@ const config: Config = {
           900: '#312e81',
           950: '#1e1b4b',
         },
+        stellarBlue: '#6366f1',
+        stellarPurple: '#a855f7',
         purple: {
           50: '#faf5ff',
           100: '#f3e8ff',
