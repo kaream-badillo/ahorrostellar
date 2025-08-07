@@ -5,6 +5,7 @@ interface CardProps {
   className?: string;
   onClick?: () => void;
   hover?: boolean;
+  padding?: 'sm' | 'md' | 'lg';
 }
 
 const Card: React.FC<CardProps> = ({
@@ -12,13 +13,20 @@ const Card: React.FC<CardProps> = ({
   className = '',
   onClick,
   hover = true,
+  padding = 'md',
 }) => {
-  const baseClasses = 'card-stellar p-6';
-  const hoverClasses = hover ? 'cursor-pointer' : '';
+  const baseClasses = 'card-stellar rounded-xl shadow-lg border border-stellar-100/50';
+  const hoverClasses = hover ? 'cursor-pointer hover:shadow-xl hover:scale-[1.02]' : '';
+  
+  const paddingClasses = {
+    sm: 'p-4',
+    md: 'p-6',
+    lg: 'p-8',
+  };
   
   return (
     <div
-      className={`${baseClasses} ${hoverClasses} ${className}`}
+      className={`${baseClasses} ${hoverClasses} ${paddingClasses[padding]} ${className} transition-all duration-300`}
       onClick={onClick}
     >
       {children}

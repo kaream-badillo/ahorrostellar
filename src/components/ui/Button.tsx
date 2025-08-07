@@ -3,7 +3,7 @@ import React from 'react';
 interface ButtonProps {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
@@ -19,18 +19,19 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   type = 'button',
 }) => {
-  const baseClasses = 'font-medium rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2';
+  const baseClasses = 'font-medium rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stellar-500';
   
   const variantClasses = {
-    primary: 'btn-stellar',
-    secondary: 'bg-purple-500 hover:bg-purple-600 text-white',
-    outline: 'border-2 border-stellar-500 text-stellar-500 hover:bg-stellar-500 hover:text-white',
+    primary: 'btn-stellar shadow-lg hover:shadow-xl',
+    secondary: 'bg-purple-500 hover:bg-purple-600 text-white shadow-lg hover:shadow-xl',
+    outline: 'border-2 border-stellar-500 text-stellar-500 hover:bg-stellar-500 hover:text-white shadow-md hover:shadow-lg',
   };
   
   const sizeClasses = {
     sm: 'px-4 py-2 text-sm',
     md: 'px-6 py-3 text-base',
     lg: 'px-8 py-4 text-lg',
+    xl: 'px-10 py-5 text-xl',
   };
   
   const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed hover:scale-100' : '';

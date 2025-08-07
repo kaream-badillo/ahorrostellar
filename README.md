@@ -103,3 +103,10 @@ Proyecto desarrollado por Kaream Badillo para el **Stellar LATAM Ideathon 2025**
 Versión: MVP v0.1 – actualizado el 2025-08-07
 
 ---
+## 🚧 Avance FASE 1 – UI Web3 MVP
+
+- 🎨 Definidas pantallas principales: Landing, Dashboard, Proyectos, Perfil, Crear Proyecto
+- 🧭 Navegación planificada con rutas claras (`/dashboard`, `/projects/[id]`, etc.)
+- 🧱 Wireframes textuales estructurados (layout tipo dashboard)
+- 🧩 Elementos UI clave: badges, QR, cards, botones, sidebar, header fijo
+- 🛠️ Listos para comenzar implementación visual (próxima etapa)
