@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Filter, Star } from "lucide-react";
+import { Search, Star } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
@@ -50,7 +50,7 @@ export default function Projects() {
           </div>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as 'recent' | 'popular' | 'ending' | 'amount')}
             className="px-4 py-3 border border-stellar-100 rounded-lg focus:ring-2 focus:ring-stellar-500 focus:border-transparent"
           >
             <option value="recent">Más Recientes</option>
