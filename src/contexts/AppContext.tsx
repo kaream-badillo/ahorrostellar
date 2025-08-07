@@ -1,0 +1,363 @@
+"use client";
+
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+// Types
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  university: string;
+  reputation: number;
+  reputationLevel: 'Bronze' | 'Silver' | 'Gold' | 'Platinum';
+  totalBalance: number;
+  activeStakes: number;
+  totalProjects: number;
+  totalRewards: number;
+  memberSince: string;
+}
+
+interface WalletState {
+  isConnected: boolean;
+  address: string | null;
+  balance: number;
+  network: 'testnet' | 'mainnet';
+  provider: 'freighter' | 'albedo' | null;
+}
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  creator: string;
+  category: string;
+  totalStaked: number;
+  targetAmount: number;
+  progress: number;
+  stakers: number;
+  daysLeft: number;
+  status: 'active' | 'funded' | 'completed' | 'cancelled';
+  myStake: number;
+  image?: string;
+  tags: string[];
+}
+
+interface Activity {
+  id: string;
+  type: 'stake' | 'reward' | 'reputation_gained' | 'project_completed' | 'wallet_connected';
+  title: string;
+  description: string;
+  amount?: number;
+  date: string;
+  projectId?: string;
+}
+
+interface AppState {
+  user: User | null;
+  wallet: WalletState;
+  projects: Project[];
+  myStakedProjects: Project[];
+  activities: Activity[];
+  notifications: number;
+  isLoading: boolean;
+  currentPage: string;
+}
+
+interface AppContextType {
+  state: AppState;
+  connectWallet: () => Promise<void>;
+  disconnectWallet: () => void;
+  makeStake: (projectId: string, amount: number) => Promise<void>;
+  updateUserProfile: (updates: Partial<User>) => void;
+  addActivity: (activity: Omit<Activity, 'id' | 'date'>) => void;
+  setCurrentPage: (page: string) => void;
+  clearNotifications: () => void;
+}
+
+// Mock Data
+const mockUser: User = {
+  id: '1',
+  name: 'Kaream Badillo',
+  email: 'kaream@university.edu',
+  avatar: 'KB',
+  university: 'Universidad Nacional',
+  reputation: 1250,
+  reputationLevel: 'Bronze',
+  totalBalance: 2450,
+  activeStakes: 1800,
+  totalProjects: 8,
+  totalRewards: 320,
+  memberSince: '2025-01-15',
+};
+
+const mockProjects: Project[] = [
+  {
+    id: '1',
+    title: 'Blockchain Education Platform',
+    description: 'Plataforma educativa para enseñar blockchain en universidades latinoamericanas',
+    creator: 'María González',
+    category: 'Educación',
+    totalStaked: 8500,
+    targetAmount: 10000,
+    progress: 85,
+    stakers: 45,
+    daysLeft: 12,
+    status: 'active',
+    myStake: 500,
+    tags: ['blockchain', 'educación', 'latam'],
+  },
+  {
+    id: '2',
+    title: 'Fintech Startup Hub',
+    description: 'Centro de innovación para startups fintech universitarias',
+    creator: 'Carlos Rodríguez',
+    category: 'Fintech',
+    totalStaked: 12000,
+    targetAmount: 15000,
+    progress: 80,
+    stakers: 78,
+    daysLeft: 8,
+    status: 'active',
+    myStake: 800,
+    tags: ['fintech', 'startup', 'innovación'],
+  },
+  {
+    id: '3',
+    title: 'Sustainable Energy Research',
+    description: 'Investigación en energías renovables para campus universitarios',
+    creator: 'Ana Martínez',
+    category: 'Sostenibilidad',
+    totalStaked: 6500,
+    targetAmount: 8000,
+    progress: 81,
+    stakers: 32,
+    daysLeft: 15,
+    status: 'active',
+    myStake: 300,
+    tags: ['sostenibilidad', 'energía', 'investigación'],
+  },
+  {
+    id: '4',
+    title: 'HealthTech Mobile App',
+    description: 'Aplicación móvil para monitoreo de salud estudiantil',
+    creator: 'Dr. Luis Pérez',
+    category: 'Salud',
+    totalStaked: 9200,
+    targetAmount: 12000,
+    progress: 77,
+    stakers: 56,
+    daysLeft: 20,
+    status: 'active',
+    myStake: 200,
+    tags: ['salud', 'móvil', 'tech'],
+  },
+];
+
+const mockActivities: Activity[] = [
+  {
+    id: '1',
+    type: 'stake',
+    title: 'Nuevo stake realizado',
+    description: 'Stakeaste $500 en "Blockchain Education Platform"',
+    amount: 500,
+    date: '2025-01-15T10:30:00Z',
+    projectId: '1',
+  },
+  {
+    id: '2',
+    type: 'reputation_gained',
+    title: 'Reputación aumentada',
+    description: 'Ganaste 50 puntos de reputación por tu participación',
+    amount: 50,
+    date: '2025-01-14T15:45:00Z',
+  },
+  {
+    id: '3',
+    type: 'reward',
+    title: 'Recompensa recibida',
+    description: 'Recibiste $25 por tu participación en "Fintech Startup Hub"',
+    amount: 25,
+    date: '2025-01-13T09:20:00Z',
+    projectId: '2',
+  },
+  {
+    id: '4',
+    type: 'project_completed',
+    title: 'Proyecto completado',
+    description: 'El proyecto "Blockchain Education" alcanzó su meta',
+    date: '2025-01-10T14:15:00Z',
+    projectId: '1',
+  },
+];
+
+// Create Context
+const AppContext = createContext<AppContextType | undefined>(undefined);
+
+// Provider Component
+export function AppProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState<AppState>({
+    user: mockUser,
+    wallet: {
+      isConnected: false,
+      address: null,
+      balance: 0,
+      network: 'testnet',
+      provider: null,
+    },
+    projects: mockProjects,
+    myStakedProjects: mockProjects.filter(p => p.myStake > 0),
+    activities: mockActivities,
+    notifications: 3,
+    isLoading: false,
+    currentPage: '/',
+  });
+
+  // Connect Wallet
+  const connectWallet = async () => {
+    setState(prev => ({ ...prev, isLoading: true }));
+    
+    // Simulate wallet connection
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    setState(prev => ({
+      ...prev,
+      wallet: {
+        isConnected: true,
+        address: 'GABC1234567890ABCDEF1234567890ABCDEF1234',
+        balance: 2450,
+        network: 'testnet',
+        provider: 'freighter',
+      },
+      isLoading: false,
+    }));
+
+    // Add activity
+    addActivity({
+      type: 'wallet_connected',
+      title: 'Wallet conectada',
+      description: 'Conectaste tu wallet Freighter exitosamente',
+    });
+  };
+
+  // Disconnect Wallet
+  const disconnectWallet = () => {
+    setState(prev => ({
+      ...prev,
+      wallet: {
+        isConnected: false,
+        address: null,
+        balance: 0,
+        network: 'testnet',
+        provider: null,
+      },
+    }));
+  };
+
+  // Make Stake
+  const makeStake = async (projectId: string, amount: number) => {
+    setState(prev => ({ ...prev, isLoading: true }));
+    
+    // Simulate stake transaction
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Update project
+    const updatedProjects = state.projects.map(project => 
+      project.id === projectId 
+        ? { 
+            ...project, 
+            totalStaked: project.totalStaked + amount,
+            progress: Math.min(100, ((project.totalStaked + amount) / project.targetAmount) * 100),
+            stakers: project.stakers + 1,
+            myStake: project.myStake + amount,
+          }
+        : project
+    );
+
+    // Update user balance
+    const updatedUser = state.user ? {
+      ...state.user,
+      totalBalance: state.user.totalBalance - amount,
+      activeStakes: state.user.activeStakes + amount,
+    } : null;
+
+    setState(prev => ({
+      ...prev,
+      projects: updatedProjects,
+      myStakedProjects: updatedProjects.filter(p => p.myStake > 0),
+      user: updatedUser,
+      isLoading: false,
+    }));
+
+    // Add activity
+    const project = state.projects.find(p => p.id === projectId);
+    addActivity({
+      type: 'stake',
+      title: 'Nuevo stake realizado',
+      description: `Stakeaste $${amount} en "${project?.title}"`,
+      amount,
+      projectId,
+    });
+  };
+
+  // Update User Profile
+  const updateUserProfile = (updates: Partial<User>) => {
+    if (state.user) {
+      setState(prev => ({
+        ...prev,
+        user: { ...prev.user!, ...updates },
+      }));
+    }
+  };
+
+  // Add Activity
+  const addActivity = (activity: Omit<Activity, 'id' | 'date'>) => {
+    const newActivity: Activity = {
+      ...activity,
+      id: Date.now().toString(),
+      date: new Date().toISOString(),
+    };
+
+    setState(prev => ({
+      ...prev,
+      activities: [newActivity, ...prev.activities],
+      notifications: prev.notifications + 1,
+    }));
+  };
+
+  // Set Current Page
+  const setCurrentPage = (page: string) => {
+    setState(prev => ({ ...prev, currentPage: page }));
+  };
+
+  // Clear Notifications
+  const clearNotifications = () => {
+    setState(prev => ({ ...prev, notifications: 0 }));
+  };
+
+  const value: AppContextType = {
+    state,
+    connectWallet,
+    disconnectWallet,
+    makeStake,
+    updateUserProfile,
+    addActivity,
+    setCurrentPage,
+    clearNotifications,
+  };
+
+  return (
+    <AppContext.Provider value={value}>
+      {children}
+    </AppContext.Provider>
+  );
+}
+
+// Hook to use AppContext
+export function useApp() {
+  const context = useContext(AppContext);
+  if (context === undefined) {
+    throw new Error('useApp must be used within an AppProvider');
+  }
+  return context;
+}

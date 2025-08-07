@@ -1,35 +1,23 @@
 "use client";
 
-import { ReactNode } from "react";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
+import React from 'react';
+import Header from './Header';
+import Sidebar from './Sidebar';
 
 interface LayoutProps {
-  children: ReactNode;
+  children: React.ReactNode;
   showSidebar?: boolean;
   showSearch?: boolean;
-  showNotifications?: boolean;
 }
 
-export default function Layout({ 
-  children, 
-  showSidebar = true, 
-  showSearch = true, 
-  showNotifications = true 
-}: LayoutProps) {
+export default function Layout({ children, showSidebar = true, showSearch = true }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stellar-50 to-purple-50">
-      {/* Header */}
-      <Header showSearch={showSearch} showNotifications={showNotifications} />
-
-      {/* Main Layout - Sidebar + Content */}
-      <div className="flex min-h-screen">
-        {/* Sidebar */}
+    <div className="min-h-screen bg-gradient-to-br from-light to-white">
+      <Header showSearch={showSearch} />
+      <div className="flex">
         {showSidebar && <Sidebar />}
-
-        {/* Main Content */}
-        <main className="flex-1 p-8">
-          <div className="max-w-screen-lg mx-auto">
+        <main className={`flex-1 ${showSidebar ? 'lg:ml-72' : ''} p-8`}>
+          <div className="max-w-screen-xl mx-auto">
             {children}
           </div>
         </main>

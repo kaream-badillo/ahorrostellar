@@ -1,37 +1,37 @@
 import React from 'react';
+import { cn } from '@/lib/utils';
 
-interface CardProps {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  className?: string;
-  onClick?: () => void;
-  hover?: boolean;
-  padding?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'glass' | 'gradient';
 }
 
-const Card: React.FC<CardProps> = ({
-  children,
-  className = '',
-  onClick,
-  hover = true,
-  padding = 'md',
-}) => {
-  const baseClasses = 'card-stellar rounded-xl shadow-lg border border-stellar-100/50';
-  const hoverClasses = hover ? 'cursor-pointer hover:shadow-xl hover:scale-[1.02]' : '';
-  
-  const paddingClasses = {
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
-  };
-  
-  return (
-    <div
-      className={`${baseClasses} ${hoverClasses} ${paddingClasses[padding]} ${className} transition-all duration-300`}
-      onClick={onClick}
-    >
-      {children}
-    </div>
-  );
-};
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant = 'default', children, ...props }, ref) => {
+    const baseClasses = 'card-stellar rounded-xl shadow-lg border border-stellar-100/50';
+
+    const variants = {
+      default: 'bg-white/80 backdrop-blur-sm',
+      glass: 'bg-white/10 backdrop-blur-md border-white/20',
+      gradient: 'bg-gradient-to-br from-white/90 to-white/70',
+    };
+
+    return (
+      <div
+        className={cn(
+          baseClasses,
+          variants[variant],
+          className
+        )}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+
+Card.displayName = 'Card';
 
 export default Card;

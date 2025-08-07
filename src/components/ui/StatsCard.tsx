@@ -4,43 +4,35 @@ import Card from './Card';
 
 interface StatsCardProps {
   title: string;
-  value: string;
+  value: string | number;
   icon: LucideIcon;
-  trend?: string;
-  trendType?: 'positive' | 'negative' | 'neutral';
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
   className?: string;
 }
 
-const StatsCard: React.FC<StatsCardProps> = ({
-  title,
-  value,
-  icon: Icon,
-  trend,
-  trendType = 'neutral',
-  className = '',
-}) => {
-  const trendColors = {
-    positive: 'text-green-600',
-    negative: 'text-red-600',
-    neutral: 'text-gray-600',
-  };
-
+export default function StatsCard({ title, value, icon: Icon, trend, className }: StatsCardProps) {
   return (
-    <Card padding="lg" className={className}>
-      <div className="text-center">
+    <Card className={className}>
+      <div className="text-center p-6">
         <div className="w-16 h-16 bg-stellar-100 rounded-xl flex items-center justify-center mx-auto mb-6">
-          <Icon className="w-8 h-8 text-stellar-500" />
+          <Icon className="w-8 h-8 text-stellarBlue" />
         </div>
-        <h3 className="text-3xl font-bold text-gray-900 mb-2">{value}</h3>
-        <p className="text-gray-600 font-medium">{title}</p>
+        
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
+        <div className="text-3xl font-bold gradient-text mb-2">{value}</div>
+        
         {trend && (
-          <p className={`text-sm mt-2 ${trendColors[trendType]}`}>
-            {trend}
-          </p>
+          <div className={`flex items-center justify-center text-sm ${
+            trend.isPositive ? 'text-green-600' : 'text-red-600'
+          }`}>
+            <span className={trend.isPositive ? '↑' : '↓'}></span>
+            <span className="ml-1">{Math.abs(trend.value)}%</span>
+          </div>
         )}
       </div>
     </Card>
   );
-};
-
-export default StatsCard;
+}
