@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { WalletProvider } from "@/components/wallet/WalletProvider";
 import { AppProvider } from "@/contexts/AppContext";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
@@ -16,6 +15,9 @@ export const metadata: Metadata = {
   description: "Plataforma Web3 para estudiantes universitarios que permite bloquear fondos sin riesgo y participar en el ecosistema Stellar",
   keywords: ["Web3", "Stellar", "Ahorro", "Universidad", "Blockchain", "Finanzas"],
   authors: [{ name: "Kaream Badillo" }],
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -33,11 +35,9 @@ export default function RootLayout({
       <body className={`${inter.className} min-h-screen bg-gradient-to-br from-stellar-50 to-white antialiased`}>
         <ErrorBoundary>
           <AppProvider>
-            <WalletProvider>
-              <div className="min-h-screen">
-                {children}
-              </div>
-            </WalletProvider>
+            <div className="min-h-screen">
+              {children}
+            </div>
           </AppProvider>
         </ErrorBoundary>
       </body>

@@ -16,8 +16,8 @@ export default function Layout({ children, showSidebar = true, showSearch = true
       <Header showSearch={showSearch} />
       <div className="flex">
         {showSidebar && <Sidebar />}
-        <main className={`flex-1 ${showSidebar ? 'lg:ml-72' : ''} p-8`}>
-          <div className="max-w-screen-xl mx-auto">
+        <main className="flex-1 p-4 lg:p-8">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>

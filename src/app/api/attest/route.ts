@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // In-memory storage for attestations (in production, use a database)
-let attestations: any[] = [];
+const attestations: any[] = [];
 
 export async function POST(request: NextRequest) {
   try {

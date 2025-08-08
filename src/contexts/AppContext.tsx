@@ -85,77 +85,34 @@ const mockUser: User = {
   email: 'kaream@university.edu',
   avatar: 'KB',
   university: 'Universidad Nacional',
-  reputation: 1250,
+  reputation: 85,
   reputationLevel: 'Bronze',
-  totalBalance: 2450,
-  activeStakes: 1800,
-  totalProjects: 8,
-  totalRewards: 320,
+  totalBalance: 1250,
+  activeStakes: 450,
+  totalProjects: 4,
+  totalRewards: 150,
   memberSince: '2025-01-15',
 };
 
-const mockProjects: Project[] = [
-  {
-    id: '1',
-    title: 'Blockchain Education Platform',
-    description: 'Plataforma educativa para enseñar blockchain en universidades latinoamericanas',
-    creator: 'María González',
-    category: 'Educación',
-    totalStaked: 8500,
-    targetAmount: 10000,
-    progress: 85,
-    stakers: 45,
-    daysLeft: 12,
-    status: 'active',
-    myStake: 500,
-    tags: ['blockchain', 'educación', 'latam'],
-  },
-  {
-    id: '2',
-    title: 'Fintech Startup Hub',
-    description: 'Centro de innovación para startups fintech universitarias',
-    creator: 'Carlos Rodríguez',
-    category: 'Fintech',
-    totalStaked: 12000,
-    targetAmount: 15000,
-    progress: 80,
-    stakers: 78,
-    daysLeft: 8,
-    status: 'active',
-    myStake: 800,
-    tags: ['fintech', 'startup', 'innovación'],
-  },
-  {
-    id: '3',
-    title: 'Sustainable Energy Research',
-    description: 'Investigación en energías renovables para campus universitarios',
-    creator: 'Ana Martínez',
-    category: 'Sostenibilidad',
-    totalStaked: 6500,
-    targetAmount: 8000,
-    progress: 81,
-    stakers: 32,
-    daysLeft: 15,
-    status: 'active',
-    myStake: 300,
-    tags: ['sostenibilidad', 'energía', 'investigación'],
-  },
-  {
-    id: '4',
-    title: 'HealthTech Mobile App',
-    description: 'Aplicación móvil para monitoreo de salud estudiantil',
-    creator: 'Dr. Luis Pérez',
-    category: 'Salud',
-    totalStaked: 9200,
-    targetAmount: 12000,
-    progress: 77,
-    stakers: 56,
-    daysLeft: 20,
-    status: 'active',
-    myStake: 200,
-    tags: ['salud', 'móvil', 'tech'],
-  },
-];
+import { mockProjects } from '@/lib/mockData';
+
+const realProjects: Project[] = mockProjects.map(project => ({
+  id: project.id.toString(),
+  title: project.title,
+  description: project.description,
+  category: project.category,
+  creator: project.creator,
+  totalStaked: project.totalStaked,
+  targetAmount: project.goal,
+  progress: project.progress,
+  stakers: project.stakers,
+  daysLeft: project.daysLeft,
+  status: project.status === 'ending' ? 'active' : project.status,
+  myStake: project.myStake,
+  image: project.image,
+  tags: [project.category.toLowerCase()],
+}));
+
 
 const mockActivities: Activity[] = [
   {
@@ -208,70 +165,53 @@ export function AppProvider({ children }: { children: ReactNode }) {
       isLoading: false,
       error: null,
     },
-    projects: mockProjects,
-    myStakedProjects: mockProjects.filter(p => p.myStake > 0),
+    projects: realProjects,
+    myStakedProjects: realProjects.filter(p => p.myStake > 0),
     activities: mockActivities,
     notifications: 3,
     isLoading: false,
     currentPage: '/',
   });
 
+  // Use the useWallet hook to get real wallet state
+  const walletHook = useWallet();
+
+  // Sync wallet state from useWallet hook
+  useEffect(() => {
+    console.log('🔄 AppContext: Syncing wallet state from useWallet hook');
+    console.log('📊 useWallet state:', {
+      isConnected: walletHook.isConnected,
+      publicKey: walletHook.publicKey,
+      balance: walletHook.balance,
+      isLoading: walletHook.isLoading,
+      error: walletHook.error
+    });
+    
+    setState(prev => ({
+      ...prev,
+      wallet: {
+        isConnected: walletHook.isConnected,
+        publicKey: walletHook.publicKey,
+        balance: walletHook.balance,
+        isLoading: walletHook.isLoading,
+        error: walletHook.error,
+      },
+    }));
+  }, [walletHook.isConnected, walletHook.publicKey, walletHook.balance, walletHook.isLoading, walletHook.error]);
+
   // Connect Wallet
   const connectWallet = async () => {
-    setState(prev => ({ ...prev, isLoading: true }));
-    
     try {
-      // Use real wallet connection with error handling
-      const publicKey = await stellarService.connectWallet();
-      const balance = await stellarService.getBalance(publicKey);
-      
-      setState(prev => ({
-        ...prev,
-        wallet: {
-          isConnected: true,
-          publicKey,
-          balance,
-          isLoading: false,
-          error: null,
-        },
-        isLoading: false,
-      }));
-
-      // Add activity
-      addActivity({
-        type: 'wallet_connected',
-        title: 'Wallet conectada',
-        description: 'Conectaste tu wallet Freighter exitosamente',
-      });
+      await walletHook.connectWallet();
     } catch (error) {
       console.error('Wallet connection error:', error);
-      // Don't fail completely, just show error in wallet state
-      setState(prev => ({
-        ...prev,
-        wallet: {
-          isConnected: false,
-          publicKey: null,
-          balance: null,
-          isLoading: false,
-          error: error instanceof Error ? error.message : 'Failed to connect wallet',
-        },
-        isLoading: false,
-      }));
+      // Error is already handled in useWallet hook
     }
   };
 
   // Disconnect Wallet
   const disconnectWallet = () => {
-    setState(prev => ({
-      ...prev,
-      wallet: {
-        isConnected: false,
-        publicKey: null,
-        balance: null,
-        isLoading: false,
-        error: null,
-      },
-    }));
+    walletHook.disconnectWallet();
   };
 
   // Make Stake

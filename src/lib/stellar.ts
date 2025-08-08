@@ -1,5 +1,6 @@
 import { Networks, TransactionBuilder, Operation, Asset, Memo } from '@stellar/stellar-sdk';
-import Server from '@stellar/stellar-sdk';
+// Temporary fix for Server import issue
+const Server = require('@stellar/stellar-sdk').Server;
 import { getStellarConfig } from './config';
 
 // Stellar testnet configuration
@@ -19,7 +20,7 @@ const NETWORK_PASSPHRASE = Networks.TESTNET;
 const REPUTATION_ASSET = null;
 
 export class StellarService {
-  private server: Server;
+  private server: any;
   private publicKey: string | null = null;
 
   constructor() {
@@ -28,18 +29,21 @@ export class StellarService {
     } catch (error) {
       console.error('Error initializing Stellar server:', error);
       // Create a mock server to prevent crashes
-      this.server = {} as Server;
+      this.server = {};
     }
   }
 
   // Connect to Freighter wallet
   async connectWallet(): Promise<string> {
     try {
+      console.log('🔌 StellarService: Checking for Freighter...');
       // Check if Freighter is installed
       if (typeof window !== 'undefined' && (window as any).stellar) {
+        console.log('✅ StellarService: Freighter found');
         const stellar = (window as any).stellar;
         
         // Request connection with timeout
+        console.log('🔌 StellarService: Requesting account...');
         const publicKey = await Promise.race([
           stellar.request({
             method: 'requestAccount'
@@ -49,13 +53,15 @@ export class StellarService {
           )
         ]);
         
+        console.log('✅ StellarService: Account received:', publicKey);
         this.publicKey = publicKey as string;
         return publicKey as string;
       } else {
+        console.log('❌ StellarService: Freighter not found');
         throw new Error('Freighter wallet not found. Please install Freighter extension.');
       }
     } catch (error) {
-      console.error('Error connecting to wallet:', error);
+      console.error('❌ StellarService: Error connecting to wallet:', error);
       throw error;
     }
   }

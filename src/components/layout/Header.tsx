@@ -1,10 +1,10 @@
 "use client";
 
-import { Search, Bell, Star, Wallet } from "lucide-react";
+import { Search, Bell } from "lucide-react";
 import Link from "next/link";
-import Button from "@/components/ui/Button";
 import { useApp } from "@/contexts/AppContext";
-import { WalletConnect } from "@/components/wallet/WalletConnect";
+import { WalletButton } from "@/components/wallet/WalletButton";
+import Image from "next/image";
 
 interface HeaderProps {
   showSearch?: boolean;
@@ -20,7 +20,13 @@ export default function Header({ showSearch = true }: HeaderProps) {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
-            <Star className="w-8 h-8 text-stellarBlue" />
+            <Image 
+              src="/favicon.png" 
+              alt="Stellar Logo" 
+              width={32} 
+              height={32} 
+              className="w-8 h-8"
+            />
             <span className="text-2xl font-bold gradient-text">AhorroStellar</span>
           </Link>
 
@@ -52,21 +58,8 @@ export default function Header({ showSearch = true }: HeaderProps) {
               )}
             </button>
 
-            {/* Profile Menu */}
-            {user && (
-              <div className="flex items-center space-x-3 bg-white px-4 py-2 rounded-lg border border-stellar-100 shadow-sm">
-                <div className="w-8 h-8 bg-stellarBlue rounded-full flex items-center justify-center">
-                  <span className="text-white font-medium text-sm">{user.avatar}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-gray-700">{user.name}</span>
-                  <span className="text-xs text-gray-500">Estudiante</span>
-                </div>
-              </div>
-            )}
-
-            {/* Wallet Connect Component */}
-            <WalletConnect />
+            {/* Wallet Connect Button */}
+            <WalletButton />
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, FolderOpen, User, TrendingUp, Settings, LogOut, Target, Shield } from "lucide-react";
+import { Home, FolderOpen, LogOut, Target, Shield } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useApp } from "@/contexts/AppContext";
@@ -12,10 +12,7 @@ export default function Sidebar() {
 
   const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: Home },
-    { name: "Votar", href: "/stake", icon: Target },
-    { name: "Proyectos", href: "/projects", icon: FolderOpen },
-    { name: "Perfil", href: "/profile", icon: User },
-    { name: "Estadísticas", href: "/stats", icon: TrendingUp },
+    { name: "Voto-Ahorro", href: "/stake", icon: Target },
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -55,13 +52,13 @@ export default function Sidebar() {
           
           <div className="bg-blue-50 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">XLM Bloqueados</span>
+              <span className="text-sm text-gray-600">USDC Bloqueados</span>
               <span className="text-sm font-semibold text-blue-600">
-                {user?.activeStakes || '0'} XLM
+                {user?.activeStakes || '0'} USDC
               </span>
             </div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Votos Activos</span>
+              <span className="text-sm text-gray-600">Proyectos Respaldados</span>
               <span className="text-sm font-semibold text-green-600">
                 {state.myStakedProjects.length}
               </span>
@@ -75,27 +72,6 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="space-y-3 mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Acciones Rápidas</h3>
-          
-          <Link
-            href="/stake"
-            className="flex items-center space-x-3 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Target className="w-5 h-5" />
-            <span>Hacer Voto</span>
-          </Link>
-          
-          <Link
-            href="/projects"
-            className="flex items-center space-x-3 px-4 py-3 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <FolderOpen className="w-5 h-5" />
-            <span>Ver Proyectos</span>
-          </Link>
-        </div>
-
         {/* Security Info */}
         <div className="space-y-3 mb-8">
           <h3 className="text-sm font-semibold text-gray-700 mb-4">Seguridad</h3>
@@ -106,54 +82,16 @@ export default function Sidebar() {
               <span className="text-sm font-medium text-green-700">Tu ahorro está seguro</span>
             </div>
             <div className="space-y-1 text-xs text-green-600">
-              <p>• XLM se bloquea temporalmente</p>
+              <p>• USDC se bloquea por 7 días</p>
               <p>• Se recupera automáticamente</p>
-              <p>• Sin transferencia a terceros</p>
+              <p>• Sin riesgo de pérdida</p>
             </div>
-          </div>
-        </div>
-
-        {/* Wallet Status */}
-        <div className="space-y-3 mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Estado de Wallet</h3>
-          
-          <div className={`px-4 py-3 rounded-lg border ${
-            wallet.isConnected 
-              ? 'bg-green-50 border-green-200' 
-              : 'bg-red-50 border-red-200'
-          }`}>
-            <div className="flex items-center space-x-2">
-              <div className={`w-2 h-2 rounded-full ${
-                wallet.isConnected ? 'bg-green-500' : 'bg-red-500'
-              }`}></div>
-              <span className="text-sm font-medium">
-                {wallet.isConnected ? 'Conectado' : 'Desconectado'}
-              </span>
-            </div>
-            {wallet.isConnected && (
-              <div className="mt-2">
-                <p className="text-xs text-gray-600 truncate">
-                  {wallet.publicKey}
-                </p>
-                <p className="text-xs text-gray-600">
-                  Balance: {wallet.balance} XLM
-                </p>
-              </div>
-            )}
           </div>
         </div>
 
         {/* Bottom Actions */}
         <div className="border-t border-gray-200 pt-6">
           <div className="space-y-2">
-            <Link
-              href="/settings"
-              className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-            >
-              <Settings className="w-5 h-5" />
-              <span>Configuración</span>
-            </Link>
-            
             <button 
               onClick={handleLogout}
               className="flex items-center space-x-3 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors w-full"

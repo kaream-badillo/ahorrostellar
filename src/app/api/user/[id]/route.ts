@@ -1,48 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// In-memory storage for user profiles
-let userProfiles: any[] = [];
+const userProfiles: Record<string, any> = {};
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const resolvedParams = await params;
-    const userId = resolvedParams.id;
+    const { id: userId } = await params;
 
-    // Get user profile
-    let userProfile = userProfiles.find(u => u.id === userId);
-
-    if (!userProfile) {
-      // Create default profile if doesn't exist
-      userProfile = {
-        id: userId,
-        username: `User_${userId.slice(-6)}`,
-        email: '',
-        university: '',
+    // Inicializar si no existe
+    if (!userProfiles[userId]) {
+      userProfiles[userId] = {
+        wallet: userId,
         joinDate: new Date().toISOString(),
-        reputation: 0,
-        badges: [],
         totalStaked: 0,
+        totalRewards: 0,
         projectsSupported: 0,
-        successfulPredictions: 0
+        successfulPredictions: 0,
+        reputationScore: 0,
+        attestations: [],
       };
-      userProfiles.push(userProfile);
     }
 
-    // Fetch attestations data (only remaining API)
-    const attestationsResponse = await fetch(`${request.nextUrl.origin}/api/attest?userId=${userId}`);
-    const attestationsData = await attestationsResponse.json();
+    const profile = userProfiles[userId];
 
-    // Update user profile with latest data
-    userProfile.successfulPredictions = attestationsData.attestations?.filter((a: any) => a.status === 'approved').length || 0;
+    // Fetch attestations
+    const attestationsResponse = await fetch(`${request.nextUrl.origin}/api/attest?userId=${userId}`);
+    const attestations = (await attestationsResponse.json())?.attestations || [];
+
+    const successful = attestations.filter((a: any) => a.status === 'approved').length;
+
+    // Actualiza valores derivados
+    profile.attestations = attestations;
+    profile.successfulPredictions = successful;
+    profile.reputationScore = successful * 10; // simbólico: 10 puntos por predicción acertada
 
     return NextResponse.json({
-      user: userProfile,
-      attestations: attestationsData.attestations || [],
+      user: profile,
       statistics: {
-        successfulPredictions: userProfile.successfulPredictions
+        totalStaked: profile.totalStaked,
+        successfulPredictions: profile.successfulPredictions,
+        reputationScore: profile.reputationScore,
+        totalRewards: profile.totalRewards,
+        projectsSupported: profile.projectsSupported
       }
     });
 
@@ -60,39 +61,33 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const resolvedParams = await params;
-    const userId = resolvedParams.id;
-    const body = await request.json();
-    const { username, email, university } = body;
+    const { id: userId } = await params;
+    const data = await request.json();
 
-    // Find or create user profile
-    let userProfile = userProfiles.find(u => u.id === userId);
-
-    if (!userProfile) {
-      userProfile = {
-        id: userId,
-        username: `User_${userId.slice(-6)}`,
-        email: '',
-        university: '',
+    if (!userProfiles[userId]) {
+      userProfiles[userId] = {
+        wallet: userId,
         joinDate: new Date().toISOString(),
-        reputation: 0,
-        badges: [],
         totalStaked: 0,
+        totalRewards: 0,
         projectsSupported: 0,
-        successfulPredictions: 0
+        successfulPredictions: 0,
+        reputationScore: 0,
+        attestations: [],
       };
-      userProfiles.push(userProfile);
     }
 
-    // Update profile fields
-    if (username) userProfile.username = username;
-    if (email) userProfile.email = email;
-    if (university) userProfile.university = university;
+    const profile = userProfiles[userId];
+
+    // Actualiza solo campos relevantes
+    if (data.totalStaked !== undefined) profile.totalStaked = data.totalStaked;
+    if (data.totalRewards !== undefined) profile.totalRewards = data.totalRewards;
+    if (data.projectsSupported !== undefined) profile.projectsSupported = data.projectsSupported;
 
     return NextResponse.json({
       success: true,
-      user: userProfile,
-      message: 'User profile updated successfully'
+      user: profile,
+      message: 'User profile updated'
     });
 
   } catch (error) {

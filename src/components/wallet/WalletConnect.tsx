@@ -14,7 +14,17 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({ onClose }) => {
   const { isConnected, publicKey, connectWallet, disconnectWallet } = useWallet();
   const [isConnecting, setIsConnecting] = useState(false);
 
+  // Check if Freighter is installed
+  const isFreighterInstalled = typeof window !== 'undefined' && (window as any).stellar;
+
   const handleConnect = async () => {
+    if (!isFreighterInstalled) {
+      // Show alert and redirect to Freighter installation
+      alert("Necesitas instalar la wallet Freighter para usar esta función. Te redirigiremos a la página oficial.");
+      window.open("https://freighter.app/", "_blank");
+      return;
+    }
+
     setIsConnecting(true);
     try {
       await connectWallet();

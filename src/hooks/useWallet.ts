@@ -20,20 +20,31 @@ export const useWallet = () => {
 
   // Check if Freighter is installed
   const isFreighterInstalled = () => {
-    return typeof window !== 'undefined' && (window as any).stellar;
+    const hasFreighter = typeof window !== 'undefined' && (window as any).stellar;
+    console.log('🔍 Checking Freighter installation:', hasFreighter);
+    return hasFreighter;
   };
 
   // Connect to wallet
   const connectWallet = async () => {
+    console.log('🔌 Starting wallet connection...');
     setWalletState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
       if (!isFreighterInstalled()) {
+        console.log('❌ Freighter not installed');
+        // Show alert and redirect to Freighter installation
+        alert("Necesitas instalar la wallet Freighter para usar esta función. Te redirigiremos a la página oficial.");
+        window.open("https://freighter.app/", "_blank");
         throw new Error('Freighter wallet not found. Please install the Freighter extension.');
       }
 
+      console.log('✅ Freighter found, requesting account...');
       const publicKey = await stellarService.connectWallet();
+      console.log('✅ Account received:', publicKey);
+      
       const balance = await stellarService.getBalance(publicKey);
+      console.log('✅ Balance retrieved:', balance);
 
       setWalletState({
         isConnected: true,
@@ -45,9 +56,11 @@ export const useWallet = () => {
 
       // Store in localStorage for persistence
       localStorage.setItem('ahorrostellar_wallet', publicKey);
+      console.log('💾 Wallet saved to localStorage');
       
       return publicKey;
     } catch (error) {
+      console.error('❌ Wallet connection error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to connect wallet';
       setWalletState(prev => ({
         ...prev,
@@ -140,14 +153,31 @@ export const useWallet = () => {
 
   // Auto-connect on mount if wallet was previously connected
   useEffect(() => {
-    const savedWallet = localStorage.getItem('ahorrostellar_wallet');
-    if (savedWallet && isFreighterInstalled()) {
-      connectWallet().catch(() => {
-        // If auto-connect fails, clear the saved wallet
-        localStorage.removeItem('ahorrostellar_wallet');
-      });
-    }
-  }, []);
+    const autoConnect = async () => {
+      // Small delay to ensure everything is initialized
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      console.log('🔍 Checking for saved wallet...');
+      const savedWallet = localStorage.getItem('ahorrostellar_wallet');
+      console.log('📦 Saved wallet:', savedWallet);
+      
+      if (savedWallet && isFreighterInstalled()) {
+        console.log('✅ Freighter installed, attempting auto-connect...');
+        try {
+          await connectWallet();
+          console.log('✅ Auto-connect successful');
+        } catch (error) {
+          console.warn('❌ Auto-connect failed:', error);
+          // If auto-connect fails, clear the saved wallet
+          localStorage.removeItem('ahorrostellar_wallet');
+        }
+      } else {
+        console.log('❌ No saved wallet or Freighter not installed');
+      }
+    };
+    
+    autoConnect();
+  }, []); // connectWallet is stable, so this is safe
 
   return {
     ...walletState,
