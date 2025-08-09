@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, TrendingUp, Shield, Users, ArrowRight } from "lucide-react";
+import { TrendingUp, Shield, Users, ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Layout from "@/components/layout/Layout";
@@ -27,7 +27,6 @@ export default function Home() {
           
           <Link href="/stake">
             <Button size="lg" className="text-lg px-8 py-4">
-              <Star className="w-6 h-6 mr-3" />
               🌟 Comenzar ahora
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
@@ -132,7 +131,6 @@ export default function Home() {
           </p>
           <Link href="/stake">
             <Button size="lg" className="text-lg px-8 py-4">
-              <Star className="w-6 h-6 mr-3" />
               Comenzar a Votar
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
