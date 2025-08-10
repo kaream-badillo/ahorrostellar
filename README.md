@@ -6,16 +6,14 @@
 
 *App DeFi educativa para estudiantes LATAM construida con Stellar + Soroban*
 
-[![Deploy](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel)](https://ahorrostellar.vercel.app)
-[![Stellar](https://img.shields.io/badge/Stellar-Network-7B3F98?style=for-the-badge&logo=stellar)](https://stellar.org)
-[![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![Deploy](ahorrostellar-nnbe-rbmohxvv7-kareams-projects.vercel.app)]
 
 
 ---
 
 ## 🚀 **Demo Live**
 
-### **[🌟 Ver AhorroStellar →](https://ahorrostellar.vercel.app)**
+### **[🌟 Ver AhorroStellar →](https://ahorrostellar-nnbe.vercel.app/)**
 
 > **Para jurados**: Acceso directo sin instalaciones. Compatible con móvil y desktop.
 
@@ -33,20 +31,20 @@
 | **🏆 Competencia** | Stellar LATAM Ideathon 2025 |
 
 ### **🎯 Propuesta de Valor Única**
-- **Sin riesgo**: Fondos siempre recuperables tras 7 días
+- **Sin riesgo**: Fondos siempre recuperables
 - **Educativo**: Primera experiencia DeFi práctica y segura
 - **Propósito**: Votación simbólica por proyectos que importan
-- **Recompensas reales**: Bonus si el proyecto respaldado gana financiamiento
+- **Recompensas reales**: Bonus si el proyecto respaldado gana financiamiento, y rentabilidad por stake.
 
 ---
 
 ## 🧪 **Funcionalidades del MVP**
 
 ### **💰 Sistema de Voto-Ahorro**
-- Bloqueo temporal de USDC (7 días, sin riesgo)
-- Rentabilidad base garantizada (0.2% semanal)
+- Bloqueo temporal de USDC (sin riesgo)
+- Rentabilidad base garantizada 
 - Votación simbólica por proyectos universitarios
-- Bonus condicional (5-12%) si el proyecto gana financiamiento externo
+- Bonus condicional si el proyecto gana financiamiento externo
 
 ### **🏆 Dashboard de Reputación**
 - Historial de participación y respaldos
@@ -94,7 +92,7 @@
 - 📋 Estado: Simulado para MVP educativo
 - 🔐 Red: Stellar Testnet
 - ⚙️ Funciones clave:
-  - `stake_temporal`: bloquea USDC por 7 días
+  - `stake_temporal`: bloquea USDC 
   - `votar_proyecto`: vota simbólicamente por un proyecto
   - `bonus_condicional`: calcula rentabilidad si el proyecto gana
 
@@ -107,7 +105,7 @@
 ### **Quick Start**
 ```bash
 # Clonar repositorio
-git clone https://github.com/tu-usuario/ahorrostellar.git
+git clone https://github.com/kaream-badillo/ahorrostellar.git
 cd ahorrostellar
 
 # Instalar dependencias
@@ -182,8 +180,6 @@ vercel deploy    # Deploy automático
 
 ---
 
-## 📸 **Screenshots**
-
 ### **Desktop Experience**
 ```
 🏠 Home → 💰 Stake → 📊 Dashboard
@@ -227,7 +223,7 @@ MIT License - Ver [LICENSE](LICENSE) para detalles completos.
 
 
 **[Kaream Badillo](https://github.com/kaream-badillo)**  
-*Full-Stack Developer & Blockchain Enthusiast*  
+*Blockchain Enthusiast & Emerging Web3 Builder 
 📧 Email • 🐙 GitHub • 🌍 Chile
 
 *Desarrollando el futuro de DeFi educativo en LATAM*
@@ -241,7 +237,7 @@ MIT License - Ver [LICENSE](LICENSE) para detalles completos.
 
 | **Demo** | **Código** | **Deploy** | **Docs** |
 |----------|------------|------------|----------|
-| [🌟 Live App](https://ahorrostellar.vercel.app) | [📁 GitHub](https://github.com/kaream-badillo/ahorrostellar) | [⚡ Vercel](https://vercel.com) | [📚 Stellar](https://stellar.org) |
+| [🌟 Live App](https://ahorrostellar-nnbe.vercel.app/) | [📁 GitHub](https://github.com/kaream-badillo/ahorrostellar) | [⚡ Vercel](https://vercel.com) | [📚 Stellar](https://stellar.org) |
 
 
 ---
