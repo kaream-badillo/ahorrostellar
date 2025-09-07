@@ -1,35 +1,13 @@
-// Stellar Configuration for AhorroStellar
-// Testnet settings for development
-
-export const STELLAR_CONFIG = {
-  // Testnet URLs
-  TESTNET_URL: 'https://horizon-testnet.stellar.org',
-  LABORATORY_URL: 'https://laboratory.stellar.org/#account-creator?network=test',
-  
-  // Network settings
-  NETWORK_PASSPHRASE: 'Test SDF Network ; September 2015',
-  
-  // Asset configuration
-  REPUTATION_TOKEN: {
-    CODE: 'REPUTATION',
-    ISSUER: 'GBZXN7PIRZGNMHGA7JGK7MWTIYZQJXFSN5NZ65NPLII55BR3SZ6JFQSC',
-    DESCRIPTION: 'Reputation tokens for AhorroStellar platform'
-  },
-  
-  // Test accounts (for development)
-  TEST_ACCOUNTS: {
-    REPUTATION_ISSUER: 'GBZXN7PIRZGNMHGA7JGK7MWTIYZQJXFSN5NZ65NPLII55BR3SZ6JFQSC',
-    // Add more test accounts as needed
-  }
-};
-
-// Environment variables (fallback to testnet defaults)
+// src/lib/config.ts
 export const getStellarConfig = () => {
   return {
-    ...STELLAR_CONFIG,
-    REPUTATION_TOKEN: {
-      ...STELLAR_CONFIG.REPUTATION_TOKEN,
-      ISSUER: process.env.STELLAR_REPUTATION_ISSUER || STELLAR_CONFIG.REPUTATION_TOKEN.ISSUER,
+    TESTNET_URL: process.env.NEXT_PUBLIC_SOROBAN_RPC_PRIMARY || 'https://soroban-testnet.stellar.org',
+    NETWORK_PASSPHRASE: process.env.NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE || 'Test SDF Network ; September 2015',
+    READONLY_PUBLIC_KEY: process.env.NEXT_PUBLIC_READONLY_PUBLIC_KEY || '',
+    REFLECTOR_CONTRACTS: {
+      USDC: process.env.NEXT_PUBLIC_REFLECTOR_CONTRACT_ID_USDC || 'CAVLP5DH2GJPZMVO7IJY4CVOD5MWEFTJFVPD2YY2FQXOQHRGHK4D6HLP',
+      FX: process.env.NEXT_PUBLIC_REFLECTOR_CONTRACT_ID_FX || 'CCSSOHTBL3LEWUCBBEB5NJFC2OKFRC74OWEIJIZLRJBGAAU4VMU5NV4W',
+      CEX: process.env.NEXT_PUBLIC_REFLECTOR_CONTRACT_ID_CEX || 'CCYOZJCOPG34LLQQ7N24YXBM7LL62R7ONMZ3G6WZAAYPB5OYKOMJRN63'
     }
-  };
-};
+  }
+}

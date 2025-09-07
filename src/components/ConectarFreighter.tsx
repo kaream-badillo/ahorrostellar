@@ -1,49 +1,45 @@
 'use client'
-import { isConnected, setAllowed, getAddress, requestAccess } from '@stellar/freighter-api'
+import freighter from '@stellar/freighter-api'
 
 export async function conectarFreighter(): Promise<string> {
   try {
     console.log('🔍 Checking Freighter connection...');
     
     // Check if Freighter is connected
-    const conn = await isConnected()
-    console.log('Connection status:', conn);
+    const c = await freighter.isConnected();
+    console.log('Connection status:', c);
     
-    if (!conn.isConnected) {
-      throw new Error('Freighter no detectada. Asegúrate de que la extensión esté instalada y desbloqueada.');
+    if (!c.isConnected) {
+      throw new Error('Freighter no detectada');
     }
 
     // Request permission
-    const perm = await setAllowed()
-    console.log('Permission status:', perm);
+    const p = await freighter.setAllowed();
+    console.log('Permission status:', p);
     
-    if (!perm.isAllowed) {
-      throw new Error('Permiso denegado. Acepta el permiso en Freighter para continuar.');
+    if (!p.isAllowed) {
+      throw new Error('Permiso denegado');
     }
 
     // Try to get address directly
-    const r1 = await getAddress()
-    console.log('Get address result:', r1);
+    const a1 = await freighter.getAddress();
+    console.log('Get address result:', a1);
     
-    if (r1.address) {
-      console.log('✅ Address received:', r1.address);
-      return r1.address;
+    if (a1.address) {
+      console.log('✅ Address received:', a1.address);
+      return a1.address;
     }
 
     // If no address, request access
-    const r2 = await requestAccess()
-    console.log('Request access result:', r2);
+    const a2 = await freighter.requestAccess();
+    console.log('Request access result:', a2);
     
-    if (r2.error) {
-      throw new Error(`Error requesting access: ${r2.error}`);
+    if (a2.error || !a2.address) {
+      throw new Error(a2.error || 'Sin address');
     }
     
-    if (!r2.address) {
-      throw new Error('Sin address. No se pudo obtener la dirección de la wallet.');
-    }
-    
-    console.log('✅ Address received via requestAccess:', r2.address);
-    return r2.address;
+    console.log('✅ Address received via requestAccess:', a2.address);
+    return a2.address;
     
   } catch (error) {
     console.error('❌ Error connecting to Freighter:', error);

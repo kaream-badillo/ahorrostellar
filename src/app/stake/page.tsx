@@ -12,21 +12,44 @@ import FreighterDebug from "@/components/FreighterDebug";
 import FreighterLocalhostGuide from "@/components/FreighterLocalhostGuide";
 import FreighterTest from "@/components/FreighterTest";
 import { useFreighter } from "@/hooks/useFreighter";
+import { WalletData } from "@/components/molecules/wallet-data";
+import { useSelectedAssetPrice, AssetCode } from "@/hooks/useSelectedAsset";
 import Link from "next/link";
+
+// [AhorroStellar][Reflector] imports
+import WalletDemoBanner from '@/components/WalletDemoBanner'
+import { useStakes } from '@/stores/stakes'
+
+export const dynamic = 'force-dynamic'
 
 export default function Stake() {
   const { state, makeStake, connectWallet } = useApp();
-  const { wallet, projects, isLoading } = state;
+  const { wallet, projects, isLoading, user } = state;
   const [selectedProject, setSelectedProject] = useState("");
   const [stakeAmount, setStakeAmount] = useState(50);
   const [stakeDuration, setStakeDuration] = useState(7);
   const [pub, setPub] = useState<string | undefined>(wallet.publicKey || undefined);
+  
+  // Modo lectura con Reflector
+  const [asset, setAsset] = useState<AssetCode>('USDC')
+  const [amount, setAmount] = useState<number>(0)
+  const { priceUSD, loading: priceLoading, error: priceError } = useSelectedAssetPrice(asset)
+  const usdEq = priceUSD ? amount * priceUSD : 0
+  
+  // [AhorroStellar][Reflector] estado
+  const { items, add, clear } = useStakes()
   
   // Use Freighter hook for better detection
   const { isInstalled, isConnected, publicKey, connect } = useFreighter();
   
   // Get real-time prices directly from hook
   const { usdcUsd, xlmUsd } = usePrices(pub);
+  
+  // Mock prices for demo mode when real prices fail
+  const mockPrices = {
+    usdcUsd: usdcUsd.error ? { price: 1.0, loading: false, error: null } : usdcUsd,
+    xlmUsd: xlmUsd.error ? { price: 0.12, loading: false, error: null } : xlmUsd,
+  };
   
   // Check if wallet is connected for price display
   if (!pub) {
@@ -38,89 +61,80 @@ export default function Stake() {
             Conecta tu wallet para ver precios en tiempo real y participar en la votación
           </p>
           
-          {/* Freighter Installation Guide */}
+          {/* Demo Mode Banner */}
           <div className="max-w-2xl mx-auto mb-8">
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-6">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
               <div className="flex items-center justify-center space-x-2 mb-4">
-                <Info className="w-6 h-6 text-orange-600" />
-                <h3 className="text-lg font-semibold text-orange-800">Freighter Wallet Requerida</h3>
+                <Info className="w-6 h-6 text-green-600" />
+                <h3 className="text-lg font-semibold text-green-800">Modo Demo Activo</h3>
               </div>
-              <p className="text-orange-700 mb-4">
-                Para usar esta aplicación necesitas instalar la extensión Freighter, la wallet oficial de Stellar.
+              <p className="text-green-700 mb-4">
+                Para probar la funcionalidad completa, puedes simular la conexión de wallet.
               </p>
               
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
-                  <span className="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                  <span className="text-orange-700">Ve a <a href="https://freighter.app/" target="_blank" rel="noopener noreferrer" className="underline font-semibold">freighter.app</a></span>
+                  <span className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
+                  <span className="text-green-700">Haz clic en "Simular Conexión" para continuar</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
-                  <span className="text-orange-700">Instala la extensión para Chrome/Edge</span>
+                  <span className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                  <span className="text-green-700">Explora los proyectos disponibles</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
-                  <span className="text-orange-700">Crea una cuenta o importa tu wallet existente</span>
+                  <span className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
+                  <span className="text-green-700">Prueba el flujo de votación completo</span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <span className="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
-                  <span className="text-orange-700">Recarga esta página y conecta tu wallet</span>
-                </div>
-              </div>
-              
-              <div className="mt-4 flex space-x-3 justify-center">
-                <a 
-                  href="https://freighter.app/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-semibold"
-                >
-                  Instalar Freighter
-                </a>
-                <Button 
-                  onClick={() => window.location.reload()} 
-                  variant="outline"
-                  className="px-6 py-3"
-                >
-                  Recargar Página
-                </Button>
               </div>
             </div>
           </div>
           
           <Button 
             onClick={async () => {
+              // Simular conexión de wallet para demo
+              const mockPublicKey = "GDEMO1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+              setPub(mockPublicKey);
+              
+              // Simular conexión en el contexto
               try {
-                if (!isInstalled) {
-                  alert('Freighter no está instalado. Instala la extensión primero.');
-                  window.open('https://freighter.app/', '_blank');
-                  return;
-                }
-                
-                const freighterPublicKey = await connect();
-                setPub(freighterPublicKey);
                 await connectWallet();
               } catch (error) {
-                console.error('Error connecting Freighter:', error);
-                alert('Error conectando Freighter. Asegúrate de que la extensión esté desbloqueada.');
+                console.log('Demo mode: Simulating wallet connection');
               }
+              
+              alert('✅ Wallet simulada conectada! Ahora puedes probar el flujo completo.');
             }} 
             size="lg"
-            disabled={!isInstalled}
-            className={!isInstalled ? "opacity-50 cursor-not-allowed" : ""}
+            className="bg-green-600 hover:bg-green-700"
           >
-            {isInstalled ? 'Conectar Freighter' : 'Instala Freighter primero'}
+            🚀 Simular Conexión (Demo)
           </Button>
           
-          {/* Freighter Test */}
-          <div className="mt-6 max-w-2xl mx-auto">
-            <FreighterTest />
-          </div>
-          
-          {/* Freighter Localhost Guide */}
-          <div className="mt-6 max-w-4xl mx-auto">
-            <FreighterLocalhostGuide />
-          </div>
+          {/* Freighter Installation Guide - Solo si no está instalado */}
+          {!isInstalled && (
+            <div className="mt-8 max-w-2xl mx-auto">
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+                <div className="flex items-center justify-center space-x-2 mb-4">
+                  <Info className="w-6 h-6 text-orange-600" />
+                  <h3 className="text-lg font-semibold text-orange-800">Para uso real: Freighter Wallet</h3>
+                </div>
+                <p className="text-orange-700 mb-4">
+                  Para transacciones reales necesitas instalar la extensión Freighter.
+                </p>
+                
+                <div className="mt-4 flex space-x-3 justify-center">
+                  <a 
+                    href="https://freighter.app/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-semibold"
+                  >
+                    Instalar Freighter
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
           
           {/* Debug Info - Solo para desarrollo */}
           {process.env.NODE_ENV === 'development' && (
@@ -138,36 +152,85 @@ export default function Stake() {
     await makeStake(selectedProject, stakeAmount);
   };
 
+  // [AhorroStellar][Reflector] handler
+  const onStake = () => {
+    if (!priceUSD || amount<=0) return
+    add({ asset, amount, usd: Number((amount*priceUSD).toFixed(2)) })
+  }
+
   // Check if Freighter is installed
   const isFreighterInstalled = typeof window !== 'undefined' && (window as any).stellar;
 
   const handleVoteStake = async (projectId: string) => {
-    if (!wallet.isConnected) {
-      if (!isFreighterInstalled) {
-        // Open Freighter installation page
-        window.open('https://freighter.app/', '_blank');
-        return;
-      }
-      try {
-        await connectWallet();
-      } catch (error) {
-        console.error('Error connecting wallet:', error);
-      }
-    } else {
-      setSelectedProject(projectId);
-      // Show stake modal or redirect to stake form
-      document.getElementById('stake-modal')?.classList.remove('hidden');
+    if (!pub) {
+      alert('Conecta tu wallet primero usando el botón "Simular Conexión"');
+      return;
+    }
+    
+    setSelectedProject(projectId);
+    // Show stake modal
+    const modal = document.getElementById('stake-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
     }
   };
 
   return (
     <Layout>
       {/* Header */}
-      <div className="mb-12 text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Vota con tu Ahorro</h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Bloquea temporalmente USDC como voto simbólico para respaldar proyectos universitarios
-        </p>
+      <div className="mb-12">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900">Votar-Ahorro</h1>
+            <p className="text-lg text-gray-600 mt-2">
+              Bloquea temporalmente USDC como voto simbólico para respaldar proyectos universitarios
+            </p>
+          </div>
+          <WalletData />
+        </div>
+        
+        {/* [AhorroStellar][Reflector] Modo Lectura - Solo cuando NO hay wallet */}
+        {!pub && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div className="flex items-center space-x-2 mb-3">
+              <Info className="w-5 h-5 text-blue-600" />
+              <h3 className="text-lg font-semibold text-blue-800">Modo Lectura</h3>
+            </div>
+            <p className="text-blue-700 text-sm mb-4">
+              Precios reales con cuenta READONLY (sin wallet) usando Reflector Oracle
+            </p>
+            
+            <WalletDemoBanner />
+            <div className="flex gap-3 items-center">
+              <select className="select select-bordered" value={asset} onChange={e=>setAsset(e.target.value as AssetCode)}>
+                <option>USDC</option><option>CLP</option><option>XLM</option>
+              </select>
+              <input className="input input-bordered w-40" type="number" step="0.01"
+                     placeholder="Monto" value={amount||''} onChange={e=>setAmount(Number(e.target.value))}/>
+              <button className="btn btn-primary" onClick={onStake} disabled={!priceUSD || amount<=0}>
+                Votar-Ahorro (mock)
+              </button>
+            </div>
+            {priceLoading && <div className="text-sm opacity-70">Cargando precio…</div>}
+            {priceError && <div className="text-sm text-red-600">Error precio: {priceError}</div>}
+            <div className="text-sm">
+              1 {asset} ≈ <b>{priceUSD ? priceUSD.toFixed(6) : '—'}</b> USD &nbsp;|&nbsp;
+              Equivalente: <b>{priceUSD ? usdEq.toFixed(2) : '—'} USD</b>
+            </div>
+            <div className="divider">Tus stakes (mock / local)</div>
+            <div className="space-y-2">
+              {items.length===0 && <div className="text-sm opacity-70">Sin registros</div>}
+              {items.map(s=>(
+                <div key={s.id} className="flex justify-between items-center p-3 rounded border">
+                  <div className="text-sm">{new Date(s.ts).toLocaleString()}</div>
+                  <div className="text-sm font-mono">{s.amount} {s.asset}</div>
+                  <div className="text-sm">{s.usd.toFixed(2)} USD</div>
+                </div>
+              ))}
+            </div>
+            {items.length>0 && <button className="btn btn-outline btn-sm" onClick={clear}>Borrar historial</button>}
+          </div>
+        )}
         
         {/* Wallet Info */}
         <div className="mt-6 flex justify-center">
@@ -178,35 +241,71 @@ export default function Stake() {
           </div>
         </div>
 
+        {/* Estadísticas del Usuario */}
+        {user && (
+          <div className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg text-center">
+                <div className="text-2xl font-bold text-blue-600">${user.activeStakes.toFixed(2)}</div>
+                <div className="text-sm text-blue-700">Ahorro Bloqueado</div>
+              </div>
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
+                <div className="text-2xl font-bold text-green-600">{user.totalProjects}</div>
+                <div className="text-sm text-green-700">Proyectos Respaldados</div>
+              </div>
+              <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg text-center">
+                <div className="text-2xl font-bold text-purple-600">{user.reputation}</div>
+                <div className="text-sm text-purple-700">Puntos de Reputación</div>
+              </div>
+            </div>
+            
+            {/* Enlace al Dashboard */}
+            {user.totalProjects > 0 && (
+              <div className="text-center">
+                <Link href="/dashboard">
+                  <Button variant="outline" className="text-sm">
+                    📊 Ver mis proyectos respaldados en el Dashboard
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Real-time Price Display */}
         <div className="mt-6 flex justify-center">
-          {usdcUsd.loading && (
+          {mockPrices.usdcUsd.loading && (
             <div className="p-3 bg-gray-50 border border-gray-200 rounded">
               <span className="text-sm text-gray-600">Cargando precios desde Reflector Oracle...</span>
             </div>
           )}
-          {usdcUsd.error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded">
-              <span className="text-sm text-red-600">Error: {usdcUsd.error}</span>
-            </div>
-          )}
-          {!usdcUsd.loading && !usdcUsd.error && usdcUsd.price > 0 && (
+          {!mockPrices.usdcUsd.loading && mockPrices.usdcUsd.price > 0 && (
             <div className="p-3 bg-blue-50 border border-blue-200 rounded">
               <div className="flex space-x-4 text-sm">
-                <span className="text-blue-700">USDC/USD: ${usdcUsd.price.toFixed(4)}</span>
-                <span className="text-green-700">XLM/USD: ${xlmUsd.price.toFixed(4)}</span>
+                <span className="text-blue-700">USDC/USD: ${mockPrices.usdcUsd.price.toFixed(4)}</span>
+                <span className="text-green-700">XLM/USD: ${mockPrices.xlmUsd.price.toFixed(4)}</span>
               </div>
               <div className="text-xs text-blue-600 mt-1">
-                📊 Precios en tiempo real desde Reflector Oracle
+                📊 {usdcUsd.error ? 'Precios demo (modo simulación)' : 'Precios en tiempo real desde Reflector Oracle'}
               </div>
             </div>
           )}
         </div>
       </div>
 
+
       {/* Projects Grid */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Proyectos Disponibles</h2>
+        
+        {/* Debug Info - Solo para desarrollo */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="mb-4 p-3 bg-gray-100 rounded text-sm">
+            <strong>Debug:</strong> Proyectos cargados: {projects?.length || 0} | 
+            Estado wallet: {wallet.isConnected ? 'Conectada' : 'Desconectada'} | 
+            PublicKey: {pub ? `${pub.slice(0,8)}...` : 'N/A'}
+          </div>
+        )}
         
         {!wallet.isConnected && !isFreighterInstalled && (
           <div className="mb-8 p-4 bg-orange-50 border border-orange-200 rounded-lg text-center max-w-2xl mx-auto">
@@ -229,7 +328,7 @@ export default function Stake() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
+          {projects && projects.length > 0 ? projects.map((project) => (
             <Card key={project.id} className="hover:shadow-lg transition-shadow">
               <div className="p-6">
                 {/* Project Header */}
@@ -251,10 +350,16 @@ export default function Stake() {
                   <div>
                     <p className="text-gray-500">Total respaldado</p>
                     <p className="font-semibold text-blue-600">${project.totalStaked.toLocaleString()}</p>
+                    {project.myStake > 0 && (
+                      <p className="text-xs text-green-600">+${project.myStake.toFixed(2)} tuyo</p>
+                    )}
                   </div>
                   <div>
                     <p className="text-gray-500">Votantes</p>
                     <p className="font-semibold text-gray-900">{project.stakers}</p>
+                    {project.myStake > 0 && (
+                      <p className="text-xs text-green-600">¡Tú votaste!</p>
+                    )}
                   </div>
                 </div>
 
@@ -276,10 +381,8 @@ export default function Stake() {
                 <div className="flex space-x-3">
                   <Button
                     onClick={() => handleVoteStake(project.id)}
-                    disabled={!isFreighterInstalled}
                     className="flex-1"
                     size="sm"
-                    title={!isFreighterInstalled ? "Instala Freighter para participar" : ""}
                   >
                     <Target className="w-4 h-4 mr-2" />
                     Votar-Ahorra
@@ -294,7 +397,15 @@ export default function Stake() {
                 </div>
               </div>
             </Card>
-          ))}
+          )) : (
+            <div className="col-span-full text-center py-12">
+              <div className="text-gray-500 mb-4">
+                <Info className="w-12 h-12 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No hay proyectos disponibles</h3>
+                <p>Los proyectos se están cargando o no hay proyectos activos en este momento.</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -353,7 +464,7 @@ export default function Stake() {
         </div>
       </Card>
 
-      {/* Stake Modal */}
+      {/* [AhorroStellar][Reflector] Stake Modal con selector de token */}
       <div id="stake-modal" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
         <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
           <h3 className="text-xl font-bold mb-4">Configura tu Voto</h3>
@@ -377,27 +488,60 @@ export default function Stake() {
             </select>
           </div>
 
+          {/* [AhorroStellar][Reflector] Token Selection */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Token para el Stake
+            </label>
+            <select
+              value={asset}
+              onChange={(e) => setAsset(e.target.value as AssetCode)}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="USDC">USDC</option>
+              <option value="XLM">XLM</option>
+              <option value="CLP">CLP</option>
+            </select>
+            {priceLoading && <div className="text-sm text-blue-600 mt-1">Cargando precio…</div>}
+            {priceError && <div className="text-sm text-red-600 mt-1">Error precio: {priceError}</div>}
+            <div className="text-sm text-gray-600 mt-1">
+              1 {asset} ≈ <b>{
+                asset === 'USDC' ? '1.0000' : 
+                asset === 'XLM' ? '0.1200' : 
+                '0.0010'
+              } USD</b> (demo)
+            </div>
+          </div>
+
           {/* Stake Amount */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Cantidad de USDC a Bloquear
+              Cantidad a Bloquear
             </label>
             <div className="relative">
               <input
                 type="number"
-                value={stakeAmount}
-                onChange={(e) => setStakeAmount(Number(e.target.value))}
-                min="10"
-                max="1000"
+                value={amount || ''}
+                onChange={(e) => setAmount(Number(e.target.value))}
+                min="1"
+                max="10000"
+                step="0.01"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Ingresa cantidad"
               />
               <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                USDC
+                {asset}
               </span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">
-              Mínimo: 10 USDC • Máximo: 1000 USDC
-            </p>
+            {amount > 0 && (
+              <p className="text-sm text-gray-600 mt-1">
+                Equivalente: <b>{
+                  asset === 'USDC' ? (amount * 1.0).toFixed(2) : 
+                  asset === 'XLM' ? (amount * 0.12).toFixed(2) : 
+                  (amount * 0.001).toFixed(2)
+                } USD</b> (demo)
+              </p>
+            )}
           </div>
 
           {/* Duration */}
@@ -415,15 +559,53 @@ export default function Stake() {
               <option value={30}>30 días</option>
             </select>
             <p className="text-sm text-gray-600 mt-1">
-              Tu USDC se desbloqueará automáticamente al finalizar el período
+              Tu {asset} se desbloqueará automáticamente al finalizar el período
             </p>
           </div>
 
           {/* Action Buttons */}
           <div className="flex space-x-3">
             <Button
-              onClick={handleStake}
-              disabled={!selectedProject || isLoading}
+              onClick={() => {
+                if (selectedProject && amount > 0) {
+                  // Simular stake con precios demo
+                  const usdValue = asset === 'USDC' ? amount * 1.0 : 
+                                  asset === 'XLM' ? amount * 0.12 : 
+                                  amount * 0.001;
+                  
+                  // Actualizar estadísticas del proyecto
+                  const project = projects.find(p => p.id === selectedProject);
+                  if (project) {
+                    // Actualizar el proyecto en el estado global
+                    makeStake(selectedProject, usdValue);
+                  }
+                  
+                  // Agregar al store local de stakes
+                  add({ asset, amount, usd: Number(usdValue.toFixed(2)) });
+                  
+                  // Cerrar modal
+                  document.getElementById('stake-modal')?.classList.add('hidden');
+                  
+                  // Mostrar confirmación con estadísticas actualizadas
+                  const updatedProject = projects.find(p => p.id === selectedProject);
+                  const newTotal = (updatedProject?.totalStaked || 0) + usdValue;
+                  const newProgress = Math.min(100, (newTotal / (updatedProject?.targetAmount || 1)) * 100);
+                  const newStakers = (updatedProject?.stakers || 0) + 1;
+                  
+                  alert(`✅ Stake simulado: ${amount} ${asset} (${usdValue.toFixed(2)} USD) para ${project?.title}
+
+📊 Estadísticas del Proyecto:
+• Total respaldado: $${newTotal.toFixed(2)} (antes: $${(updatedProject?.totalStaked || 0).toFixed(2)})
+• Progreso: ${newProgress.toFixed(1)}% (antes: ${(updatedProject?.progress || 0).toFixed(1)}%)
+• Votantes: ${newStakers} (antes: ${updatedProject?.stakers || 0})
+
+👤 Tus Estadísticas:
+• Ahorro bloqueado: $${((user?.activeStakes || 0) + usdValue).toFixed(2)} (antes: $${(user?.activeStakes || 0).toFixed(2)})
+• Proyectos respaldados: ${(user?.totalProjects || 0) + 1} (antes: ${user?.totalProjects || 0})
+• Tu stake: $${usdValue.toFixed(2)}`);
+                }
+              }}
+              disabled={!selectedProject || !amount || isLoading}
               className="flex-1"
             >
               {isLoading ? (
@@ -434,7 +616,7 @@ export default function Stake() {
               ) : (
                 <>
                   <Target className="w-5 h-5 mr-2" />
-                  Votar con {stakeAmount} USDC
+                  Votar con {amount || 0} {asset}
                 </>
               )}
             </Button>

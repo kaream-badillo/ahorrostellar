@@ -3,7 +3,7 @@
 import { Search, Bell } from "lucide-react";
 import Link from "next/link";
 import { useApp } from "@/contexts/AppContext";
-import { WalletButton } from "@/components/wallet/WalletButton";
+import { WalletData } from "@/components/molecules/wallet-data";
 import Image from "next/image";
 
 interface HeaderProps {
@@ -59,7 +59,7 @@ export default function Header({ showSearch = true }: HeaderProps) {
             </button>
 
             {/* Wallet Connect Button */}
-            <WalletButton />
+            <WalletData />
           </div>
         </div>
       </div>

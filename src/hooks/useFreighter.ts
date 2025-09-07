@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { isConnected, getAddress } from '@stellar/freighter-api'
+import freighter from '@stellar/freighter-api'
 
 export interface FreighterStatus {
   isInstalled: boolean
@@ -49,12 +49,12 @@ export const useFreighter = () => {
 
         // Try to check connection status using official API
         try {
-          const conn = await isConnected()
+          const conn = await freighter.isConnected()
           console.log('Freighter connection check:', conn)
           
           if (conn.isConnected) {
             // Try to get address
-            const addressResult = await getAddress()
+            const addressResult = await freighter.getAddress()
             console.log('Freighter address check:', addressResult)
             
             setStatus({

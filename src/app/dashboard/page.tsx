@@ -5,11 +5,13 @@ import { useApp } from "@/contexts/AppContext";
 import StatsCard from "@/components/ui/StatsCard";
 import Card from "@/components/ui/Card";
 import { usePrices } from "@/hooks/usePrices";
+import { useHydration } from "@/hooks/useHydration";
 import { Wallet, FolderOpen, Users, DollarSign } from "lucide-react";
 
 export default function Dashboard() {
   const { state } = useApp();
   const { user, isLoading } = state;
+  const isHydrated = useHydration();
   
   // Get real-time prices directly from hook
   const { usdcUsd, xlmUsd } = usePrices();
@@ -39,7 +41,15 @@ export default function Dashboard() {
             value={`${user.activeStakes} USDC`}
             icon={Wallet}
             trend={{ value: 15, isPositive: true }}
-            subtitle={usdcUsd.price > 0 ? `≈ $${(user.activeStakes * usdcUsd.price).toFixed(2)} USD` : usdcUsd.error ? 'Error loading price' : 'Loading...'}
+            subtitle={
+              !isHydrated 
+                ? 'Loading...' 
+                : usdcUsd.price > 0 
+                  ? `≈ $${(user.activeStakes * usdcUsd.price).toFixed(2)} USD` 
+                  : usdcUsd.error 
+                    ? 'Error loading price' 
+                    : 'Loading...'
+            }
           />
           <StatsCard
             title="Proyectos Respaldados"
@@ -65,7 +75,9 @@ export default function Dashboard() {
                   <p className="text-sm text-gray-500">Precio de USDC</p>
                 </div>
                 <div className="text-right">
-                  {usdcUsd.loading ? (
+                  {!isHydrated ? (
+                    <span className="text-gray-500">Cargando...</span>
+                  ) : usdcUsd.loading ? (
                     <span className="text-gray-500">Cargando...</span>
                   ) : usdcUsd.error ? (
                     <span className="text-red-500">Error</span>
@@ -83,7 +95,9 @@ export default function Dashboard() {
                   <p className="text-sm text-gray-500">Precio de Stellar</p>
                 </div>
                 <div className="text-right">
-                  {xlmUsd.loading ? (
+                  {!isHydrated ? (
+                    <span className="text-gray-500">Cargando...</span>
+                  ) : xlmUsd.loading ? (
                     <span className="text-gray-500">Cargando...</span>
                   ) : xlmUsd.error ? (
                     <span className="text-red-500">Error</span>
@@ -104,6 +118,57 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+
+        {/* Mis Proyectos Respaldados */}
+        {state.projects.filter(p => p.myStake > 0).length > 0 && (
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Mis Proyectos Respaldados</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {state.projects.filter(p => p.myStake > 0).map((project) => (
+                <Card key={project.id} className="hover:shadow-lg transition-shadow border-green-200 bg-green-50">
+                  <div className="p-6">
+                    <div className="mb-4">
+                      <h4 className="text-lg font-bold text-gray-900 mb-2">{project.title}</h4>
+                      <p className="text-gray-600 text-sm mb-3">{project.description}</p>
+                      
+                      <div className="bg-green-100 border border-green-300 rounded-lg p-3 mb-4">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <span className="text-green-800 font-semibold">Tu Respaldo</span>
+                        </div>
+                        <p className="text-green-700 font-bold text-lg">${project.myStake.toFixed(2)} USD</p>
+                        <p className="text-green-600 text-sm">Bloqueado temporalmente</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                      <div>
+                        <p className="text-gray-500">Total respaldado</p>
+                        <p className="font-semibold text-blue-600">${project.totalStaked.toLocaleString()}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500">Progreso</p>
+                        <p className="font-semibold text-gray-900">{project.progress.toFixed(1)}%</p>
+                      </div>
+                    </div>
+
+                    <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                      <div 
+                        className="bg-green-600 h-2 rounded-full transition-all duration-300" 
+                        style={{ width: `${project.progress}%` }}
+                      ></div>
+                    </div>
+
+                    <div className="text-center">
+                      <span className="text-xs text-green-600 font-semibold">
+                        ✅ Proyecto respaldado por ti
+                      </span>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="text-sm text-gray-500 italic mt-4">
           Próximamente: panel de reputación, visualización global y votación pública.
