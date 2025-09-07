@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Wallet, TrendingUp, Shield, Target, Award, Users, ExternalLink, Info } from "lucide-react";
+import { Wallet, TrendingUp, Shield, Target, Award, Users, ExternalLink, Info, DollarSign } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Layout from "@/components/layout/Layout";
 import { useApp } from "@/contexts/AppContext";
+import { useReflectorPrices } from "@/hooks/useReflectorPrices";
 import Link from "next/link";
 
 export default function Stake() {
@@ -14,6 +15,9 @@ export default function Stake() {
   const [selectedProject, setSelectedProject] = useState("");
   const [stakeAmount, setStakeAmount] = useState(50);
   const [stakeDuration, setStakeDuration] = useState(7);
+  
+  // Get real-time prices from Reflector Oracle
+  const { prices, loading: pricesLoading, error: pricesError, isHealthy } = useReflectorPrices();
 
   const handleStake = async () => {
     if (!selectedProject) return;
@@ -50,6 +54,39 @@ export default function Stake() {
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Bloquea temporalmente USDC como voto simbólico para respaldar proyectos universitarios
         </p>
+        
+        {/* Real-time Price Display */}
+        <div className="mt-6 flex justify-center">
+          <Card className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+            <div className="flex items-center space-x-4">
+              <DollarSign className="w-5 h-5 text-blue-600" />
+              <div className="text-sm">
+                <span className="text-gray-600">Precios en tiempo real:</span>
+                <div className="flex space-x-4 mt-1">
+                  {pricesLoading ? (
+                    <span className="text-gray-500">Cargando...</span>
+                  ) : pricesError ? (
+                    <span className="text-red-500">Error: {pricesError}</span>
+                  ) : (
+                    <>
+                      <span className="font-semibold text-green-600">
+                        USDC/USD: ${prices['USDC:GBBD47IF6LXCC7EDU6L4Q5JWCQ7PASDKL3SWK3UMVD7AQ4AVM6U2Y3X3/USD']?.price?.toFixed(4) || 'N/A'}
+                      </span>
+                      <span className="font-semibold text-blue-600">
+                        XLM/USD: ${prices['XLM/USD']?.price?.toFixed(4) || 'N/A'}
+                      </span>
+                    </>
+                  )}
+                </div>
+                {!isHealthy && (
+                  <div className="text-xs text-orange-600 mt-1">
+                    ⚠️ Oracle no disponible, usando precios simulados
+                  </div>
+                )}
+              </div>
+            </div>
+          </Card>
+        </div>
       </div>
 
       {/* Projects Grid */}

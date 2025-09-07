@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useWallet } from '@/hooks/useWallet';
 import { useAttestation, useUser } from '@/hooks/useApi';
+import { useReflectorPrices } from '@/hooks/useReflectorPrices';
 import { stellarService } from '@/lib/stellar';
 
 // Types
@@ -65,6 +66,10 @@ interface AppState {
   notifications: number;
   isLoading: boolean;
   currentPage: string;
+  prices: Record<string, any>;
+  pricesLoading: boolean;
+  pricesError: string | null;
+  oracleHealthy: boolean;
 }
 
 interface AppContextType {
@@ -76,6 +81,7 @@ interface AppContextType {
   addActivity: (activity: Omit<Activity, 'id' | 'date'>) => void;
   setCurrentPage: (page: string) => void;
   clearNotifications: () => void;
+  refreshPrices: () => Promise<void>;
 }
 
 // Mock Data
@@ -171,10 +177,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
     notifications: 3,
     isLoading: false,
     currentPage: '/',
+    prices: {},
+    pricesLoading: true,
+    pricesError: null,
+    oracleHealthy: false,
   });
 
   // Use the useWallet hook to get real wallet state
   const walletHook = useWallet();
+  
+  // Use the useReflectorPrices hook to get real-time prices
+  const { prices, loading: pricesLoading, error: pricesError, refresh: refreshPrices, isHealthy: oracleHealthy } = useReflectorPrices();
 
   // Sync wallet state from useWallet hook
   useEffect(() => {
@@ -198,6 +211,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
       },
     }));
   }, [walletHook.isConnected, walletHook.publicKey, walletHook.balance, walletHook.isLoading, walletHook.error]);
+
+  // Sync prices state from useReflectorPrices hook
+  useEffect(() => {
+    console.log('🔄 AppContext: Syncing prices state from useReflectorPrices hook');
+    console.log('📊 useReflectorPrices state:', {
+      prices,
+      pricesLoading,
+      pricesError,
+      oracleHealthy
+    });
+    
+    setState(prev => ({
+      ...prev,
+      prices,
+      pricesLoading,
+      pricesError,
+      oracleHealthy,
+    }));
+  }, [prices, pricesLoading, pricesError, oracleHealthy]);
 
   // Connect Wallet
   const connectWallet = async () => {
@@ -326,6 +358,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     addActivity,
     setCurrentPage,
     clearNotifications,
+    refreshPrices,
   };
 
   return (

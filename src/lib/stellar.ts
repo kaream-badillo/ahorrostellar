@@ -1,6 +1,4 @@
-import { Networks, TransactionBuilder, Operation, Asset, Memo } from '@stellar/stellar-sdk';
-// Temporary fix for Server import issue
-const Server = require('@stellar/stellar-sdk').Server;
+import { Networks, TransactionBuilder, Operation, Asset, Memo, Server } from '@stellar/stellar-sdk';
 import { getStellarConfig } from './config';
 
 // Stellar testnet configuration
