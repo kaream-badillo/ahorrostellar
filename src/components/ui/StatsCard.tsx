@@ -10,10 +10,11 @@ interface StatsCardProps {
     value: number;
     isPositive: boolean;
   };
+  subtitle?: string;
   className?: string;
 }
 
-export default function StatsCard({ title, value, icon: Icon, trend, className }: StatsCardProps) {
+export default function StatsCard({ title, value, icon: Icon, trend, subtitle, className }: StatsCardProps) {
   return (
     <Card className={className}>
       <div className="text-center p-6">
@@ -23,6 +24,10 @@ export default function StatsCard({ title, value, icon: Icon, trend, className }
         
         <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
         <div className="text-3xl font-bold gradient-text mb-2">{value}</div>
+        
+        {subtitle && (
+          <div className="text-sm text-green-600 mb-2">{subtitle}</div>
+        )}
         
         {trend && (
           <div className={`flex items-center justify-center text-sm ${

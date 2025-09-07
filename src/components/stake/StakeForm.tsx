@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Target, DollarSign } from "lucide-react";
+import { useState } from "react";
+import { Target } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import { useApp } from "@/contexts/AppContext";
-import { useXLMToUSDConverter } from "@/hooks/useReflectorPrices";
 
 interface StakeFormProps {
   onStake: (projectId: string, amount: number) => Promise<void>;
@@ -18,12 +17,6 @@ export default function StakeForm({ onStake, isLoading = false }: StakeFormProps
 
   const [selectedProject, setSelectedProject] = useState("");
   const [stakeAmount, setStakeAmount] = useState(50);
-  
-  // Get real-time XLM to USD conversion
-  const { convertXLMToUSD, xlmUsdPrice, loading: priceLoading } = useXLMToUSDConverter();
-  
-  // Calculate USD equivalent
-  const stakeAmountUSD = convertXLMToUSD(stakeAmount);
 
   const handleStake = async () => {
     if (!selectedProject || isLoading) return;
@@ -63,20 +56,7 @@ export default function StakeForm({ onStake, isLoading = false }: StakeFormProps
             max={1000}
             className="w-full p-3 border border-gray-300 rounded-lg"
           />
-          <div className="flex items-center justify-between mt-1">
-            <p className="text-sm text-gray-500">Rango sugerido: 10 a 1000 XLM</p>
-            {stakeAmountUSD && (
-              <div className="flex items-center space-x-1 text-sm text-green-600">
-                <DollarSign className="w-3 h-3" />
-                <span>≈ ${stakeAmountUSD.toFixed(2)} USD</span>
-              </div>
-            )}
-          </div>
-          {xlmUsdPrice && (
-            <p className="text-xs text-gray-400 mt-1">
-              Precio XLM: ${xlmUsdPrice.toFixed(4)} USD
-            </p>
-          )}
+          <p className="text-sm text-gray-500 mt-1">Rango sugerido: 10 a 1000 XLM</p>
         </div>
 
         {/* Botón de stake */}

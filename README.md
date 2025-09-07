@@ -58,6 +58,14 @@
 - Arquitectura preparada para contratos Soroban
 - Transacciones simuladas (MVP educativo)
 
+## Reflector Edition (Hackathon)
+- Network: Testnet (Soroban)
+- Oracle: Reflector (SEP-40 compatible)
+- RPC: $NEXT_PUBLIC_SOROBAN_RPC_URL
+- Contract: $NEXT_PUBLIC_REFLECTOR_CONTRACT_ID
+- UI: USDC/USD live price + USD equivalences
+- Notes: prices are read-only; no admin ops executed
+
 ---
 
 ## 🛠️ **Stack Tecnológico**

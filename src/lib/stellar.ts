@@ -1,4 +1,4 @@
-import { Networks, TransactionBuilder, Operation, Asset, Memo, Server } from '@stellar/stellar-sdk';
+import { Networks, TransactionBuilder, Operation, Asset, Memo, rpc } from '@stellar/stellar-sdk';
 import { getStellarConfig } from './config';
 
 // Stellar testnet configuration
@@ -23,7 +23,7 @@ export class StellarService {
 
   constructor() {
     try {
-      this.server = new Server(STELLAR_TESTNET_URL);
+      this.server = new rpc.Server(process.env.NEXT_PUBLIC_SOROBAN_RPC_URL as string, { allowHttp: true });
     } catch (error) {
       console.error('Error initializing Stellar server:', error);
       // Create a mock server to prevent crashes

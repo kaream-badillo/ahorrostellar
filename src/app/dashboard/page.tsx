@@ -3,7 +3,7 @@
 import Layout from "@/components/layout/Layout";
 import { useApp } from "@/contexts/AppContext";
 import StatsCard from "@/components/ui/StatsCard";
-import { useUSDCToUSDConverter } from "@/hooks/useReflectorPrices";
+import { useUSDCUSD } from "@/hooks/useReflectorPrices";
 import { Wallet, FolderOpen, Users, DollarSign } from "lucide-react";
 
 export default function Dashboard() {
@@ -11,11 +11,7 @@ export default function Dashboard() {
   const { user, isLoading } = state;
   
   // Get real-time USDC to USD conversion
-  const { convertUSDCToUSD, usdcUsdPrice, loading: priceLoading } = useUSDCToUSDConverter();
-  
-  // Calculate USD values
-  const activeStakesUSD = user ? convertUSDCToUSD(user.activeStakes) : null;
-  const totalBalanceUSD = user ? convertUSDCToUSD(user.totalBalance) : null;
+  const { price } = useUSDCUSD(15000);
 
   if (!user) {
     return (
@@ -42,6 +38,7 @@ export default function Dashboard() {
             value={`${user.activeStakes} USDC`}
             icon={Wallet}
             trend={{ value: 15, isPositive: true }}
+            subtitle={price ? `≈ $${(user.activeStakes * price).toFixed(2)} USD` : ''}
           />
           <StatsCard
             title="Proyectos Respaldados"
@@ -55,34 +52,6 @@ export default function Dashboard() {
             trend={{ value: 8, isPositive: true }}
           />
         </div>
-
-        {/* Real-time USD Values */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <StatsCard
-            title="Valor Total en USD"
-            value={totalBalanceUSD ? `$${totalBalanceUSD.toFixed(2)}` : 'Cargando...'}
-            icon={DollarSign}
-            className={priceLoading ? 'opacity-50' : ''}
-          />
-          <StatsCard
-            title="Stakes Activos en USD"
-            value={activeStakesUSD ? `$${activeStakesUSD.toFixed(2)}` : 'Cargando...'}
-            icon={DollarSign}
-            className={priceLoading ? 'opacity-50' : ''}
-          />
-        </div>
-
-        {/* Price Info */}
-        {usdcUsdPrice && (
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="flex items-center justify-center space-x-2">
-              <DollarSign className="w-4 h-4 text-blue-600" />
-              <span className="text-sm text-blue-800">
-                Precio USDC: ${usdcUsdPrice.toFixed(4)} USD (actualizado en tiempo real)
-              </span>
-            </div>
-          </div>
-        )}
 
         <div className="text-sm text-gray-500 italic mt-4">
           Próximamente: panel de reputación, visualización global y votación pública.
