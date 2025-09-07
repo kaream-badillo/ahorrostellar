@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Layout from "@/components/layout/Layout";
 import { useApp } from "@/contexts/AppContext";
-import { useUSDCUSD } from "@/hooks/useReflectorPrices";
+import { usePrices } from "@/hooks/usePrices";
 import Link from "next/link";
 
 export default function Stake() {
@@ -16,8 +16,25 @@ export default function Stake() {
   const [stakeAmount, setStakeAmount] = useState(50);
   const [stakeDuration, setStakeDuration] = useState(7);
   
-  // Get real-time USDC/USD price from Reflector Oracle
-  const { price, loading } = useUSDCUSD(10000);
+  // Get real-time prices directly from hook
+  const { usdcUsd, xlmUsd } = usePrices();
+  
+  // Check if wallet is connected for price display
+  if (!wallet.publicKey) {
+    return (
+      <Layout>
+        <div className="text-center py-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Vota con tu Ahorro</h1>
+          <p className="text-lg text-gray-600 mb-6">
+            Conecta tu wallet para ver precios en tiempo real y participar en la votación
+          </p>
+          <Button onClick={connectWallet} size="lg">
+            Conectar Wallet
+          </Button>
+        </div>
+      </Layout>
+    );
+  }
 
   const handleStake = async () => {
     if (!selectedProject) return;
@@ -57,9 +74,25 @@ export default function Stake() {
         
         {/* Real-time Price Display */}
         <div className="mt-6 flex justify-center">
-          {!loading && price !== null && (
+          {usdcUsd.loading && (
+            <div className="p-3 bg-gray-50 border border-gray-200 rounded">
+              <span className="text-sm text-gray-600">Cargando precios desde Reflector Oracle...</span>
+            </div>
+          )}
+          {usdcUsd.error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded">
+              <span className="text-sm text-red-600">Error: {usdcUsd.error}</span>
+            </div>
+          )}
+          {!usdcUsd.loading && !usdcUsd.error && usdcUsd.price > 0 && (
             <div className="p-3 bg-blue-50 border border-blue-200 rounded">
-              <span className="text-sm text-blue-700">USDC/USD: ${price.toFixed(4)}</span>
+              <div className="flex space-x-4 text-sm">
+                <span className="text-blue-700">USDC/USD: ${usdcUsd.price.toFixed(4)}</span>
+                <span className="text-green-700">XLM/USD: ${xlmUsd.price.toFixed(4)}</span>
+              </div>
+              <div className="text-xs text-blue-600 mt-1">
+                📊 Precios en tiempo real desde Reflector Oracle
+              </div>
             </div>
           )}
         </div>

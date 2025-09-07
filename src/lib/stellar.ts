@@ -23,7 +23,7 @@ export class StellarService {
 
   constructor() {
     try {
-      this.server = new rpc.Server(process.env.NEXT_PUBLIC_SOROBAN_RPC_URL as string, { allowHttp: true });
+      this.server = new rpc.Server(process.env.NEXT_PUBLIC_SOROBAN_RPC_PRIMARY || 'https://soroban-testnet.stellar.org', { allowHttp: true });
     } catch (error) {
       console.error('Error initializing Stellar server:', error);
       // Create a mock server to prevent crashes

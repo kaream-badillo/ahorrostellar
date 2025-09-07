@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { stellarService } from '@/lib/stellar';
+import { ensureFunded } from '@/lib/friendbot';
 
 export interface WalletState {
   isConnected: boolean;
@@ -42,6 +43,9 @@ export const useWallet = () => {
       console.log('✅ Freighter found, requesting account...');
       const publicKey = await stellarService.connectWallet();
       console.log('✅ Account received:', publicKey);
+      
+      // Ensure account is funded (testnet only)
+      await ensureFunded(publicKey);
       
       const balance = await stellarService.getBalance(publicKey);
       console.log('✅ Balance retrieved:', balance);
