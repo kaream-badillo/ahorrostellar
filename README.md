@@ -279,6 +279,8 @@ MIT License - See LICENSE for complete details.
 - **Contracts**: Official Reflector testnet contract IDs
 - **Polling**: 30-second auto-refresh for live price updates
 - **Fallback**: Demo prices when Reflector unavailable
+- **Based on**: Official @reflector/oracle-client v6.1.1 implementation
+- **Features**: TWAP, cross-asset pricing, timestamp-based queries, comprehensive error handling
 
 ### **What Existed vs What's New**
 - **Existed**: MVP UI, Freighter connect, educational flows, mock staking

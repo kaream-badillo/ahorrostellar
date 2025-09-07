@@ -6,6 +6,9 @@ import {
   usdPerCLP, 
   priceXLMinUSD, 
   priceCLPinUSD,
+  getTwap,
+  getXTwap,
+  getLastTimestamp,
   testReflectorConnections 
 } from '@/lib/reflector'
 import Layout from '@/components/layout/Layout'
@@ -149,35 +152,75 @@ export default function ReflectorDebugPage() {
         <Card className="mb-6">
           <div className="p-6">
             <h2 className="text-xl font-semibold mb-4">Individual Tests</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Button 
-                onClick={() => testIndividual('USDC/USD', priceUSDCinUSD)}
-                variant="outline"
-                size="sm"
-              >
-                Test USDC/USD
-              </Button>
-              <Button 
-                onClick={() => testIndividual('USD/CLP', usdPerCLP)}
-                variant="outline"
-                size="sm"
-              >
-                Test USD/CLP
-              </Button>
-              <Button 
-                onClick={() => testIndividual('XLM/USD', priceXLMinUSD)}
-                variant="outline"
-                size="sm"
-              >
-                Test XLM/USD
-              </Button>
-              <Button 
-                onClick={() => testIndividual('CLP/USD', priceCLPinUSD)}
-                variant="outline"
-                size="sm"
-              >
-                Test CLP/USD
-              </Button>
+            
+            {/* Basic Price Tests */}
+            <div className="mb-4">
+              <h3 className="text-lg font-medium mb-2">Basic Price Feeds</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Button 
+                  onClick={() => testIndividual('USDC/USD', priceUSDCinUSD)}
+                  variant="outline"
+                  size="sm"
+                >
+                  Test USDC/USD
+                </Button>
+                <Button 
+                  onClick={() => testIndividual('USD/CLP', usdPerCLP)}
+                  variant="outline"
+                  size="sm"
+                >
+                  Test USD/CLP
+                </Button>
+                <Button 
+                  onClick={() => testIndividual('XLM/USD', priceXLMinUSD)}
+                  variant="outline"
+                  size="sm"
+                >
+                  Test XLM/USD
+                </Button>
+                <Button 
+                  onClick={() => testIndividual('CLP/USD', priceCLPinUSD)}
+                  variant="outline"
+                  size="sm"
+                >
+                  Test CLP/USD
+                </Button>
+              </div>
+            </div>
+
+            {/* Advanced Tests */}
+            <div className="mb-4">
+              <h3 className="text-lg font-medium mb-2">Advanced Oracle Functions</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Button 
+                  onClick={() => testIndividual('USDC TWAP', () => getTwap(process.env.NEXT_PUBLIC_REFLECTOR_CONTRACT_ID_USDC!, { type: 2, code: 'USDC' }, 2))}
+                  variant="outline"
+                  size="sm"
+                >
+                  Test USDC TWAP
+                </Button>
+                <Button 
+                  onClick={() => testIndividual('XLM TWAP', () => getTwap(process.env.NEXT_PUBLIC_REFLECTOR_CONTRACT_ID_CEX!, { type: 1, code: 'XLM' }, 2))}
+                  variant="outline"
+                  size="sm"
+                >
+                  Test XLM TWAP
+                </Button>
+                <Button 
+                  onClick={() => testIndividual('XLM/USD TWAP', () => getXTwap(process.env.NEXT_PUBLIC_REFLECTOR_CONTRACT_ID_CEX!, { type: 1, code: 'XLM' }, { type: 2, code: 'USD' }, 2))}
+                  variant="outline"
+                  size="sm"
+                >
+                  Test XLM/USD TWAP
+                </Button>
+                <Button 
+                  onClick={() => testIndividual('Last Timestamp', () => getLastTimestamp(process.env.NEXT_PUBLIC_REFLECTOR_CONTRACT_ID_USDC!))}
+                  variant="outline"
+                  size="sm"
+                >
+                  Test Last Timestamp
+                </Button>
+              </div>
             </div>
           </div>
         </Card>
