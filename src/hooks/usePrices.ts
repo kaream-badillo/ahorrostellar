@@ -9,7 +9,7 @@ export interface PriceData {
   error: string | null;
 }
 
-export function usePrices() {
+export function usePrices(publicKey?: string) {
   // Check if we're in a browser environment
   if (typeof window === 'undefined') {
     return {
@@ -22,9 +22,10 @@ export function usePrices() {
     };
   }
 
+  // Use provided publicKey or fallback to context
   const { state } = useApp();
   const { wallet } = state;
-  const publicKey = wallet.publicKey;
+  const activePublicKey = publicKey || wallet.publicKey;
 
   const [usdcUsd, setUsdcUsd] = useState<PriceData>({
     price: 0,
@@ -48,7 +49,7 @@ export function usePrices() {
   });
 
   useEffect(() => {
-    if (!publicKey) {
+    if (!activePublicKey) {
       setUsdcUsd(prev => ({ ...prev, loading: false, error: 'wallet not connected' }));
       setXlmUsd(prev => ({ ...prev, loading: false, error: 'wallet not connected' }));
       setClpUsd(prev => ({ ...prev, loading: false, error: 'wallet not connected' }));
@@ -59,7 +60,7 @@ export function usePrices() {
       try {
         // Fetch USDC/USD
         try {
-          const usdcPrice = await priceUSDCinUSD(publicKey);
+          const usdcPrice = await priceUSDCinUSD(activePublicKey);
           setUsdcUsd({
             price: usdcPrice,
             timestamp: Math.floor(Date.now() / 1000),
@@ -72,7 +73,7 @@ export function usePrices() {
 
         // Fetch XLM/USD
         try {
-          const xlmPrice = await priceXLMinUSD(publicKey);
+          const xlmPrice = await priceXLMinUSD(activePublicKey);
           setXlmUsd({
             price: xlmPrice,
             timestamp: Math.floor(Date.now() / 1000),
@@ -85,7 +86,7 @@ export function usePrices() {
 
         // Fetch CLP/USD (inverse of USD/CLP)
         try {
-          const usdPerClp = await usdPerCLP(publicKey);
+          const usdPerClp = await usdPerCLP(activePublicKey);
           const clpPrice = 1 / usdPerClp; // Convert USD/CLP to CLP/USD
           setClpUsd({
             price: clpPrice,
@@ -110,7 +111,7 @@ export function usePrices() {
     // Refresh every 30 seconds
     const interval = setInterval(fetchPrices, 30000);
     return () => clearInterval(interval);
-  }, [publicKey]);
+  }, [activePublicKey]);
 
   return {
     usdcUsd,

@@ -7,6 +7,11 @@ import Card from "@/components/ui/Card";
 import Layout from "@/components/layout/Layout";
 import { useApp } from "@/contexts/AppContext";
 import { usePrices } from "@/hooks/usePrices";
+import { conectarFreighter } from "@/components/ConectarFreighter";
+import FreighterDebug from "@/components/FreighterDebug";
+import FreighterLocalhostGuide from "@/components/FreighterLocalhostGuide";
+import FreighterTest from "@/components/FreighterTest";
+import { useFreighter } from "@/hooks/useFreighter";
 import Link from "next/link";
 
 export default function Stake() {
@@ -15,12 +20,16 @@ export default function Stake() {
   const [selectedProject, setSelectedProject] = useState("");
   const [stakeAmount, setStakeAmount] = useState(50);
   const [stakeDuration, setStakeDuration] = useState(7);
+  const [pub, setPub] = useState<string | undefined>(wallet.publicKey || undefined);
+  
+  // Use Freighter hook for better detection
+  const { isInstalled, isConnected, publicKey, connect } = useFreighter();
   
   // Get real-time prices directly from hook
-  const { usdcUsd, xlmUsd } = usePrices();
+  const { usdcUsd, xlmUsd } = usePrices(pub);
   
   // Check if wallet is connected for price display
-  if (!wallet.publicKey) {
+  if (!pub) {
     return (
       <Layout>
         <div className="text-center py-12">
@@ -28,9 +37,97 @@ export default function Stake() {
           <p className="text-lg text-gray-600 mb-6">
             Conecta tu wallet para ver precios en tiempo real y participar en la votación
           </p>
-          <Button onClick={connectWallet} size="lg">
-            Conectar Wallet
+          
+          {/* Freighter Installation Guide */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-6">
+              <div className="flex items-center justify-center space-x-2 mb-4">
+                <Info className="w-6 h-6 text-orange-600" />
+                <h3 className="text-lg font-semibold text-orange-800">Freighter Wallet Requerida</h3>
+              </div>
+              <p className="text-orange-700 mb-4">
+                Para usar esta aplicación necesitas instalar la extensión Freighter, la wallet oficial de Stellar.
+              </p>
+              
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <span className="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
+                  <span className="text-orange-700">Ve a <a href="https://freighter.app/" target="_blank" rel="noopener noreferrer" className="underline font-semibold">freighter.app</a></span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                  <span className="text-orange-700">Instala la extensión para Chrome/Edge</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
+                  <span className="text-orange-700">Crea una cuenta o importa tu wallet existente</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="w-6 h-6 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
+                  <span className="text-orange-700">Recarga esta página y conecta tu wallet</span>
+                </div>
+              </div>
+              
+              <div className="mt-4 flex space-x-3 justify-center">
+                <a 
+                  href="https://freighter.app/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-semibold"
+                >
+                  Instalar Freighter
+                </a>
+                <Button 
+                  onClick={() => window.location.reload()} 
+                  variant="outline"
+                  className="px-6 py-3"
+                >
+                  Recargar Página
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          <Button 
+            onClick={async () => {
+              try {
+                if (!isInstalled) {
+                  alert('Freighter no está instalado. Instala la extensión primero.');
+                  window.open('https://freighter.app/', '_blank');
+                  return;
+                }
+                
+                const freighterPublicKey = await connect();
+                setPub(freighterPublicKey);
+                await connectWallet();
+              } catch (error) {
+                console.error('Error connecting Freighter:', error);
+                alert('Error conectando Freighter. Asegúrate de que la extensión esté desbloqueada.');
+              }
+            }} 
+            size="lg"
+            disabled={!isInstalled}
+            className={!isInstalled ? "opacity-50 cursor-not-allowed" : ""}
+          >
+            {isInstalled ? 'Conectar Freighter' : 'Instala Freighter primero'}
           </Button>
+          
+          {/* Freighter Test */}
+          <div className="mt-6 max-w-2xl mx-auto">
+            <FreighterTest />
+          </div>
+          
+          {/* Freighter Localhost Guide */}
+          <div className="mt-6 max-w-4xl mx-auto">
+            <FreighterLocalhostGuide />
+          </div>
+          
+          {/* Debug Info - Solo para desarrollo */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-6">
+              <FreighterDebug />
+            </div>
+          )}
         </div>
       </Layout>
     );
@@ -72,6 +169,15 @@ export default function Stake() {
           Bloquea temporalmente USDC como voto simbólico para respaldar proyectos universitarios
         </p>
         
+        {/* Wallet Info */}
+        <div className="mt-6 flex justify-center">
+          <div className="p-3 bg-green-50 border border-green-200 rounded">
+            <div className="text-sm text-green-700">
+              ✅ Wallet conectada: {pub.slice(0,4)}…{pub.slice(-4)}
+            </div>
+          </div>
+        </div>
+
         {/* Real-time Price Display */}
         <div className="mt-6 flex justify-center">
           {usdcUsd.loading && (
