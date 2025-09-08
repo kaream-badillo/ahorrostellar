@@ -329,3 +329,109 @@ Blockchain Enthusiast & Emerging Web3 Builder
 ---
 
 *This project demonstrates composability by building directly on top of existing Stellar infrastructure (Reflector Oracle) while maintaining educational value and zero-risk user experience.*
+
+---
+
+## ✅ Prerequisites
+
+- Node.js 20.x (LTS)
+- npm 10.x (o pnpm 9.x)
+- macOS/Linux/Windows (en Windows se recomienda WSL para dev avanzado)
+
+---
+
+## 🔧 Environment Variables
+
+Add a `.env.local` file at project root:
+
+```bash
+# 🔴 Replace with your values
+NEXT_PUBLIC_READONLY_PUBLIC_KEY=TODO_PUBLIC_KEY
+NEXT_PUBLIC_SOROBAN_RPC_PRIMARY=TODO_RPC_URL
+NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
+```
+
+What they do:
+- `NEXT_PUBLIC_READONLY_PUBLIC_KEY`: public key for read-only Reflector calls.
+- `NEXT_PUBLIC_SOROBAN_RPC_PRIMARY`: Soroban Testnet RPC.
+- `NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE`: network passphrase (Testnet).
+
+---
+
+## 🧪 Demo vs Real Usage
+
+- Demo mode: click "🚀 Simulate Connection (Demo)" on `/stake`. No real funds, enables full flow for judges.
+- Real mode: connect Freighter on Testnet, see live prices (Reflector) and interact read-only.
+
+Limitations in MVP:
+- No on-chain transfers; staking is simulated for education.
+
+---
+
+## 🔐 Freighter Guide (Testnet)
+
+1) Install Freighter: https://freighter.app
+2) Switch to Testnet and create a new account.
+3) Fund with Friendbot:
+```bash
+curl "https://friendbot.stellar.org/?addr=YOUR_PUBLIC_KEY"
+```
+4) Open `/stake`, connect wallet, verify live prices.
+
+Troubleshooting:
+- If connection popup is blocked, allow site pop-ups.
+- If network mismatch, re-select Testnet in Freighter and refresh.
+
+---
+
+## 🔎 How to evaluate in 2 minutes (Judges)
+
+1) Open the live demo: https://ahorrostellar.vercel.app
+2) Go to `/stake` and click "🚀 Simulate Connection (Demo)"
+3) Pick a project and perform a "Vote-Save (mock)"
+4) Go to `/dashboard` to view reputation and backed projects
+
+---
+
+## 🔗 Contract Links (Testnet)
+
+Reflector Contracts on Testnet (explorer):
+- USDC_PRICE: `CAVLP5DH2GJPZMVO7IJY4CVOD5MWEFTJFVPD2YY2FQXOQHRGHK4D6HLP` — https://stellar.expert/explorer/testnet/contract/CAVLP5DH2GJPZMVO7IJY4CVOD5MWEFTJFVPD2YY2FQXOQHRGHK4D6HLP
+- FX_RATES:   `CCSSOHTBL3LEWUCBBEB5NJFC2OKFRC74OWEIJIZLRJBGAAU4VMU5NV4W` — https://stellar.expert/explorer/testnet/contract/CCSSOHTBL3LEWUCBBEB5NJFC2OKFRC74OWEIJIZLRJBGAAU4VMU5NV4W
+- CEX_DEX:    `CCYOZJCOPG34LLQQ7N24YXBM7LL62R7ONMZ3G6WZAAYPB5OYKOMJRN63` — https://stellar.expert/explorer/testnet/contract/CCYOZJCOPG34LLQQ7N24YXBM7LL62R7ONMZ3G6WZAAYPB5OYKOMJRN63
+
+---
+
+## 🧰 Scripts
+
+```bash
+npm run dev
+npm run build
+npm run lint
+npm run format
+```
+
+---
+
+## 🧪 CI/CD
+
+Add a CI badge once your workflow is configured:
+
+```markdown
+[![CI](https://github.com/TODO_USER/TODO_REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/TODO_USER/TODO_REPO/actions/workflows/ci.yml)
+```
+
+---
+
+## 🤝 KALE Tie-in (Education)
+
+- Future step: integrate KALE-based reputation boosts for "work" contributions.
+- Governance preview: community voting via KALE staking (post-hackathon).
+
+---
+
+## 🛟 Troubleshooting
+
+- Build fails with JSX/TS errors: ensure Node 20.x and clean install `rm -rf node_modules && npm i`.
+- Reflector not responding: wait 30–60 seconds and retry; demo prices will fallback.
+- Freighter not detected: confirm extension installed and on Testnet.
