@@ -12,7 +12,7 @@ export default function Sidebar() {
 
   const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: Home },
-    { name: "Voto-Ahorro", href: "/stake", icon: Target },
+    { name: "Vote-Save", href: "/stake", icon: Target },
     { name: "Reflector Debug", href: "/reflector-debug", icon: Activity },
   ];
 
@@ -49,7 +49,7 @@ export default function Sidebar() {
 
         {/* Quick Stats */}
         <div className="space-y-4 mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Resumen Rápido</h3>
+          <h3 className="text-sm font-semibold text-gray-700 mb-4">Quick Summary</h3>
           
           <div className="bg-blue-50 rounded-lg p-4">
             <div className="flex items-center justify-between mb-2">
@@ -59,13 +59,13 @@ export default function Sidebar() {
               </span>
             </div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Proyectos Respaldados</span>
+              <span className="text-sm text-gray-600">Backed Projects</span>
               <span className="text-sm font-semibold text-green-600">
                 {state.myStakedProjects.length}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Reputación</span>
+              <span className="text-sm text-gray-600">Reputation</span>
               <span className="text-sm font-semibold text-purple-600">
                 {user?.reputationLevel || 'Bronze'}
               </span>
@@ -75,12 +75,12 @@ export default function Sidebar() {
 
         {/* Security Info */}
         <div className="space-y-3 mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Seguridad</h3>
+          <h3 className="text-sm font-semibold text-gray-700 mb-4">Security</h3>
           
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
             <div className="flex items-center space-x-2 mb-2">
               <Shield className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-green-700">Tu ahorro está seguro</span>
+              <span className="text-sm font-medium text-green-700">Your savings are safe</span>
             </div>
             <div className="space-y-1 text-xs text-green-600">
               <p>• USDC se bloquea por 7 días</p>
@@ -98,7 +98,7 @@ export default function Sidebar() {
               className="flex items-center space-x-3 px-4 py-3 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors w-full"
             >
               <LogOut className="w-5 h-5" />
-              <span>Cerrar Sesión</span>
+              <span>Sign Out</span>
             </button>
           </div>
         </div>

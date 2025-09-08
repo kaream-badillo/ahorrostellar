@@ -9,7 +9,7 @@ Educational DeFi app for LATAM students built with Stellar + Soroban + **Reflect
 [![Stellar](https://img.shields.io/badge/Stellar-Testnet-7D00FF?style=for-the-badge&logo=stellar)](https://stellar.org)
 [![Reflector](https://img.shields.io/badge/Reflector-Oracle-FF6B35?style=for-the-badge)](https://reflector.stellar.org)
 
-🚀 **Live Demo** | 🌟 **[Try AhorroStellar →](https://ahorrostellar-4csb4hgoa-kareams-projects.vercel.app)**
+🚀 **Live Demo** | 🌟 **[Try AhorroStellar →](https://ahorrostellar.vercel.app)**
 
 *For judges: Direct access without installations. Mobile & desktop compatible.*
 
@@ -259,13 +259,16 @@ MIT License - See LICENSE for complete details.
 
 ## 📞 Contact & Links
 
-| Demo | Code | Deploy | Docs |
-|------|------|--------|------|
-| 🌟 Live App | 📁 GitHub | ⚡ Vercel | 📚 Stellar |
+| Demo | Code (branch) | Deploy | Docs |
+|------|----------------|--------|------|
+| 🌟 [Live App](https://ahorrostellar.vercel.app) | 📁 [GitHub](https://github.com/kaream-badillo/ahorrostellar/tree/feat/kale-reflector-hackathon) | ⚡ [Vercel Project](https://vercel.com/kareams-projects/ahorrostellar) | 📚 [Stellar](https://stellar.org) |
 
 **Kaream Badillo**  
-*Blockchain Enthusiast & Emerging Web3 Builder*  
-📧 Email • 🐙 GitHub • 🌍 Chile
+Blockchain Enthusiast & Emerging Web3 Builder  
+📧 Email: kaream.badillo@usach.cl  
+🐦 X: https://x.com/kaream_badillo  
+🐙 GitHub: https://github.com/kaream-badillo  
+🌍 Chile
 
 *Developing the future of educational DeFi in LATAM*
 

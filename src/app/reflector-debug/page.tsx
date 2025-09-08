@@ -424,50 +424,6 @@ export default function ReflectorDebugPage() {
           </div>
         )}
 
-        {/* Error Details */}
-        {data && (
-          <Card className="mt-6">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Error Details</h2>
-              <div className="space-y-2">
-                {data.usdcUsd.error && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded">
-                    <div className="font-semibold text-red-900">USDC/USD Error:</div>
-                    <div className="text-sm text-red-700">{data.usdcUsd.error}</div>
-                  </div>
-                )}
-                {data.usdClp.error && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded">
-                    <div className="font-semibold text-red-900">USD/CLP Error:</div>
-                    <div className="text-sm text-red-700">{data.usdClp.error}</div>
-                  </div>
-                )}
-                {data.xlmUsd.error && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded">
-                    <div className="font-semibold text-red-900">XLM/USD Error:</div>
-                    <div className="text-sm text-red-700">{data.xlmUsd.error}</div>
-                  </div>
-                )}
-                {data.clpUsd.error && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded">
-                    <div className="font-semibold text-red-900">CLP/USD Error:</div>
-                    <div className="text-sm text-red-700">{data.clpUsd.error}</div>
-                  </div>
-                )}
-                {data.decimals.errors.length > 0 && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded">
-                    <div className="font-semibold text-red-900">Decimals Errors:</div>
-                    <div className="text-sm text-red-700">
-                      {data.decimals.errors.map((error, i) => (
-                        <div key={i}>• {error}</div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </Card>
-        )}
       </div>
     </Layout>
   )

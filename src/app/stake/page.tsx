@@ -55,9 +55,9 @@ export default function Stake() {
     return (
       <Layout>
         <div className="text-center py-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Vota con tu Ahorro</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Vote with your Savings</h1>
           <p className="text-lg text-gray-600 mb-6">
-            Conecta tu wallet para ver precios en tiempo real y participar en la votación
+            Connect your wallet to see live prices and participate in voting
           </p>
           
           {/* Demo Mode Banner */}
@@ -65,24 +65,24 @@ export default function Stake() {
             <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
               <div className="flex items-center justify-center space-x-2 mb-4">
                 <Info className="w-6 h-6 text-green-600" />
-                <h3 className="text-lg font-semibold text-green-800">Modo Demo Activo</h3>
+                <h3 className="text-lg font-semibold text-green-800">Demo Mode Active</h3>
               </div>
               <p className="text-green-700 mb-4">
-                Para probar la funcionalidad completa, puedes simular la conexión de wallet.
+                To try the full flow, you can simulate the wallet connection.
               </p>
               
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <span className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
-                  <span className="text-green-700">Haz clic en "Simular Conexión" para continuar</span>
+                  <span className="text-green-700">Click "Simulate Connection" to continue</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <span className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
-                  <span className="text-green-700">Explora los proyectos disponibles</span>
+                  <span className="text-green-700">Explore available projects</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <span className="w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
-                  <span className="text-green-700">Prueba el flujo de votación completo</span>
+                  <span className="text-green-700">Test the full voting flow</span>
                 </div>
               </div>
             </div>
@@ -101,19 +101,19 @@ export default function Stake() {
             size="lg"
             className="bg-green-600 hover:bg-green-700"
           >
-            🚀 Simular Conexión (Demo)
+            🚀 Simulate Connection (Demo)
           </Button>
           
-          {/* Freighter Installation Guide - Solo si no está instalado */}
-          {!isInstalled && (
+          {/* Freighter Installation Guide - only when not installed and no demo connection */}
+          {!isInstalled && !pub && (
             <div className="mt-8 max-w-2xl mx-auto">
               <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
                 <div className="flex items-center justify-center space-x-2 mb-4">
                   <Info className="w-6 h-6 text-orange-600" />
-                  <h3 className="text-lg font-semibold text-orange-800">Para uso real: Freighter Wallet</h3>
+                  <h3 className="text-lg font-semibold text-orange-800">For real use: Freighter Wallet</h3>
                 </div>
                 <p className="text-orange-700 mb-4">
-                  Para transacciones reales necesitas instalar la extensión Freighter.
+                  For real transactions you need to install the Freighter extension.
                 </p>
                 
                 <div className="mt-4 flex space-x-3 justify-center">
@@ -123,7 +123,7 @@ export default function Stake() {
                     rel="noopener noreferrer"
                     className="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-semibold"
                   >
-                    Instalar Freighter
+                    Install Freighter
                   </a>
                 </div>
               </div>
@@ -151,7 +151,7 @@ export default function Stake() {
 
   const handleVoteStake = async (projectId: string) => {
     if (!pub) {
-      alert('Conecta tu wallet primero usando el botón "Simular Conexión"');
+      alert('Connect your wallet first using the "Simulate Connection" button');
       return;
     }
     
@@ -169,9 +169,9 @@ export default function Stake() {
       <div className="mb-12">
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">Votar-Ahorro</h1>
+            <h1 className="text-4xl font-bold text-gray-900">Vote-Save</h1>
             <p className="text-lg text-gray-600 mt-2">
-              Bloquea temporalmente USDC como voto simbólico para respaldar proyectos universitarios
+              Temporarily lock USDC as a symbolic vote to back university projects
             </p>
           </div>
         </div>
@@ -195,7 +195,7 @@ export default function Stake() {
               <input className="input input-bordered w-40" type="number" step="0.01"
                      placeholder="Monto" value={amount||''} onChange={e=>setAmount(Number(e.target.value))}/>
               <button className="btn btn-primary" onClick={onStake} disabled={!priceUSD || amount<=0}>
-                Votar-Ahorro (mock)
+                Vote-Save (mock)
               </button>
             </div>
             {priceLoading && <div className="text-sm opacity-70">Cargando precio…</div>}
@@ -223,7 +223,7 @@ export default function Stake() {
         <div className="mt-6 flex justify-center">
           <div className="p-3 bg-green-50 border border-green-200 rounded">
             <div className="text-sm text-green-700">
-              ✅ Wallet conectada: {pub.slice(0,4)}…{pub.slice(-4)}
+              ✅ Wallet connected: {pub.slice(0,4)}…{pub.slice(-4)}
             </div>
           </div>
         </div>
@@ -234,15 +234,15 @@ export default function Stake() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg text-center">
                 <div className="text-2xl font-bold text-blue-600">${user.activeStakes.toFixed(2)}</div>
-                <div className="text-sm text-blue-700">Ahorro Bloqueado</div>
+                <div className="text-sm text-blue-700">Locked Savings</div>
               </div>
               <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
                 <div className="text-2xl font-bold text-green-600">{user.totalProjects}</div>
-                <div className="text-sm text-green-700">Proyectos Respaldados</div>
+                <div className="text-sm text-green-700">Backed Projects</div>
               </div>
               <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg text-center">
                 <div className="text-2xl font-bold text-purple-600">{user.reputation}</div>
-                <div className="text-sm text-purple-700">Puntos de Reputación</div>
+                <div className="text-sm text-purple-700">Reputation Points</div>
               </div>
             </div>
             
@@ -251,7 +251,7 @@ export default function Stake() {
               <div className="text-center">
                 <Link href="/dashboard">
                   <Button variant="outline" className="text-sm">
-                    📊 Ver mis proyectos respaldados en el Dashboard
+                    📊 View my backed projects in the Dashboard
                   </Button>
                 </Link>
               </div>
@@ -273,7 +273,7 @@ export default function Stake() {
                 <span className="text-green-700">XLM/USD: ${mockPrices.xlmUsd.price.toFixed(4)}</span>
               </div>
               <div className="text-xs text-blue-600 mt-1">
-                📊 {usdcUsd.error ? 'Precios demo (modo simulación)' : 'Precios en tiempo real desde Reflector Oracle'}
+                📊 {usdcUsd.error ? 'Demo prices (simulation mode)' : 'Live prices from Reflector Oracle'}
               </div>
             </div>
           )}
@@ -283,7 +283,7 @@ export default function Stake() {
 
       {/* Projects Grid */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Proyectos Disponibles</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Available Projects</h2>
         
         {/* Debug Info - Solo para desarrollo */}
         {process.env.NODE_ENV === 'development' && (
@@ -298,10 +298,10 @@ export default function Stake() {
           <div className="mb-8 p-4 bg-orange-50 border border-orange-200 rounded-lg text-center max-w-2xl mx-auto">
             <div className="flex items-center justify-center space-x-2 mb-2">
               <Info className="w-5 h-5 text-orange-600" />
-              <span className="font-semibold text-orange-800">Instala Freighter para participar</span>
+              <span className="font-semibold text-orange-800">Install Freighter to participate</span>
             </div>
             <p className="text-sm text-orange-700">
-              Necesitas la extensión Freighter para votar con tu ahorro
+              You need the Freighter extension to vote with your savings
             </p>
             <a 
               href="https://freighter.app/" 
@@ -309,7 +309,7 @@ export default function Stake() {
               rel="noopener noreferrer"
               className="inline-block mt-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm"
             >
-              Descargar Freighter
+              Download Freighter
             </a>
           </div>
         )}
@@ -327,7 +327,7 @@ export default function Stake() {
                   <div className="flex items-center space-x-2 mb-4">
                     <Award className="w-4 h-4 text-purple-600" />
                     <span className="text-sm font-medium text-purple-700">
-                      Hasta {Math.floor(Math.random() * 15) + 8}% de bonus si gana financiamiento
+                      Up to {Math.floor(Math.random() * 15) + 8}% bonus if funded
                     </span>
                   </div>
                 </div>
@@ -335,17 +335,17 @@ export default function Stake() {
                 {/* Project Stats */}
                 <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
                   <div>
-                    <p className="text-gray-500">Total respaldado</p>
+                    <p className="text-gray-500">Total backed</p>
                     <p className="font-semibold text-blue-600">${project.totalStaked.toLocaleString()}</p>
                     {project.myStake > 0 && (
                       <p className="text-xs text-green-600">+${project.myStake.toFixed(2)} tuyo</p>
                     )}
                   </div>
                   <div>
-                    <p className="text-gray-500">Votantes</p>
+                    <p className="text-gray-500">Voters</p>
                     <p className="font-semibold text-gray-900">{project.stakers}</p>
                     {project.myStake > 0 && (
-                      <p className="text-xs text-green-600">¡Tú votaste!</p>
+                      <p className="text-xs text-green-600">You voted!</p>
                     )}
                   </div>
                 </div>
@@ -353,7 +353,7 @@ export default function Stake() {
                 {/* Progress Bar */}
                 <div className="mb-4">
                   <div className="flex justify-between text-xs text-gray-500 mb-1">
-                    <span>Progreso</span>
+                    <span>Progress</span>
                     <span>{project.progress}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -372,13 +372,13 @@ export default function Stake() {
                     size="sm"
                   >
                     <Target className="w-4 h-4 mr-2" />
-                    Votar-Ahorra
+                    Vote-Save
                   </Button>
                   
                   <Link href={`/proyectos/demo`}>
                     <Button variant="ghost" size="sm" className="flex items-center">
                       <ExternalLink className="w-4 h-4 mr-2" />
-                      Ver detalles
+                      View details
                     </Button>
                   </Link>
                 </div>
@@ -399,28 +399,28 @@ export default function Stake() {
       {/* How it Works */}
       <Card className="mb-12 max-w-4xl mx-auto">
         <div className="p-8">
-          <h3 className="text-2xl font-bold mb-6 text-gray-900 text-center">¿Cómo Funciona?</h3>
+          <h3 className="text-2xl font-bold mb-6 text-gray-900 text-center">How it works</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-blue-600 text-lg font-bold">1</span>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Bloquea USDC</h4>
-              <p className="text-sm text-gray-600">Tu dinero queda seguro por 7 días</p>
+              <h4 className="font-semibold text-gray-900 mb-2">Lock USDC</h4>
+              <p className="text-sm text-gray-600">Your money is safe for 7 days</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-blue-600 text-lg font-bold">2</span>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Vota simbólicamente</h4>
-              <p className="text-sm text-gray-600">Apoya proyectos que crees que merecen ganar</p>
+              <h4 className="font-semibold text-gray-900 mb-2">Vote symbolically</h4>
+              <p className="text-sm text-gray-600">Support projects you believe should win</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-blue-600 text-lg font-bold">3</span>
               </div>
-              <h4 className="font-semibold text-gray-900 mb-2">Gana reputación</h4>
-              <p className="text-sm text-gray-600">Y posible bonus si el proyecto gana</p>
+              <h4 className="font-semibold text-gray-900 mb-2">Gain reputation</h4>
+              <p className="text-sm text-gray-600">And a possible bonus if the project wins</p>
             </div>
           </div>
         </div>
@@ -429,23 +429,23 @@ export default function Stake() {
       {/* Benefits */}
       <Card className="mb-12 max-w-4xl mx-auto">
         <div className="p-8">
-          <h3 className="text-2xl font-bold mb-6 text-gray-900 text-center">Beneficios</h3>
+          <h3 className="text-2xl font-bold mb-6 text-gray-900 text-center">Benefits</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-center space-x-3">
               <Shield className="w-5 h-5 text-green-600" />
-              <span className="text-sm text-gray-700">Sin riesgo de pérdida</span>
+              <span className="text-sm text-gray-700">No risk of loss</span>
             </div>
             <div className="flex items-center space-x-3">
               <TrendingUp className="w-5 h-5 text-blue-600" />
-              <span className="text-sm text-gray-700">Construyes reputación pública</span>
+              <span className="text-sm text-gray-700">Build public reputation</span>
             </div>
             <div className="flex items-center space-x-3">
               <Award className="w-5 h-5 text-purple-600" />
-              <span className="text-sm text-gray-700">Posible recompensa condicional</span>
+              <span className="text-sm text-gray-700">Possible conditional reward</span>
             </div>
             <div className="flex items-center space-x-3">
               <Users className="w-5 h-5 text-orange-600" />
-              <span className="text-sm text-gray-700">Educación Web3 práctica</span>
+              <span className="text-sm text-gray-700">Practical Web3 education</span>
             </div>
           </div>
         </div>
@@ -522,7 +522,7 @@ export default function Stake() {
             </div>
             {amount > 0 && (
               <p className="text-sm text-gray-600 mt-1">
-                Equivalente: <b>{
+                Equivalent: <b>{
                   asset === 'USDC' ? (amount * 1.0).toFixed(2) : 
                   asset === 'XLM' ? (amount * 0.12).toFixed(2) : 
                   (amount * 0.001).toFixed(2)
@@ -534,19 +534,19 @@ export default function Stake() {
           {/* Duration */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Duración del Bloqueo
+              Lock Duration
             </label>
             <select
               value={stakeDuration}
               onChange={(e) => setStakeDuration(Number(e.target.value))}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value={7}>7 días (recomendado)</option>
-              <option value={14}>14 días</option>
-              <option value={30}>30 días</option>
+              <option value={7}>7 days (recommended)</option>
+              <option value={14}>14 days</option>
+              <option value={30}>30 days</option>
             </select>
             <p className="text-sm text-gray-600 mt-1">
-              Tu {asset} se desbloqueará automáticamente al finalizar el período
+              Your {asset} will automatically unlock at the end of the period
             </p>
           </div>
 
@@ -573,12 +573,12 @@ export default function Stake() {
                   // Cerrar modal
                   document.getElementById('stake-modal')?.classList.add('hidden');
                   
-                  // Mostrar confirmación simple
-                  alert(`✅ ¡Voto registrado exitosamente!
+                  // Simple confirmation
+                  alert(`✅ Vote recorded successfully!
 
-${amount} ${asset} ($${usdValue.toFixed(2)}) para "${project?.title}"
+${amount} ${asset} ($${usdValue.toFixed(2)}) for "${project?.title}"
 
-Ve al dashboard para ver todas tus estadísticas y proyectos respaldados.`);
+Go to the dashboard to see all your stats and backed projects.`);
                 }
               }}
               disabled={!selectedProject || !amount || isLoading}
@@ -587,12 +587,12 @@ Ve al dashboard para ver todas tus estadísticas y proyectos respaldados.`);
               {isLoading ? (
                 <>
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Procesando...
+                  Processing...
                 </>
               ) : (
                 <>
                   <Target className="w-5 h-5 mr-2" />
-                  Votar con {amount || 0} {asset}
+                  Vote with {amount || 0} {asset}
                 </>
               )}
             </Button>
@@ -601,7 +601,7 @@ Ve al dashboard para ver todas tus estadísticas y proyectos respaldados.`);
               variant="ghost"
               onClick={() => document.getElementById('stake-modal')?.classList.add('hidden')}
             >
-              Cancelar
+              Cancel
             </Button>
           </div>
         </div>
@@ -612,7 +612,7 @@ Ve al dashboard para ver todas tus estadísticas y proyectos respaldados.`);
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 flex items-center space-x-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span className="text-gray-700">Procesando voto...</span>
+            <span className="text-gray-700">Processing vote...</span>
           </div>
         </div>
       )}
