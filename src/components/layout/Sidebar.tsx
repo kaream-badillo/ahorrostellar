@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, FolderOpen, LogOut, Target, Shield } from "lucide-react";
+import { Home, FolderOpen, LogOut, Target, Shield, Activity } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useApp } from "@/contexts/AppContext";
@@ -13,6 +13,7 @@ export default function Sidebar() {
   const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: Home },
     { name: "Voto-Ahorro", href: "/stake", icon: Target },
+    { name: "Reflector Debug", href: "/reflector-debug", icon: Activity },
   ];
 
   const isActive = (href: string) => pathname === href;

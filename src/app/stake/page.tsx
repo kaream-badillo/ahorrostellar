@@ -8,7 +8,6 @@ import Layout from "@/components/layout/Layout";
 import { useApp } from "@/contexts/AppContext";
 import { usePrices } from "@/hooks/usePrices";
 import { conectarFreighter } from "@/components/ConectarFreighter";
-import FreighterDebug from "@/components/FreighterDebug";
 import FreighterLocalhostGuide from "@/components/FreighterLocalhostGuide";
 import FreighterTest from "@/components/FreighterTest";
 import { useFreighter } from "@/hooks/useFreighter";
@@ -102,7 +101,8 @@ export default function Stake() {
                 console.log('Demo mode: Simulating wallet connection');
               }
               
-              alert('✅ Wallet simulada conectada! Ahora puedes probar el flujo completo.');
+              // Mostrar confirmación simple sin popup
+              console.log('✅ Wallet simulada conectada! Ahora puedes probar el flujo completo.');
             }} 
             size="lg"
             className="bg-green-600 hover:bg-green-700"
@@ -136,12 +136,6 @@ export default function Stake() {
             </div>
           )}
           
-          {/* Debug Info - Solo para desarrollo */}
-          {process.env.NODE_ENV === 'development' && (
-            <div className="mt-6">
-              <FreighterDebug />
-            </div>
-          )}
         </div>
       </Layout>
     );
@@ -186,7 +180,6 @@ export default function Stake() {
               Bloquea temporalmente USDC como voto simbólico para respaldar proyectos universitarios
             </p>
           </div>
-          <WalletData />
         </div>
         
         {/* [AhorroStellar][Reflector] Modo Lectura - Solo cuando NO hay wallet */}
@@ -586,23 +579,12 @@ export default function Stake() {
                   // Cerrar modal
                   document.getElementById('stake-modal')?.classList.add('hidden');
                   
-                  // Mostrar confirmación con estadísticas actualizadas
-                  const updatedProject = projects.find(p => p.id === selectedProject);
-                  const newTotal = (updatedProject?.totalStaked || 0) + usdValue;
-                  const newProgress = Math.min(100, (newTotal / (updatedProject?.targetAmount || 1)) * 100);
-                  const newStakers = (updatedProject?.stakers || 0) + 1;
-                  
-                  alert(`✅ Stake simulado: ${amount} ${asset} (${usdValue.toFixed(2)} USD) para ${project?.title}
+                  // Mostrar confirmación simple
+                  alert(`✅ ¡Voto registrado exitosamente!
 
-📊 Estadísticas del Proyecto:
-• Total respaldado: $${newTotal.toFixed(2)} (antes: $${(updatedProject?.totalStaked || 0).toFixed(2)})
-• Progreso: ${newProgress.toFixed(1)}% (antes: ${(updatedProject?.progress || 0).toFixed(1)}%)
-• Votantes: ${newStakers} (antes: ${updatedProject?.stakers || 0})
+${amount} ${asset} ($${usdValue.toFixed(2)}) para "${project?.title}"
 
-👤 Tus Estadísticas:
-• Ahorro bloqueado: $${((user?.activeStakes || 0) + usdValue).toFixed(2)} (antes: $${(user?.activeStakes || 0).toFixed(2)})
-• Proyectos respaldados: ${(user?.totalProjects || 0) + 1} (antes: ${user?.totalProjects || 0})
-• Tu stake: $${usdValue.toFixed(2)}`);
+Ve al dashboard para ver todas tus estadísticas y proyectos respaldados.`);
                 }
               }}
               disabled={!selectedProject || !amount || isLoading}

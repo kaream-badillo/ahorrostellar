@@ -201,11 +201,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Connect Wallet
   const connectWallet = async () => {
+    // En modo demo, simular conexión exitosa sin llamar a Freighter
+    if (process.env.NEXT_PUBLIC_DEV_WALLET_MOCK === 'true') {
+      console.log('Demo mode: Simulating successful wallet connection');
+      setState(prev => ({
+        ...prev,
+        wallet: {
+          isConnected: true,
+          publicKey: "GDEMO1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+          balance: { USDC: 1000, XLM: 500 },
+          isLoading: false,
+          error: null,
+        },
+      }));
+      return;
+    }
+    
     try {
       await walletHook.connectWallet();
     } catch (error) {
       console.error('Wallet connection error:', error);
-      // En modo demo, simular conexión exitosa
+      // Fallback para modo demo si no está configurado
       console.log('Demo mode: Simulating successful wallet connection');
       setState(prev => ({
         ...prev,

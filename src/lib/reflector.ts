@@ -110,24 +110,44 @@ function parseSorobanResult(resultMetaXdr: any): any {
 export async function simulateRead(contractId: string, method: string, args: xdr.ScVal[]): Promise<number> {
   try {
     const reader = getReaderPk()
-    const account = await server.getAccount(reader)
-    const contract = new Contract(contractId)
+    
+    // Check if we're using a demo key
+    if (reader.startsWith('GDEMO')) {
+      console.warn('🔧 DEMO MODE: Using fallback prices (configure .env.local for real Reflector)')
+      // Return demo prices based on method and contract
+      if (method === 'lastprice') {
+        if (contractId === CID_USDC) return 1.0  // USDC/USD
+        if (contractId === CID_CEX) return 0.12  // XLM/USD
+      }
+      if (method === 'x_last_price') {
+        if (contractId === CID_FX) return 1000   // USD/CLP
+        if (contractId === CID_CEX) return 0.12  // XLM/USD
+      }
+      if (method === 'decimals') return 14
+      if (method === 'last_timestamp') return Math.floor(Date.now() / 1000)
+      return 1.0 // Default fallback
+    }
+    
+    console.log('🚀 REAL REFLECTOR: Fetching live prices from Oracle')
+    
+  const account = await server.getAccount(reader)
+  const contract = new Contract(contractId)
     
     const tx = new TransactionBuilder(account, { 
       fee: BASE_FEE,
       networkPassphrase: NET 
     })
-      .addOperation(contract.call(method, ...args))
+    .addOperation(contract.call(method, ...args))
       .setTimeout(30)
-      .build()
+    .build()
     
-    const sim = await server.simulateTransaction(tx)
+  const sim = await server.simulateTransaction(tx)
     
     if (rpc.Api.isSimulationError(sim)) {
       throw new Error(`Simulation error: ${sim.error}`)
     }
     
-    const retval = (sim as any).result?.retval ?? (sim as any).result
+  const retval = (sim as any).result?.retval ?? (sim as any).result
     if (!retval) {
       throw new Error('No retval from simulation')
     }
@@ -137,6 +157,24 @@ export async function simulateRead(contractId: string, method: string, args: xdr
     
   } catch (error) {
     console.error(`Error in simulateRead(${contractId}, ${method}):`, error)
+    
+    // If it's an account error, fall back to demo prices
+    if (error instanceof Error && (error.message.includes('Account not found') || error.message.includes('invalid checksum'))) {
+      console.warn('Account error detected, falling back to demo prices')
+      // Return demo prices based on method and contract
+      if (method === 'lastprice') {
+        if (contractId === CID_USDC) return 1.0  // USDC/USD
+        if (contractId === CID_CEX) return 0.12  // XLM/USD
+      }
+      if (method === 'x_last_price') {
+        if (contractId === CID_FX) return 1000   // USD/CLP
+        if (contractId === CID_CEX) return 0.12  // XLM/USD
+      }
+      if (method === 'decimals') return 14
+      if (method === 'last_timestamp') return Math.floor(Date.now() / 1000)
+      return 1.0 // Default fallback
+    }
+    
     throw error
   }
 }

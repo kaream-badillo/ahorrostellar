@@ -113,6 +113,31 @@ export default function ReflectorDebugPage() {
           <p className="text-gray-600">
             Real-time testing of Reflector Oracle price feeds for KALE x Reflector Hackathon 2025
           </p>
+          
+          {/* Status Indicator */}
+          <div className="mt-4 p-4 rounded-lg border">
+            <div className="flex items-center space-x-2">
+              {process.env.NEXT_PUBLIC_READONLY_PUBLIC_KEY && 
+               !process.env.NEXT_PUBLIC_READONLY_PUBLIC_KEY.startsWith('GDEMO') &&
+               process.env.NEXT_PUBLIC_READONLY_PUBLIC_KEY !== '<TU_PUBLIC_KEY_G...>' ? (
+                <>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-green-700 font-medium">🚀 REAL REFLECTOR MODE</span>
+                  <span className="text-sm text-gray-600">
+                    Account: {process.env.NEXT_PUBLIC_READONLY_PUBLIC_KEY.slice(0, 6)}...{process.env.NEXT_PUBLIC_READONLY_PUBLIC_KEY.slice(-6)}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <span className="text-yellow-700 font-medium">🔧 DEMO MODE</span>
+                  <span className="text-sm text-gray-600">
+                    Configure .env.local with real testnet account for live prices
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Controls */}
