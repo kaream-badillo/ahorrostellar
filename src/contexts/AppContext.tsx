@@ -202,7 +202,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Connect Wallet
   const connectWallet = async () => {
     // En modo demo, simular conexión exitosa sin llamar a Freighter
-    if (process.env.NEXT_PUBLIC_DEV_WALLET_MOCK === 'true') {
+    if (process.env.NEXT_PUBLIC_DEV_WALLET_MOCK === 'true' || 
+        process.env.NODE_ENV === 'development') {
       console.log('Demo mode: Simulating successful wallet connection');
       setState(prev => ({
         ...prev,

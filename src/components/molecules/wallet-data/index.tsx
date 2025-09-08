@@ -15,7 +15,15 @@ export function WalletData() {
       const address = await conectarFreighter()
       setAddr(address)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desconocido')
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido'
+      
+      // Si Freighter no está detectada, redirigir a la página oficial
+      if (errorMessage.includes('Freighter no detectada')) {
+        window.open('https://freighter.app/', '_blank')
+        return
+      }
+      
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
