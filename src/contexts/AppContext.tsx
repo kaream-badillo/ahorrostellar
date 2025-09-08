@@ -44,6 +44,7 @@ interface Project {
   myStake: number;
   image?: string;
   tags: string[];
+  bonusPercent: number;
 }
 
 interface Activity {
@@ -111,6 +112,7 @@ const realProjects: Project[] = mockProjects.map(project => ({
   myStake: project.myStake,
   image: project.image,
   tags: [project.category.toLowerCase()],
+  bonusPercent: project.bonusPercent,
 }));
 
 
