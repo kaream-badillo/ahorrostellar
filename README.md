@@ -9,9 +9,23 @@ Educational DeFi app for LATAM students built with Stellar + Soroban + **Reflect
 [![Stellar](https://img.shields.io/badge/Stellar-Testnet-7D00FF?style=for-the-badge&logo=stellar)](https://stellar.org)
 [![Reflector](https://img.shields.io/badge/Reflector-Oracle-FF6B35?style=for-the-badge)](https://reflector.stellar.org)
 
-🚀 **Live Demo** | 🌟 **[Try AhorroStellar →](https://ahorrostellar.vercel.app)**
+🚀 **Live Demo** | 🌟 **[Try AhorroStellar →](https://ahorrostellar-4csb4hgoa-kareams-projects.vercel.app)**
 
 *For judges: Direct access without installations. Mobile & desktop compatible.*
+
+## 🏆 Stellar KALE x Reflector Hackathon 2025
+
+**Category:** DeFi & Financial Inclusion  
+**Focus:** Web3 Education for LATAM students  
+**Differentiator:** Zero risk + social purpose + real scalability + Reflector integration
+
+### Why AhorroStellar Will Win
+- ✅ **Real Problem:** Lack of educational DeFi access in LATAM
+- ✅ **Viable Solution:** Functional MVP, scalable architecture  
+- ✅ **Large Market:** Millions of university students
+- ✅ **Early Traction:** Complete UI, smooth experience
+- ✅ **Clear Vision:** Defined technical and business roadmap
+- ✅ **Reflector Integration:** Real-time price feeds for accurate calculations
 
 ---
 

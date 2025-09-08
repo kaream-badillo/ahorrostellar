@@ -90,18 +90,12 @@ export default function Stake() {
           
           <Button 
             onClick={async () => {
-              // Simular conexión de wallet para demo
+              // Simular conexión de wallet para demo - SIN llamar a connectWallet()
               const mockPublicKey = "GDEMO1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
               setPub(mockPublicKey);
               
-              // Simular conexión en el contexto
-              try {
-                await connectWallet();
-              } catch (error) {
-                console.log('Demo mode: Simulating wallet connection');
-              }
-              
-              // Mostrar confirmación simple sin popup
+              // Simular conexión directamente en el contexto sin llamar a Freighter
+              console.log('Demo mode: Simulating wallet connection');
               console.log('✅ Wallet simulada conectada! Ahora puedes probar el flujo completo.');
             }} 
             size="lg"
