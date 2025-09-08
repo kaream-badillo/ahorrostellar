@@ -16,6 +16,7 @@ export interface Project {
   goal: number;
   progress: number;
   stakers: number;
+  bonusPercent: number;
 }
 
 export interface UserStats {
@@ -63,11 +64,12 @@ export const mockProjects: Project[] = [
     status: "active",
     goal: 5000,
     progress: 50,
+    bonusPercent: 8,
   },
   {
     id: 2,
-    title: "Fintech Startup Hub",
-    description: "Financial innovation hub connecting students with fintech startups for research and development projects.",
+    title: "Web3 Fintech Startup Hub (Blockchain R&D)",
+    description: "Blockchain-first innovation hub connecting students with startups to build DeFi rails, on-chain payments, and tokenized experiments.",
     category: "Social",
     creator: "Maria Lopez",
     totalStaked: 1800,
@@ -79,10 +81,11 @@ export const mockProjects: Project[] = [
     status: "active",
     goal: 3000,
     progress: 60,
+    bonusPercent: 6,
   },
   {
     id: 3,
-    title: "Advanced Blockchain Mentorship",
+    title: "Web3 Advanced Blockchain Mentorship",
     description: "Specialized mentorship program where industry experts guide students in real DeFi and NFT projects.",
     category: "Education",
     creator: "Carlos Ruiz",
@@ -95,11 +98,12 @@ export const mockProjects: Project[] = [
     status: "active",
     goal: 4000,
     progress: 80,
+    bonusPercent: 11,
   },
   {
     id: 4,
-    title: "Green Campus: Renewable Energy",
-    description: "Solar panels and renewable energy systems on campus, with blockchain-based energy consumption monitoring.",
+    title: "Web3 Green Campus: Renewable Energy On-chain",
+    description: "Renewable energy deployments with on-chain metering, transparent reporting, and tokenized incentives for sustainability.",
     category: "Environment",
     creator: "Ana Martinez",
     totalStaked: 1200,
@@ -111,11 +115,12 @@ export const mockProjects: Project[] = [
     status: "ending",
     goal: 2000,
     progress: 60,
+    bonusPercent: 5,
   },
   {
     id: 5,
-    title: "AI & Blockchain Lab",
-    description: "Research center combining AI and blockchain to develop innovative decentralized applications.",
+    title: "Web3 AI & Blockchain Lab (DeAI)",
+    description: "Research lab exploring decentralized AI, verifiable data pipelines, and on-chain automation with real dApps.",
     category: "Technology",
     creator: "Prof. Rodriguez",
     totalStaked: 4500,
@@ -127,11 +132,12 @@ export const mockProjects: Project[] = [
     status: "active",
     goal: 6000,
     progress: 75,
+    bonusPercent: 9,
   },
   {
     id: 6,
-    title: "Web3 Digital Library",
-    description: "Decentralized platform of educational resources with blockchain certification of authenticity and intellectual property.",
+    title: "Web3 Digital Library (On-chain IP)",
+    description: "Decentralized library with on-chain provenance, open licensing, and contributor rewards via smart contracts.",
     category: "Education",
     creator: "Central Library",
     totalStaked: 2800,
@@ -143,6 +149,7 @@ export const mockProjects: Project[] = [
     status: "active",
     goal: 3500,
     progress: 80,
+    bonusPercent: 7,
   },
 ];
 

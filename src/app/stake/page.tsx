@@ -89,14 +89,10 @@ export default function Stake() {
           </div>
           
           <Button 
-            onClick={async () => {
-              // Simular conexión de wallet para demo - SIN llamar a connectWallet()
-              const mockPublicKey = "GDEMO1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-              setPub(mockPublicKey);
-              
-              // Simular conexión directamente en el contexto sin llamar a Freighter
+            onClick={() => {
+              // Demo mode: just set demo public key without calling connectWallet
+              setPub("GDEMO1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ");
               console.log('Demo mode: Simulating wallet connection');
-              console.log('✅ Wallet simulada conectada! Ahora puedes probar el flujo completo.');
             }} 
             size="lg"
             className="bg-green-600 hover:bg-green-700"
@@ -259,11 +255,12 @@ export default function Stake() {
           </div>
         )}
 
-        {/* Real-time Price Display */}
+        {/* Real-time Price Display */
+        }
         <div className="mt-6 flex justify-center">
           {mockPrices.usdcUsd.loading && (
             <div className="p-3 bg-gray-50 border border-gray-200 rounded">
-              <span className="text-sm text-gray-600">Cargando precios desde Reflector Oracle...</span>
+              <span className="text-sm text-gray-600">Loading prices from Reflector Oracle...</span>
             </div>
           )}
           {!mockPrices.usdcUsd.loading && mockPrices.usdcUsd.price > 0 && (
@@ -280,21 +277,20 @@ export default function Stake() {
         </div>
       </div>
 
-
       {/* Projects Grid */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Available Projects</h2>
         
-        {/* Debug Info - Solo para desarrollo */}
-        {process.env.NODE_ENV === 'development' && (
+        {/* Debug Info (hidden in demo and prod) */}
+        {false && process.env.NODE_ENV === 'development' && (
           <div className="mb-4 p-3 bg-gray-100 rounded text-sm">
-            <strong>Debug:</strong> Proyectos cargados: {projects?.length || 0} | 
-            Estado wallet: {wallet.isConnected ? 'Conectada' : 'Desconectada'} | 
+            <strong>Debug:</strong> Projects loaded: {projects?.length || 0} | 
+            Wallet: {wallet.isConnected ? 'Connected' : 'Disconnected'} | 
             PublicKey: {pub ? `${pub.slice(0,8)}...` : 'N/A'}
           </div>
         )}
         
-        {!wallet.isConnected && !isFreighterInstalled && (
+        {!(wallet.isConnected || pub) && !isFreighterInstalled && (
           <div className="mb-8 p-4 bg-orange-50 border border-orange-200 rounded-lg text-center max-w-2xl mx-auto">
             <div className="flex items-center justify-center space-x-2 mb-2">
               <Info className="w-5 h-5 text-orange-600" />
@@ -327,7 +323,7 @@ export default function Stake() {
                   <div className="flex items-center space-x-2 mb-4">
                     <Award className="w-4 h-4 text-purple-600" />
                     <span className="text-sm font-medium text-purple-700">
-                      Up to {Math.floor(Math.random() * 15) + 8}% bonus if funded
+                      Up to {project.bonusPercent}% bonus if funded
                     </span>
                   </div>
                 </div>
@@ -375,7 +371,7 @@ export default function Stake() {
                     Vote-Save
                   </Button>
                   
-                  <Link href={`/proyectos/demo`}>
+                  <Link href={`/proyectos/${project.id}`}>
                     <Button variant="ghost" size="sm" className="flex items-center">
                       <ExternalLink className="w-4 h-4 mr-2" />
                       View details
@@ -451,16 +447,14 @@ export default function Stake() {
         </div>
       </Card>
 
-      {/* [AhorroStellar][Reflector] Stake Modal con selector de token */}
+      {/* [AhorroStellar][Reflector] Stake Modal with token selector */}
       <div id="stake-modal" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
         <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-          <h3 className="text-xl font-bold mb-4">Configura tu Voto</h3>
+          <h3 className="text-xl font-bold mb-4">Configure your Vote</h3>
           
           {/* Project Selection */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Proyecto Seleccionado
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Selected Project</label>
             <select
               value={selectedProject}
               onChange={(e) => setSelectedProject(e.target.value)}
