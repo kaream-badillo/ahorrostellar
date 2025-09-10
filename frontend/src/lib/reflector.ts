@@ -207,7 +207,7 @@ export async function priceUSDCinUSD(): Promise<number> {
     ])
     return raw
   } catch (error) {
-    console.error('Failed to get USDC/USD price:', error)
+    console.warn('Reflector Oracle unavailable, using demo price for USDC:', error)
     // Fallback to demo price
     return 1.0
   }
@@ -228,7 +228,7 @@ export async function usdPerCLP(): Promise<number> {
     ])
     return raw
   } catch (error) {
-    console.error('Failed to get USD/CLP rate:', error)
+    console.warn('Reflector Oracle unavailable, using demo price for USD/CLP:', error)
     // Fallback to demo rate (1 USD = 1000 CLP)
     return 1000
   }
@@ -249,7 +249,7 @@ export async function priceXLMinUSD(): Promise<number> {
     ])
     return raw
   } catch (error) {
-    console.error('Failed to get XLM/USD price:', error)
+    console.warn('Reflector Oracle unavailable, using demo price for XLM/USD:', error)
     // Fallback to demo price
     return 0.12
   }
