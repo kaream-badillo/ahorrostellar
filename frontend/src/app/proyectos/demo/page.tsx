@@ -46,19 +46,19 @@ export default function ProjectDemo() {
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-500">Goal</span>
-                  <span className="font-medium">${project.goal.toLocaleString()}</span>
+                  <span className="font-medium">${(project.goal || 0).toLocaleString()}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-500">Progress</span>
-                  <span className="font-medium">{project.progress}%</span>
+                  <span className="font-medium">{project.progress || 0}%</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-500">Backers</span>
-                  <span className="font-medium">{project.backers}</span>
+                  <span className="font-medium">{project.backers || 0}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-500">Days Left</span>
-                  <span className="font-medium">{project.daysLeft}</span>
+                  <span className="font-medium">{project.daysLeft || 0}</span>
                 </div>
               </div>
 
