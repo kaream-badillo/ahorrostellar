@@ -14,7 +14,21 @@ export default function ProjectDetails() {
   const { projects } = state;
   
   const projectId = params.id as string;
-  const project = projects.find(p => p.id === projectId);
+  const project = projects.find(p => p.id.toString() === projectId);
+
+  if (!project) {
+    return (
+      <Layout>
+        <div className="max-w-4xl mx-auto py-16 text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Project Not Found</h1>
+          <p className="text-gray-600 mb-8">The project you're looking for doesn't exist.</p>
+          <Link href="/proyectos/demo">
+            <Button>View All Projects</Button>
+          </Link>
+        </div>
+      </Layout>
+    );
+  }
 
   // Per-project tailored copy (EN) to avoid generic Spanish leftovers
   const projectExtras: Record<string, {about1: string; about2: string}> = {

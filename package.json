@@ -10,6 +10,7 @@
     "dev": "node scripts/dev-frontend.js",
     "build": "node scripts/build-frontend.js",
     "setup": "node scripts/setup.js",
+    "deploy": "node scripts/deploy.js",
     "start": "cd frontend && npm start",
     "lint": "cd frontend && npm run lint",
     "test": "cd frontend && npm test"
