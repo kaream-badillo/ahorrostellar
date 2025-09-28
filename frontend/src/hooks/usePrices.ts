@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { priceUSDCinUSD, priceXLMinUSD, usdPerCLP } from '@/lib/reflector';
+import { priceUSDCinUSD, priceXLMinUSD, usdPerCLP } from '@/lib/api/reflector';
 import { useApp } from '@/contexts/AppContext';
 
 export interface PriceData {

@@ -11,12 +11,6 @@
       "static/chunks/401.c3b153c6a160a894.js"
     ]
   },
-  "hooks\\useFreighter.ts -> @/components/ConectarFreighter": {
-    "id": 2583,
-    "files": [
-      "static/chunks/583.93139dbf9039870b.js"
-    ]
-  },
   "hooks\\useSelectedAsset.ts -> @/lib/reflector": {
     "id": 8934,
     "files": []

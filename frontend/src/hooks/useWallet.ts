@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { stellarService } from '@/lib/stellar';
-import { ensureFunded } from '@/lib/friendbot';
+import { stellarService } from '@/lib/auth/stellar';
+import { ensureFunded } from '@/lib/api/friendbot';
 
 export interface WalletState {
   isConnected: boolean;

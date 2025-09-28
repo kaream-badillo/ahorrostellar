@@ -97,7 +97,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Users\\karea\\Documents\\HACKATHONs\\STELLAR\\ahorrostellar",
+    "outputFileTracingRoot": "C:\\Users\\karea\\Documents\\HACKATHONs\\STELLAR\\Arreglo\\ahorrostellar",
     "experimental": {
       "useSkewCookie": false,
       "nodeMiddleware": false,
@@ -288,7 +288,7 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "C:\\Users\\karea\\Documents\\HACKATHONs\\STELLAR\\ahorrostellar"
+      "root": "C:\\Users\\karea\\Documents\\HACKATHONs\\STELLAR\\Arreglo\\ahorrostellar"
     },
     "_originalRedirects": [
       {
@@ -298,7 +298,7 @@
       }
     ]
   },
-  "appDir": "C:\\Users\\karea\\Documents\\HACKATHONs\\STELLAR\\ahorrostellar\\frontend",
+  "appDir": "C:\\Users\\karea\\Documents\\HACKATHONs\\STELLAR\\Arreglo\\ahorrostellar\\frontend",
   "relativeAppDir": "frontend",
   "files": [
     ".next\\routes-manifest.json",

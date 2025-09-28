@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useWallet } from '@/hooks/useWallet';
 import { useAttestation, useUser } from '@/hooks/useApi';
-import { stellarService } from '@/lib/stellar';
+import { stellarService } from '@/lib/auth/stellar';
 
 // Types
 interface User {
@@ -95,7 +95,7 @@ const mockUser: User = {
   memberSince: '2025-01-15',
 };
 
-import { mockProjects } from '@/lib/mockData';
+import { mockProjects } from '@/lib/utils/mockData';
 
 const realProjects: Project[] = mockProjects.map(project => ({
   id: project.id.toString(),

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { mockUserStats, mockStakes, mockActivity, UserStats, Stake, Activity } from '@/lib/mockData';
+import { mockUserStats, mockStakes, mockActivity, UserStats, Stake, Activity } from '@/lib/utils/mockData';
 
 export function useUserStats() {
   const [userStats, setUserStats] = useState<UserStats>(mockUserStats);

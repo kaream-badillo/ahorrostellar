@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { mockProjects, Project, projectCategories } from '@/lib/mockData';
+import { mockProjects, Project, projectCategories } from '@/lib/utils/mockData';
 
 export function useProjects() {
   const [searchTerm, setSearchTerm] = useState('');

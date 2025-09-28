@@ -7,16 +7,16 @@ import Card from "@/components/ui/Card";
 import Layout from "@/components/layout/Layout";
 import { useApp } from "@/contexts/AppContext";
 import { usePrices } from "@/hooks/usePrices";
-import { conectarFreighter } from "@/components/ConectarFreighter";
-import FreighterLocalhostGuide from "@/components/FreighterLocalhostGuide";
-import FreighterTest from "@/components/FreighterTest";
+import { conectarFreighter } from "@/components/wallet/ConectarFreighter";
+import FreighterLocalhostGuide from "@/components/wallet/FreighterLocalhostGuide";
+import FreighterTest from "@/components/wallet/FreighterTest";
 import { useFreighter } from "@/hooks/useFreighter";
-import { WalletData } from "@/components/molecules/wallet-data";
+import { WalletData } from "@/components/ui/WalletData";
 import { useSelectedAssetPrice, AssetCode } from "@/hooks/useSelectedAsset";
 import Link from "next/link";
 
 // [AhorroStellar][Reflector] imports
-import WalletDemoBanner from '@/components/WalletDemoBanner'
+import WalletDemoBanner from '@/components/wallet/WalletDemoBanner'
 import { useStakes } from '@/stores/stakes'
 
 export const dynamic = 'force-dynamic'

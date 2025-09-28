@@ -111,7 +111,7 @@ export const useFreighter = () => {
 
     try {
       // Use the official conectarFreighter function
-      const { conectarFreighter } = await import('@/components/ConectarFreighter')
+      const { conectarFreighter } = await import('@/components/wallet/ConectarFreighter')
       const publicKey = await conectarFreighter()
 
       setStatus({

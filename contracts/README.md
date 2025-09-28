@@ -1,29 +1,68 @@
-# 🔐 README – Smart Contract (Soroban Simulation)
+# Smart Contracts - AhorroStellar
 
-Este contrato simula la distribución de un bonus del 5% al 10% si el proyecto respaldado gana.
+## 🔗 Descripción
+Contratos inteligentes Soroban para la plataforma AhorroStellar, desarrollados en Rust.
 
-## 📄 Función principal
+## 🏗️ Estructura
+```
+contracts/
+├── src/                  # Código fuente Rust
+│   ├── staking.rs       # Contrato de Staking
+│   ├── voting.rs        # Contrato de Votación
+│   └── rewards.rs       # Contrato de Recompensas
+├── tests/               # Tests de contratos
+├── Cargo.toml           # Dependencias Rust
+└── README.md            # Documentación
+```
 
-```rust
-pub fn distribute_bonus(env: Env, project_id: u64, backers: Vec<Address>, amount: i128) {
-    // Simula repartir bonus proporcional entre quienes hicieron stake
-}
+## 🎯 Contratos Principales
 
-⚠️ Advertencias
-El contrato está desplegado en testnet.
+### **Staking Contract**
+- Maneja el bloqueo temporal de USDC
+- Calcula intereses y recompensas
+- Gestiona el desbloqueo de fondos
 
-No mueve fondos reales.
+### **Voting Contract**
+- Registra votos de usuarios
+- Calcula peso de votos por stake
+- Gestiona resultados de votación
 
-Solo simula el comportamiento final para efectos del MVP.
+### **Rewards Contract**
+- Distribuye recompensas por participación
+- Calcula reputación de usuarios
+- Maneja bonus por proyectos exitosos
 
-📌 Archivos relevantes
-smart-contracts/bonus.rs
+## 🛠️ Desarrollo
 
-smart-contracts/Cargo.toml
+### **Prerrequisitos**
+```bash
+# Instalar Rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-scripts/deploy.ts
+# Instalar Soroban CLI
+cargo install soroban-cli
+```
 
-🧠 Próximos pasos
-Activar oracles o triggers de evento real (grants, premios).
+### **Comandos**
+```bash
+# Build contratos
+soroban contract build
 
-Evaluar distribución automática real on-chain.
+# Test contratos
+cargo test
+
+# Deploy a testnet
+soroban contract deploy --source-account YOUR_ACCOUNT
+```
+
+## 🔧 Tecnologías
+- **Rust** - Lenguaje de programación
+- **Soroban** - Plataforma de contratos inteligentes
+- **Stellar SDK** - Integración con Stellar
+
+## 📋 Estado del Desarrollo
+- [ ] Staking Contract - En desarrollo
+- [ ] Voting Contract - En desarrollo  
+- [ ] Rewards Contract - En desarrollo
+- [ ] Tests - Pendiente
+- [ ] Deploy - Pendiente

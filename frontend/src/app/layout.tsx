@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../styles/globals.css";
 import { AppProvider } from "@/contexts/AppContext";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 

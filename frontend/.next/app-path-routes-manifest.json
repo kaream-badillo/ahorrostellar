@@ -1,15 +1,15 @@
 {
+  "/_not-found/page": "/_not-found",
   "/api/attest/route": "/api/attest",
   "/api/user/[id]/route": "/api/user/[id]",
-  "/_not-found/page": "/_not-found",
   "/favicon.ico/route": "/favicon.ico",
-  "/freighter-debug/page": "/freighter-debug",
-  "/dashboard/page": "/dashboard",
   "/page": "/",
-  "/proyectos/[id]/page": "/proyectos/[id]",
+  "/dashboard/page": "/dashboard",
+  "/freighter-debug/page": "/freighter-debug",
   "/proyectos/demo/page": "/proyectos/demo",
-  "/test-freighter/page": "/test-freighter",
+  "/proyectos/[id]/page": "/proyectos/[id]",
   "/reflector-debug/page": "/reflector-debug",
+  "/test-freighter/page": "/test-freighter",
   "/test-wallet/page": "/test-wallet",
   "/stake/page": "/stake"
 }

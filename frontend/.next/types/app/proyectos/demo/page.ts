@@ -1,4 +1,4 @@
-// File: C:\Users\karea\Documents\HACKATHONs\STELLAR\ahorrostellar\frontend\src\app\proyectos\demo\page.tsx
+// File: C:\Users\karea\Documents\HACKATHONs\STELLAR\Arreglo\ahorrostellar\frontend\src\app\proyectos\demo\page.tsx
 import * as entry from '../../../../../src/app/proyectos/demo/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -10,7 +10,7 @@ import {
   getXTwap,
   getLastTimestamp,
   testReflectorConnections 
-} from '@/lib/reflector'
+} from '@/lib/api/reflector'
 import Layout from '@/components/layout/Layout'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'

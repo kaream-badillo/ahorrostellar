@@ -3,7 +3,7 @@
 import { Search, Bell } from "lucide-react";
 import Link from "next/link";
 import { useApp } from "@/contexts/AppContext";
-import { WalletData } from "@/components/molecules/wallet-data";
+import { WalletData } from "@/components/ui/WalletData";
 import Image from "next/image";
 
 interface HeaderProps {
