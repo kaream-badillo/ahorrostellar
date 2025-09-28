@@ -3,7 +3,7 @@
 import { Search, Bell } from "lucide-react";
 import Link from "next/link";
 import { useApp } from "@/contexts/AppContext";
-import { WalletButton } from "@/components/wallet/WalletButton";
+import { WalletData } from "@/components/molecules/wallet-data";
 import Image from "next/image";
 
 interface HeaderProps {
@@ -37,7 +37,7 @@ export default function Header({ showSearch = true }: HeaderProps) {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Buscar proyectos, usuarios..."
+                  placeholder="Search projects, users..."
                   className="w-full pl-10 pr-4 py-2 border border-stellar-100 rounded-lg focus:ring-2 focus:ring-stellarBlue focus:border-transparent"
                 />
               </div>
@@ -59,7 +59,7 @@ export default function Header({ showSearch = true }: HeaderProps) {
             </button>
 
             {/* Wallet Connect Button */}
-            <WalletButton />
+            <WalletData />
           </div>
         </div>
       </div>

@@ -11,9 +11,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AhorroStellar - Tu ahorro construye el futuro Web3",
-  description: "Plataforma Web3 para estudiantes universitarios que permite bloquear fondos sin riesgo y participar en el ecosistema Stellar",
-  keywords: ["Web3", "Stellar", "Ahorro", "Universidad", "Blockchain", "Finanzas"],
+  title: "AhorroStellar - Save with purpose. Vote for the future.",
+  description: "Educational Web3 platform for students. Temporary, zero-risk savings and purpose-driven voting powered by Stellar and Reflector.",
+  keywords: ["Web3", "Stellar", "Savings", "University", "Blockchain", "Finance"],
   authors: [{ name: "Kaream Badillo" }],
   icons: {
     icon: "/favicon.png",
@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" data-theme="ahorrostellar" className={inter.variable}>
+    <html lang="en" data-theme="ahorrostellar" className={inter.variable}>
       <body className={`${inter.className} min-h-screen bg-gradient-to-br from-stellar-50 to-white antialiased`}>
         <ErrorBoundary>
           <AppProvider>

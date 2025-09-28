@@ -37,7 +37,7 @@ export default function RecentVotes() {
                     <span className="text-xs text-green-600">+{user.reputation} reputación</span>
                   </div>
                   <Link href={`/projects/${project.id}`}>
-                    <Button size="sm">Ver Detalles</Button>
+                    <Button size="sm">View Details</Button>
                   </Link>
                 </div>
               </div>

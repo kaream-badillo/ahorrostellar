@@ -1,6 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  // Traído desde next.config.js
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
+
   async redirects() {
     return [
       {
@@ -8,8 +12,8 @@ const nextConfig: NextConfig = {
         destination: '/stake',
         permanent: true,
       },
-    ];
+    ]
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig
