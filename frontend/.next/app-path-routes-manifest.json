@@ -1,0 +1,15 @@
+{
+  "/api/attest/route": "/api/attest",
+  "/api/user/[id]/route": "/api/user/[id]",
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/freighter-debug/page": "/freighter-debug",
+  "/dashboard/page": "/dashboard",
+  "/page": "/",
+  "/proyectos/[id]/page": "/proyectos/[id]",
+  "/proyectos/demo/page": "/proyectos/demo",
+  "/test-freighter/page": "/test-freighter",
+  "/reflector-debug/page": "/reflector-debug",
+  "/test-wallet/page": "/test-wallet",
+  "/stake/page": "/stake"
+}
