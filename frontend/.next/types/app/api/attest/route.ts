@@ -1,8 +1,8 @@
-// File: C:\Users\karea\Documents\HACKATHONs\STELLAR\Arreglo\ahorrostellar\frontend\src\app\api\attest\route.ts
-import * as entry from '../../../../../src/app/api/attest/route.js'
+// File: C:\Users\karea\Documents\HACKATHONs\STELLAR\Arreglo\ahorrostellar\frontend\app\api\attest\route.ts
+import * as entry from '../../../../../app/api/attest/route.js'
 import type { NextRequest } from 'next/server.js'
 
-type TEntry = typeof import('../../../../../src/app/api/attest/route.js')
+type TEntry = typeof import('../../../../../app/api/attest/route.js')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }

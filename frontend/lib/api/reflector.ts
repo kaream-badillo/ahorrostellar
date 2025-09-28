@@ -3,7 +3,7 @@
 import {
   rpc, Contract, TransactionBuilder, BASE_FEE, Networks, xdr, scValToBigInt, Operation, Address, Asset as StellarAsset, hash, StrKey
 } from '@stellar/stellar-sdk'
-import { getReaderPk } from '@/lib/reader'
+import { getReaderPk } from './reader'
 
 const RPC = process.env.NEXT_PUBLIC_SOROBAN_RPC_PRIMARY || 'https://soroban-testnet.stellar.org'
 const NET = process.env.NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE || Networks.TESTNET

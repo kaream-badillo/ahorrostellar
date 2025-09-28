@@ -34,12 +34,12 @@
       "namedRegex": "^/api/user/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
-      "page": "/proyectos/[id]",
-      "regex": "^/proyectos/([^/]+?)(?:/)?$",
+      "page": "/links/[id]",
+      "regex": "^/links/([^/]+?)(?:/)?$",
       "routeKeys": {
         "nxtPid": "nxtPid"
       },
-      "namedRegex": "^/proyectos/(?<nxtPid>[^/]+?)(?:/)?$"
+      "namedRegex": "^/links/(?<nxtPid>[^/]+?)(?:/)?$"
     }
   ],
   "staticRoutes": [
@@ -54,6 +54,30 @@
       "regex": "^/_not\\-found(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/add",
+      "regex": "^/add(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/add(?:/)?$"
+    },
+    {
+      "page": "/auth/login",
+      "regex": "^/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/login(?:/)?$"
+    },
+    {
+      "page": "/auth/register",
+      "regex": "^/auth/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/register(?:/)?$"
+    },
+    {
+      "page": "/categories",
+      "regex": "^/categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/categories(?:/)?$"
     },
     {
       "page": "/dashboard",
@@ -74,16 +98,28 @@
       "namedRegex": "^/freighter\\-debug(?:/)?$"
     },
     {
-      "page": "/proyectos/demo",
-      "regex": "^/proyectos/demo(?:/)?$",
+      "page": "/links/demo",
+      "regex": "^/links/demo(?:/)?$",
       "routeKeys": {},
-      "namedRegex": "^/proyectos/demo(?:/)?$"
+      "namedRegex": "^/links/demo(?:/)?$"
     },
     {
       "page": "/reflector-debug",
       "regex": "^/reflector\\-debug(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/reflector\\-debug(?:/)?$"
+    },
+    {
+      "page": "/search",
+      "regex": "^/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/search(?:/)?$"
+    },
+    {
+      "page": "/settings",
+      "regex": "^/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/settings(?:/)?$"
     },
     {
       "page": "/stake",
